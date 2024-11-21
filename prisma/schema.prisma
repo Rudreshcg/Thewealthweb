@@ -1,0 +1,263 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+type preferences {
+  theme    String
+  currency String
+}
+
+model User {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?      @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  preferences   preferences?
+
+  plan       Plan?   @default(free)
+  customerId String?
+
+  MarkupCalculations               MarkupCalculation[]
+  BreakEvenPointCalculations       BreakEvenPointCalculation[]
+  InvestmentTimeCalculations       InvestmentTimeCalculation[]
+  PresentValueCalculations         PresentValueCalculation[]
+  AnnualizedReturnCalculations     AnnualizedReturnCalculation[]
+  CompoundInterestCalculations     CompoundInterestCalculation[]
+  EventProbabilityCalculations     EventProbabilityCalculation[]
+  PriceToEarningsRatioCalculations PriceToEarningsRatioCalculation[]
+  DollarCostAverageCalculations    DollarCostAverageCalculation[]
+  EnterpriseValueCalculations      EnterpriseValueCalculation[]
+  Subscription                     Subscription?
+}
+
+enum Plan {
+  free
+  premium
+}
+
+enum SubscriptionPeriod {
+  weekly
+  monthly
+  yearly
+}
+
+model Subscription {
+  id     String             @id @default(cuid()) @map("_id")
+  userId String             @unique @db.ObjectId
+  plan   Plan
+  period SubscriptionPeriod
+
+  startDate DateTime @default(now())
+  endDate   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User User @relation(fields: [userId], references: [id])
+}
+
+type BreakEvenPointCalculationFormData {
+  fixedCosts          Float
+  variableCostPerUnit Float
+  pricePerUnit        Float
+}
+
+model BreakEvenPointCalculation {
+  id        String                            @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                            @db.ObjectId
+  name      String
+  formData  BreakEvenPointCalculationFormData
+  createdAt DateTime                          @default(now())
+  updatedAt DateTime                          @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type MarkupCalculationFormData {
+  cost       Float
+  salesPrice Float
+}
+
+model MarkupCalculation {
+  id        String                    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                    @db.ObjectId
+  name      String
+  formData  MarkupCalculationFormData
+  createdAt DateTime                  @default(now())
+  updatedAt DateTime                  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type InvestmentTimeCalculationFormData {
+  startingBalance    Float
+  endingBalance      Float
+  annualInterestRate Float
+}
+
+model InvestmentTimeCalculation {
+  id        String                            @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                            @db.ObjectId
+  name      String
+  formData  InvestmentTimeCalculationFormData
+  createdAt DateTime                          @default(now())
+  updatedAt DateTime                          @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type PresentValueCalculationFormData {
+  startingBalance    Float
+  duration           Float
+  durationMultiplier Float
+  discountRate       Float
+}
+
+model PresentValueCalculation {
+  id        String                          @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                          @db.ObjectId
+  name      String
+  formData  PresentValueCalculationFormData
+  createdAt DateTime                        @default(now())
+  updatedAt DateTime                        @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type AnnualizedReturnCalculationFormData {
+  startingBalance    Float
+  endingBalance      Float
+  duration           Float
+  durationMultiplier Float
+}
+
+model AnnualizedReturnCalculation {
+  id        String                              @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                              @db.ObjectId
+  name      String
+  formData  AnnualizedReturnCalculationFormData
+  createdAt DateTime                            @default(now())
+  updatedAt DateTime                            @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type CompoundInterestCalculationFormData {
+  startingBalance        Float
+  contribution           Float
+  contributionMultiplier Float
+  contributionFrequency  Float
+  interestRate           Float
+  compoundFrequency      Float
+  duration               Float
+  durationMultiplier     Float
+}
+
+model CompoundInterestCalculation {
+  id        String                              @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                              @db.ObjectId
+  name      String
+  formData  CompoundInterestCalculationFormData
+  createdAt DateTime                            @default(now())
+  updatedAt DateTime                            @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type EventProbabilityCalculationFormData {
+  eventProbabilityPercent Float
+  eventTries              Int
+}
+
+model EventProbabilityCalculation {
+  id        String                              @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                              @db.ObjectId
+  name      String
+  formData  EventProbabilityCalculationFormData
+  createdAt DateTime                            @default(now())
+  updatedAt DateTime                            @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type PriceToEarningsRatioCalculationFormData {
+  sharePrice       Float
+  earningsPerShare Float
+}
+
+model PriceToEarningsRatioCalculation {
+  id        String                                  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                                  @db.ObjectId
+  name      String
+  formData  PriceToEarningsRatioCalculationFormData
+  createdAt DateTime                                @default(now())
+  updatedAt DateTime                                @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type DollarCostAverageCalculationFormData {
+  initialInvestment  Float
+  sharePrice         Float
+  deposit            Float
+  depositFrequency   Float
+  interestRate       Float
+  compoundFrequency  Float
+  duration           Float
+  durationMultiplier Float
+}
+
+model DollarCostAverageCalculation {
+  id        String                               @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                               @db.ObjectId
+  name      String
+  formData  DollarCostAverageCalculationFormData
+  createdAt DateTime                             @default(now())
+  updatedAt DateTime                             @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type EnterpriseValueCalculationFormData {
+  sharePrice        Float
+  sharesOutstanding Float
+  cash              Float
+  debt              Float
+}
+
+model EnterpriseValueCalculation {
+  id        String                             @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                             @db.ObjectId
+  name      String
+  formData  EnterpriseValueCalculationFormData
+  createdAt DateTime                           @default(now())
+  updatedAt DateTime                           @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
