@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = "mongodb+srv://thimmegowdatp01:pPFXR2mixpU0LYXg@cluster0.lmteg.mongodb.net/thewealthweb?retryWrites=true&w=majority&appName=Cluster0"
 }
 
 model Account {
