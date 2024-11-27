@@ -1,4 +1,4 @@
-export const calculators = [
+export const categories = [
   {
     name: "Investment Calculators",
     url: "investment-calculators",
