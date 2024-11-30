@@ -18,8 +18,12 @@ export const DOLLAR_COST_AVERAGE_CALCULATIONS_API_URL =
   "/api/dollar-cost-average-calculations" as const;
 export const ENTERPRICE_VALUE_CALCULATIONS_API_URL =
   "/api/enterprise-value-calculations" as const;
-export const MUTUAL_FUND_SIP_CALCULATIONS_API_URL =
-    "/api/mutual-fund-sip-calculator" as const;
+export const MF_SIP_CALCULATIONS_API_URL =
+    "/api/mf-sip-calculator" as const;
+export const MF_LUMPSUM_CALCULATIONS_API_URL =
+    "/api/mf-lumpsum-calculator" as const;
+export const STEP_UP_SIP_CALCULATIONS_API_URL =
+    "/api/step-up-sip-calculator" as const;
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
   BREAK_EVEN_POINT_CALCULATIONS_API_URL,
@@ -31,7 +35,9 @@ export const API_URLS = [
   PRICE_TO_EARNINGS_RATIO_CALCULATIONS_API_URL,
   DOLLAR_COST_AVERAGE_CALCULATIONS_API_URL,
   ENTERPRICE_VALUE_CALCULATIONS_API_URL,
-  MUTUAL_FUND_SIP_CALCULATIONS_API_URL,
+  MF_SIP_CALCULATIONS_API_URL,
+  MF_LUMPSUM_CALCULATIONS_API_URL,
+  STEP_UP_SIP_CALCULATIONS_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -57,8 +63,12 @@ export const DOLLAR_COST_AVERAGE_CALCULATIONS_QUERY_KEY =
 export const ENTERPRICE_VALUE_CALCULATIONS_QUERY_KEY =
   "enterprise-value-calculations" as const;
 
-export const MUTUAL_FUND_SIP_CALCULATIONS_QUERY_KEY =
-    "mutual-fund-sip-calculator" as const;
+export const MF_SIP_CALCULATIONS_QUERY_KEY =
+    "mf-sip-calculator" as const;
+export const MF_LUMPSUM_CALCULATIONS_QUERY_KEY =
+    "mf-lumpsum-calculator" as const;
+export const STEP_UP_SIP_CALCULATIONS_QUERY_KEY =
+    "step-up-sip-calculator" as const;
 
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
@@ -71,5 +81,7 @@ export const QUERY_KEYS = [
   PRICE_TO_EARNINGS_RATIO_CALCULATIONS_QUERY_KEY,
   DOLLAR_COST_AVERAGE_CALCULATIONS_QUERY_KEY,
   ENTERPRICE_VALUE_CALCULATIONS_QUERY_KEY,
-  MUTUAL_FUND_SIP_CALCULATIONS_QUERY_KEY,
+  MF_SIP_CALCULATIONS_QUERY_KEY,
+  MF_LUMPSUM_CALCULATIONS_QUERY_KEY,
+  STEP_UP_SIP_CALCULATIONS_QUERY_KEY,
 ] as const;

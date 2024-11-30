@@ -21,6 +21,10 @@ import {
 	PriceToEarningsRatioReportProps,
 	ISipCalculationFormData,
 	SipCalculationProps,
+	LumpsumCalculationProps,
+	ILumpsumCalculationFormData,
+	IStepUpSipCalculationFormData,
+	StepUpSipCalculationProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -298,12 +302,65 @@ export const calculateSIPCalculation = (
 	const totalValue = monthlyInvestment * ((Math.pow(1 + ratePerMonth, months) - 1) / ratePerMonth) * (1 + ratePerMonth);
 	const estimatedReturn = totalValue - investedAmount;
 
+	return { monthlyInvestment, expectedReturnRate, timePeriod, investedAmount, estimatedReturn, totalValue };
+};
+
+export const calculateLumpsumCalculation = (
+	formData: ILumpsumCalculationFormData
+): LumpsumCalculationProps => {
+	const {totalInvestment, expectedReturnRate, timePeriod} = formData;
+
+	const timePeriodInYears = timePeriod;
+	const ratePerYear = expectedReturnRate / 100;
+	const totalValue = totalInvestment * Math.pow((1 + ratePerYear), timePeriodInYears);
+	const estimatedReturn = totalValue - totalInvestment;
+
+	console.log("totalInvestment: "+ totalInvestment);
+	console.log("expectedReturnRate: "+ expectedReturnRate);
+	console.log("timePeriod: "+ timePeriod)
+
+	// Calculated Result
 	console.log("totalValue: "+ totalValue);
 	console.log("estimatedReturn: "+ estimatedReturn);
-	console.log("investedAmount: "+ investedAmount);
-	console.log("timePeriod: "+ timePeriod)
-	console.log("expectedReturnRate: "+ expectedReturnRate);
-	console.log("monthlyInvestment: "+ monthlyInvestment);
 
-	return { monthlyInvestment, expectedReturnRate, timePeriod, investedAmount, estimatedReturn, totalValue };
+	return { totalInvestment, expectedReturnRate, timePeriod, estimatedReturn, totalValue };
+};
+
+export const calculateStepUpSIPCalculation = (
+	formData: IStepUpSipCalculationFormData
+): StepUpSipCalculationProps => {
+	const { monthlyInvestment, annualStepUp, expectedReturnRate, timePeriod } = formData;
+	let totalValue = 0;
+	let investedAmount = 0;
+
+	const stepUpRate = annualStepUp / 100;
+	const ratePerMonth = expectedReturnRate / (12 * 100);
+
+	for (let year = 1; year <= timePeriod; year++) {
+		// Adjust the investment amount for the current year
+		const currentInvestment = monthlyInvestment * Math.pow(1 + stepUpRate, year - 1);
+		// Total investment for this year
+		const yearlyInvestment = currentInvestment * 12;
+		investedAmount += yearlyInvestment;
+
+		// Calculate the value for each month in the current year
+		let yearlyValue = 0;
+		for (let month = 1; month <= 12; month++) {
+			yearlyValue += currentInvestment * Math.pow(1 + ratePerMonth, (timePeriod * 12) - ((year - 1) * 12 + month));
+		}
+		totalValue += yearlyValue;
+	}
+
+	const estimatedReturn = totalValue - investedAmount;
+
+	console.log("monthlyInvestment : " + monthlyInvestment)
+	console.log("annualStepUp : " + annualStepUp)
+	console.log("expectedReturnRate : " + expectedReturnRate)
+	console.log("timePeriod : " + timePeriod)
+
+	console.log("investedAmount : " + investedAmount)
+	console.log("estimatedReturn : " + estimatedReturn)
+	console.log("totalValue : " + totalValue)
+
+	return { monthlyInvestment, annualStepUp, expectedReturnRate, timePeriod, investedAmount, estimatedReturn, totalValue };
 };

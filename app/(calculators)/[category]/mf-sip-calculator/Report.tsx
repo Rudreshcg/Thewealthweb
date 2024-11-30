@@ -41,7 +41,7 @@ const Report = ({ report }: ReportProps) => {
 			<ReportGroup
 				fullWidth
 				header="Duration (Yr)"
-				value={`${timePeriod.toFixed(2)} ${getDurationLabel(timePeriod)}`}
+				value={`${timePeriod.toFixed(2)} Years`}
 			/>
 
 			<ReportDivider/>

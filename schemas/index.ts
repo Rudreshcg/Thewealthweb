@@ -171,7 +171,20 @@ export const enterpriseValueFormDataSchema = z.object({
 });
 
 export const sipCalculationFormDataScheme = z.object({
-	monthlyInvestment: positiveNumberFieldSchemaWithMaxAndMin('Monthly Investment', 100, 1000000),
+	monthlyInvestment: positiveNumberFieldSchemaWithMaxAndMin('Monthly Investment', 100, 10000000),
+	expectedReturnRate: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
+	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
+});
+
+export const lumpsumCalculationFormDataScheme = z.object({
+	totalInvestment: positiveNumberFieldSchemaWithMaxAndMin('Monthly Investment', 500, 10000000),
+	expectedReturnRate: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
+	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
+});
+
+export const stepUpSipCalculationFormDataScheme = z.object({
+	monthlyInvestment: positiveNumberFieldSchemaWithMaxAndMin('Monthly Investment', 100, 10000000),
+	annualStepUp: positiveNumberFieldSchemaWithMaxAndMin('Annual Step Up', 1, 50),
 	expectedReturnRate: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
 	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
 });

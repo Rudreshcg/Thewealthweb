@@ -2,14 +2,14 @@ export const calculatorsCategory = [
   //1. Investment Calculators
   {
     name: "Mutual Fund SIP Calculator",
-    url: "mutual-fund-sip-calculator",
+    url: "mf-sip-calculator",
     category: "investment-calculators",
     description:
       "Calculates the future value of investments made via Systematic Investment Plans.",
   },
   {
-    name: "LumpSum Calculator",
-    url: "lump-sum-calculator",
+    name: "Mutual Fund LumpSum Calculator",
+    url: "mf-lumpsum-calculator",
     category: "investment-calculators",
     description:
       "Estimates the returns on one-time investments in mutual funds or stocks.",

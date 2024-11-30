@@ -61,21 +61,14 @@ export const calculators = [
   },
   {
     name: "Mutual Fund SIP Calculator",
-    url: "mutual-fund-sip-calculator",
-    category: "investment-calculators",
-    description:
-      "Calculates the future value of investments made via Systematic Investment Plans.",
-  },
-  {
-    name: "Mutual Fund SIP and Lumpsum Calculator",
-    url: "mf-sip-and-lumpsum-calculator",
+    url: "mf-sip-calculator",
     category: "investment-calculators",
     description:
         "Calculates the future value of investments made via Systematic Investment Plans.",
   },
   {
-    name: "Lump Sum Calculator",
-    url: "lump-sum-calculator",
+    name: "Mutual Fund LumpSum Calculator",
+    url: "mf-lumpsum-calculator",
     category: "investment-calculators",
     description:
       "Estimates the returns on one-time investments in mutual funds or stocks.",

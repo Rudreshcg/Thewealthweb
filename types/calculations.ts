@@ -7,11 +7,11 @@ import {
 	dollarCostAverageFormDataSchema,
 	enterpriseValueFormDataSchema,
 	eventProbabilityFormDataSchema,
-	investmentTimeFormDataSchema,
+	investmentTimeFormDataSchema, lumpsumCalculationFormDataScheme,
 	markupFormDataSchema,
 	presentValueFormDataSchema,
 	priceToEarningsRatioFormDataSchema,
-	sipCalculationFormDataScheme,
+	sipCalculationFormDataScheme, stepUpSipCalculationFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -150,6 +150,21 @@ export interface SipCalculationProps extends ISipCalculationFormData {
 	totalValue: number;
 }
 
+export type ILumpsumCalculationFormData = z.infer<typeof lumpsumCalculationFormDataScheme>;
+
+export interface LumpsumCalculationProps extends ILumpsumCalculationFormData {
+	estimatedReturn: number;
+	totalValue: number;
+}
+
+// SIP Calculation
+export type IStepUpSipCalculationFormData = z.infer<typeof stepUpSipCalculationFormDataScheme>;
+
+export interface StepUpSipCalculationProps extends IStepUpSipCalculationFormData {
+	investedAmount: number;
+	estimatedReturn: number;
+	totalValue: number;
+}
 export type CalculationType =
 	| BreakEvenPointCalculation
 	| MarkupCalculation
@@ -161,4 +176,5 @@ export type CalculationType =
 	| PriceToEarningsRatioCalculation
 	| DollarCostAverageCalculation
 	| EnterpriseValueCalculation
-	| SipCalculation;
+	| SipCalculation
+	| LumpsumCalculationProps;

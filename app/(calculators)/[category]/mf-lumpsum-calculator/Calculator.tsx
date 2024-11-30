@@ -1,7 +1,6 @@
 "use client";
 
 import FormContainer from "@/components/Form/FormContainer";
-import FormControlsTop from "@/components/Form/FormControlsTop";
 import FormGroup from "@/components/Form/FormGroup";
 import NumberInputWithIcon from "@/components/Form/NumberInputWithIcon";
 import SubmitButton from "@/components/Form/SubmitButton";
@@ -15,30 +14,27 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  MUTUAL_FUND_SIP_CALCULATIONS_API_URL,
-  MUTUAL_FUND_SIP_CALCULATIONS_QUERY_KEY
+  MF_LUMPSUM_CALCULATIONS_API_URL,
+  MF_LUMPSUM_CALCULATIONS_QUERY_KEY
 } from "@/constants/api";
 import useCalculator from "@/hooks/useCalculator";
-import { calculateSIPCalculation } from "@/lib/calculatorFns";
+import { calculateLumpsumCalculation } from "@/lib/calculatorFns";
 import { getCalculations } from "@/lib/queryFns/calculations";
-import { sipCalculationFormDataScheme } from "@/schemas";
+import { lumpsumCalculationFormDataScheme } from "@/schemas";
 import {
-  ISipCalculationFormData,
-  SipCalculationProps,
+  ILumpsumCalculationFormData,
+    LumpsumCalculationProps,
 } from "@/types/calculations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SipCalculation } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
-import Info from "./Info";
 import Report from "./Report";
 import {FaDownload} from "react-icons/fa";
-import {Button} from "@/components/ui/button";
-import React, {useState} from "react";
+import {LumpsumCalculation} from "@prisma/client";
 
-const defaultValues: ISipCalculationFormData = {
-  monthlyInvestment: 25000,
+const defaultValues: ILumpsumCalculationFormData = {
+  totalInvestment: 25000,
   expectedReturnRate:12,
   timePeriod: 10,
 };
@@ -47,8 +43,8 @@ const handlePrint = () => {
 };
 
 const Calculator = () => {
-  const form = useForm<ISipCalculationFormData>({
-    resolver: zodResolver(sipCalculationFormDataScheme),
+  const form = useForm<ILumpsumCalculationFormData>({
+    resolver: zodResolver(lumpsumCalculationFormDataScheme),
     defaultValues,
   });
 
@@ -73,36 +69,26 @@ const Calculator = () => {
     handleImportStart,
     closeImportModal,
   } = useCalculator<
-    ISipCalculationFormData,
-    SipCalculationProps,
-    SipCalculation
+    ILumpsumCalculationFormData,
+    LumpsumCalculationProps,
+    LumpsumCalculation
   >({
-    apiUrl: MUTUAL_FUND_SIP_CALCULATIONS_API_URL,
-    queryKey: MUTUAL_FUND_SIP_CALCULATIONS_QUERY_KEY,
+    apiUrl: MF_LUMPSUM_CALCULATIONS_API_URL,
+    queryKey: MF_LUMPSUM_CALCULATIONS_QUERY_KEY,
     defaultValues,
     form,
-    calcFn: calculateSIPCalculation,
+    calcFn: calculateLumpsumCalculation,
   });
 
   const { status: sessionStatus } = useSession();
-
-  const [calcType, setCalcType] = useState('SIP');
-  const handleOptionChange = (newCalcType: string) => {
-  setCalcType(newCalcType);
-        form.handleSubmit(onCalculate)();
-   };
-    // const handleSubmit = (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     onCalculate();
-    // };
 
   const {
     data: calculations,
     isLoading: isCalculationsLoading,
     isFetching,
-  } = useQuery<SipCalculation[] | null>({
-    queryKey: [MUTUAL_FUND_SIP_CALCULATIONS_QUERY_KEY],
-    queryFn: () => getCalculations(MUTUAL_FUND_SIP_CALCULATIONS_API_URL),
+  } = useQuery<LumpsumCalculation[] | null>({
+    queryKey: [MF_LUMPSUM_CALCULATIONS_QUERY_KEY],
+    queryFn: () => getCalculations(MF_LUMPSUM_CALCULATIONS_API_URL),
     staleTime: 1_000 * 60 * 10, // 10 minutes
     enabled: sessionStatus === "authenticated",
   });
@@ -133,29 +119,21 @@ const Calculator = () => {
 
           <Form {...form}>
               <form onSubmit={form.handleSubmit(onCalculate)} className="space-y-4">
-                  <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '20px'}}>
-                      <Button
-                      onClick={() => handleOptionChange('SIP')}
-                      className={`option-button ${calcType === 'SIP' ? 'active' : ''}`}>SIP</Button>
-                      <Button
-                      onClick={() => handleOptionChange('Lumpsum')}
-                      className={`option-button ${calcType === 'Lumpsum' ? 'active' : ''}`}>Lumpsum</Button>
-                  </div>
                   <FormGroup>
                       <FormField
                           control={form.control}
-                          name="monthlyInvestment"
+                          name="totalInvestment"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Monthly Investment</FormLabel>
+                                  <FormLabel>Total Investment</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="monthlyInvestment"
+                                          name="totalInvestment"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("monthlyInvestment", 25000);
+                                              form.setValue("totalInvestment", 25000);
                                           }}
                                       />
                                   </FormControl>
