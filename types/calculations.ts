@@ -11,6 +11,7 @@ import {
 	markupFormDataSchema,
 	presentValueFormDataSchema,
 	priceToEarningsRatioFormDataSchema,
+	sipCalculationFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -23,6 +24,7 @@ import {
 	MarkupCalculation,
 	PresentValueCalculation,
 	PriceToEarningsRatioCalculation,
+	SipCalculation,
 } from '@prisma/client';
 import { z } from 'zod';
 
@@ -139,6 +141,15 @@ export interface EnterpriseValueReportProps extends IEnterpriseValueFormData {
 	enterpriseValue: number;
 }
 
+// SIP Calculation
+export type ISipCalculationFormData = z.infer<typeof sipCalculationFormDataScheme>;
+
+export interface SipCalculationProps extends ISipCalculationFormData {
+	investedAmount: number;
+	estimatedReturn: number;
+	totalValue: number;
+}
+
 export type CalculationType =
 	| BreakEvenPointCalculation
 	| MarkupCalculation
@@ -149,4 +160,5 @@ export type CalculationType =
 	| EventProbabilityCalculation
 	| PriceToEarningsRatioCalculation
 	| DollarCostAverageCalculation
-	| EnterpriseValueCalculation;
+	| EnterpriseValueCalculation
+	| SipCalculation;

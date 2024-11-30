@@ -142,6 +142,13 @@ export const footerSocialMedia = [
 
 export const currencies = [
 	{
+		name: 'Indian Rupee',
+		value: 'inr',
+		symbol: '₹',
+		locale: 'en-US',
+		pluralName: 'Indian Rupees',
+	},
+	/*{
 		name: 'United States dollar',
 		value: 'usd',
 		symbol: '$',
@@ -162,14 +169,7 @@ export const currencies = [
 		symbol: '¥',
 		locale: 'en-US',
 		pluralName: 'Japanese Yen',
-	},
-	{
-		name: 'Indian Rupee',
-		value: 'inr',
-		symbol: '₹',
-		locale: 'en-US',
-		pluralName: 'Indian Rupees',
-	},
+	},*/
 ] as const;
 
 export const durationMultipliers = [

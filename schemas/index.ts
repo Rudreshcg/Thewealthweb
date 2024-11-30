@@ -53,6 +53,13 @@ const positiveNumberFieldSchemaWithMax = (fieldName = 'Number', max: number) => 
 	});
 };
 
+const positiveNumberFieldSchemaWithMaxAndMin = (fieldName = 'Number', min: number, max: number) => {
+	return positiveNumberFieldSchema(fieldName).max(max, {
+		message: `${fieldName} cannot be greater than ${max}`,
+	})
+		.min(min, {message: `${fieldName} cannot be smaller than ${min}`});
+};
+
 export const markupFormDataSchema = z.object({
 	cost: positiveNumberFieldSchema('Cost'),
 	salesPrice: positiveNumberFieldSchema('Sales price'),
@@ -161,4 +168,10 @@ export const enterpriseValueFormDataSchema = z.object({
 	sharesOutstanding: positiveIntegerFieldSchema('Shares outstanding'),
 	cash: positiveNumberFieldSchema('Cash'),
 	debt: positiveNumberFieldSchema('Debt'),
+});
+
+export const sipCalculationFormDataScheme = z.object({
+	monthlyInvestment: positiveNumberFieldSchemaWithMaxAndMin('Monthly Investment', 100, 1000000),
+	expectedReturnRate: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
+	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
 });

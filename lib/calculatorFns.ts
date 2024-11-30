@@ -19,6 +19,8 @@ import {
 	MarkupReportProps,
 	PresentValueReportProps,
 	PriceToEarningsRatioReportProps,
+	ISipCalculationFormData,
+	SipCalculationProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -28,6 +30,26 @@ export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps =>
 	const markup = (profit / cost) * 100;
 
 	return { cost, salesPrice, profit, markup };
+};
+
+export const calculateAnnualizedReturn = (
+	formData: IAnnualizedReturnFormData
+): AnnualizedReturnReportProps => {
+	const { startingBalance, endingBalance, duration, durationMultiplier } = formData;
+
+	// Time in years
+	const t = (duration * durationMultiplier) / 12;
+	const annualizedReturn = ((endingBalance / startingBalance) ** (1 / t) - 1) * 100;
+	const percentReturn = ((endingBalance - startingBalance) / startingBalance) * 100;
+
+	return {
+		startingBalance,
+		endingBalance,
+		duration,
+		durationMultiplier,
+		annualizedReturn,
+		percentReturn,
+	};
 };
 
 export const calcualteBreakEvenPoint = (
@@ -83,26 +105,6 @@ export const calculatePresentValue = (formData: IPresentValueFormData): PresentV
 	const PV = FV * (1 / (1 + r) ** n);
 
 	return { startingBalance, discountRate, duration, durationMultiplier, presentValue: PV };
-};
-
-export const calculateAnnualizedReturn = (
-	formData: IAnnualizedReturnFormData
-): AnnualizedReturnReportProps => {
-	const { startingBalance, endingBalance, duration, durationMultiplier } = formData;
-
-	// Time in years
-	const t = (duration * durationMultiplier) / 12;
-	const annualizedReturn = ((endingBalance / startingBalance) ** (1 / t) - 1) * 100;
-	const percentReturn = ((endingBalance - startingBalance) / startingBalance) * 100;
-
-	return {
-		startingBalance,
-		endingBalance,
-		duration,
-		durationMultiplier,
-		annualizedReturn,
-		percentReturn,
-	};
 };
 
 export const calcualteCoumpoundInterest = (
@@ -283,4 +285,25 @@ export const calculateEnterpriseValue = (
 	const enterpriseValue = marketCap + debt - cash;
 
 	return { sharePrice, sharesOutstanding, cash, debt, marketCap, enterpriseValue };
+};
+
+export const calculateSIPCalculation = (
+	formData: ISipCalculationFormData
+): SipCalculationProps => {
+	const {monthlyInvestment, expectedReturnRate, timePeriod} = formData;
+
+	const months = timePeriod * 12;
+	const ratePerMonth = expectedReturnRate / (12 * 100);
+	const investedAmount = monthlyInvestment * months;
+	const totalValue = monthlyInvestment * ((Math.pow(1 + ratePerMonth, months) - 1) / ratePerMonth) * (1 + ratePerMonth);
+	const estimatedReturn = totalValue - investedAmount;
+
+	console.log("totalValue: "+ totalValue);
+	console.log("estimatedReturn: "+ estimatedReturn);
+	console.log("investedAmount: "+ investedAmount);
+	console.log("timePeriod: "+ timePeriod)
+	console.log("expectedReturnRate: "+ expectedReturnRate);
+	console.log("monthlyInvestment: "+ monthlyInvestment);
+
+	return { monthlyInvestment, expectedReturnRate, timePeriod, investedAmount, estimatedReturn, totalValue };
 };

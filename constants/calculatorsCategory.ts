@@ -8,8 +8,8 @@ export const calculatorsCategory = [
       "Calculates the future value of investments made via Systematic Investment Plans.",
   },
   {
-    name: "Lump Sum Investment Calculator",
-    url: "lump-sum-investment-calculator",
+    name: "LumpSum Calculator",
+    url: "lump-sum-calculator",
     category: "investment-calculators",
     description:
       "Estimates the returns on one-time investments in mutual funds or stocks.",

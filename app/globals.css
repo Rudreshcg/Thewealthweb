@@ -112,3 +112,12 @@ input[type='number'] {
 		@apply bg-background text-foreground;
 	}
 }
+
+@media print {
+	header, footer {
+		display: none;
+	}
+	.print-button{
+		display: none !important;
+	}
+}
