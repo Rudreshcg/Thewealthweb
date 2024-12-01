@@ -7,11 +7,13 @@ import {
 	dollarCostAverageFormDataSchema,
 	enterpriseValueFormDataSchema,
 	eventProbabilityFormDataSchema,
-	investmentTimeFormDataSchema, lumpsumCalculationFormDataScheme,
+	investmentTimeFormDataSchema,
 	markupFormDataSchema,
 	presentValueFormDataSchema,
 	priceToEarningsRatioFormDataSchema,
-	sipCalculationFormDataScheme, stepUpSipCalculationFormDataScheme,
+	sipCalculationFormDataScheme,
+	lumpsumCalculationFormDataScheme,
+	stepUpSipCalculationFormDataScheme, xirrCalculationFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -20,11 +22,12 @@ import {
 	DollarCostAverageCalculation,
 	EnterpriseValueCalculation,
 	EventProbabilityCalculation,
-	InvestmentTimeCalculation,
+	InvestmentTimeCalculation, LumpsumCalculation,
 	MarkupCalculation,
 	PresentValueCalculation,
 	PriceToEarningsRatioCalculation,
 	SipCalculation,
+	XirrCalculation,
 } from '@prisma/client';
 import { z } from 'zod';
 
@@ -165,6 +168,13 @@ export interface StepUpSipCalculationProps extends IStepUpSipCalculationFormData
 	estimatedReturn: number;
 	totalValue: number;
 }
+
+export type IXirrCalculationFormData = z.infer<typeof xirrCalculationFormDataScheme>;
+
+export interface XirrCalculationProps extends IXirrCalculationFormData {
+	xirr: number;
+	totalReturn: number;
+}
 export type CalculationType =
 	| BreakEvenPointCalculation
 	| MarkupCalculation
@@ -177,4 +187,5 @@ export type CalculationType =
 	| DollarCostAverageCalculation
 	| EnterpriseValueCalculation
 	| SipCalculation
-	| LumpsumCalculationProps;
+	| LumpsumCalculation
+	| XirrCalculation;

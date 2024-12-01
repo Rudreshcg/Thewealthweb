@@ -188,3 +188,9 @@ export const stepUpSipCalculationFormDataScheme = z.object({
 	expectedReturnRate: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
 	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
 });
+
+export const xirrCalculationFormDataScheme = z.object({
+	amountInvested: positiveNumberFieldSchemaWithMaxAndMin('Amount Invested', 100, 10000000),
+	amountAtMaturity: positiveNumberFieldSchemaWithMaxAndMin('Amount Invested', 100, 10000000),
+	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
+});

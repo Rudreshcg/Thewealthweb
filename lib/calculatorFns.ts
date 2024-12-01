@@ -24,7 +24,7 @@ import {
 	LumpsumCalculationProps,
 	ILumpsumCalculationFormData,
 	IStepUpSipCalculationFormData,
-	StepUpSipCalculationProps,
+	StepUpSipCalculationProps, XirrCalculationProps, IXirrCalculationFormData,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -353,14 +353,40 @@ export const calculateStepUpSIPCalculation = (
 
 	const estimatedReturn = totalValue - investedAmount;
 
-	console.log("monthlyInvestment : " + monthlyInvestment)
-	console.log("annualStepUp : " + annualStepUp)
-	console.log("expectedReturnRate : " + expectedReturnRate)
-	console.log("timePeriod : " + timePeriod)
-
-	console.log("investedAmount : " + investedAmount)
-	console.log("estimatedReturn : " + estimatedReturn)
-	console.log("totalValue : " + totalValue)
-
 	return { monthlyInvestment, annualStepUp, expectedReturnRate, timePeriod, investedAmount, estimatedReturn, totalValue };
+};
+
+
+export const calculateXirrCalculation = (
+	formData: IXirrCalculationFormData
+): XirrCalculationProps => {
+	const { amountInvested, amountAtMaturity, timePeriod } = formData;
+	// Total Return Calculation
+	const totalReturn = ((amountAtMaturity / amountInvested) - 1) * 100;
+
+	// XIRR Calculation using Newton-Raphson Method
+	const xirrFunction = (rate: number) => {
+		return amountInvested * Math.pow(1 + rate, timePeriod) - amountAtMaturity;
+	};
+	const xirrFunctionDerivative = (rate: number) => {
+		return amountInvested * timePeriod * Math.pow(1 + rate, timePeriod - 1);
+	};
+	let xirr = 0;
+	let guess = 0.1;
+	// Initial guess for the rate
+	const tolerance = 0.0001;
+	// Tolerance level for convergence
+	const maxIterations = 100;
+	// Maximum number of iterations
+	for (let i = 0; i < maxIterations; i++) {
+		const value = xirrFunction(guess);
+		const derivative = xirrFunctionDerivative(guess);
+		const newGuess = guess - value / derivative;
+		if (Math.abs(newGuess - guess) < tolerance) {
+			xirr = newGuess; break;
+		} guess = newGuess;
+	}
+	// Convert XIRR to percentage
+	xirr = xirr * 100;
+	return { amountInvested, amountAtMaturity, timePeriod, xirr, totalReturn};
 };

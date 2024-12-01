@@ -24,6 +24,9 @@ export const MF_LUMPSUM_CALCULATIONS_API_URL =
     "/api/mf-lumpsum-calculator" as const;
 export const STEP_UP_SIP_CALCULATIONS_API_URL =
     "/api/step-up-sip-calculator" as const;
+export const XIRR_CALCULATIONS_API_URL =
+    "/api/xirr-calculator" as const;
+
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
   BREAK_EVEN_POINT_CALCULATIONS_API_URL,
@@ -38,6 +41,7 @@ export const API_URLS = [
   MF_SIP_CALCULATIONS_API_URL,
   MF_LUMPSUM_CALCULATIONS_API_URL,
   STEP_UP_SIP_CALCULATIONS_API_URL,
+  XIRR_CALCULATIONS_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -69,6 +73,8 @@ export const MF_LUMPSUM_CALCULATIONS_QUERY_KEY =
     "mf-lumpsum-calculator" as const;
 export const STEP_UP_SIP_CALCULATIONS_QUERY_KEY =
     "step-up-sip-calculator" as const;
+export const XIRR_CALCULATIONS_QUERY_KEY =
+    "xirr-calculator" as const;
 
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
@@ -84,4 +90,5 @@ export const QUERY_KEYS = [
   MF_SIP_CALCULATIONS_QUERY_KEY,
   MF_LUMPSUM_CALCULATIONS_QUERY_KEY,
   STEP_UP_SIP_CALCULATIONS_QUERY_KEY,
+  XIRR_CALCULATIONS_QUERY_KEY,
 ] as const;
