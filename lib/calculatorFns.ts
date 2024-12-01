@@ -32,7 +32,10 @@ import {
 	IWealthGainCalculationFormData,
 	WealthGainCalculationProps,
 	IRecurringDepositCalculationFormData,
-	RecurringDepositCalculationProps, IFixedDepositCalculationFormData, FixedDepositCalculationProps,
+	RecurringDepositCalculationProps,
+	IFixedDepositCalculationFormData,
+	FixedDepositCalculationProps,
+	IPpfCalculationFormData, PpfCalculationProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -512,13 +515,6 @@ export const calculateFixedDepositCalculation = (
 	// Calculate the estimated return (interest earned)
 	const estimatedReturn = totalValue - totalInvestment;
 
-	console.log("totalInvestment: "+totalInvestment);
-	console.log("rateOfInterest: "+rateOfInterest);
-	console.log("duration: "+duration);
-	console.log("durationType: "+durationType);
-	console.log("estimatedReturn: "+estimatedReturn);
-	console.log("totalValue: "+totalValue);
-
 	return {
 		totalInvestment,
 		rateOfInterest,
@@ -526,5 +522,39 @@ export const calculateFixedDepositCalculation = (
 		durationType,
 		estimatedReturn,
 		totalValue,
+	};
+};
+
+export const calculatePpfCalculation = (
+	formData: IPpfCalculationFormData
+): PpfCalculationProps => {
+	const {
+		yearlyInvestment,
+		timePeriod,
+		RateOfInterest,
+	} = formData;
+
+	// Convert the annual interest rate from percentage to decimal
+	const annualRateOfInterest = RateOfInterest / 100;
+	// Initialize variables for total invested amount, total interest, and maturity value
+	let investedAmount = 0;
+	let totalInterest = 0;
+	let maturityValue = 0;
+
+	// Calculate the maturity value, interest earned, and total invested amount
+	for (let year = 1; year <= timePeriod; year++) {
+		investedAmount += yearlyInvestment;
+		maturityValue = (maturityValue + yearlyInvestment) * (1 + annualRateOfInterest);
+	}
+	// Calculate the total interest earned
+	totalInterest = maturityValue - investedAmount;
+
+	return {
+		yearlyInvestment,
+		timePeriod,
+		RateOfInterest,
+		investedAmount,
+		totalInterest,
+		maturityValue,
 	};
 };

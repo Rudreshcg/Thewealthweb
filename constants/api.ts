@@ -35,6 +35,8 @@ export const RECURRING_DEPOSIT_CALCULATIONS_API_URL =
     "/api/rd-calculator" as const;
 export const FIXED_DEPOSIT_CALCULATIONS_API_URL =
     "/api/fixed-deposit-calculator" as const;
+export const PPF_CALCULATIONS_API_URL =
+    "/api/ppf-calculator" as const;
 
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
@@ -55,6 +57,7 @@ export const API_URLS = [
   WEALTH_GAIN_CALCULATIONS_API_URL,
   RECURRING_DEPOSIT_CALCULATIONS_API_URL,
   FIXED_DEPOSIT_CALCULATIONS_API_URL,
+  PPF_CALCULATIONS_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -97,6 +100,8 @@ export const RECURRING_DEPOSIT_CALCULATIONS_QUERY_KEY =
     "rd-calculator" as const;
 export const FIXED_DEPOSIT_CALCULATIONS_QUERY_KEY =
     "fixed-deposit-calculator" as const;
+export const PPF_CALCULATIONS_QUERY_KEY =
+    "ppf-calculator" as const;
 
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
@@ -117,4 +122,5 @@ export const QUERY_KEYS = [
   WEALTH_GAIN_CALCULATIONS_QUERY_KEY,
   RECURRING_DEPOSIT_CALCULATIONS_QUERY_KEY,
   FIXED_DEPOSIT_CALCULATIONS_QUERY_KEY,
+  PPF_CALCULATIONS_QUERY_KEY,
 ] as const;

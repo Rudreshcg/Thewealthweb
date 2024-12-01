@@ -61,6 +61,8 @@ model User {
   RetirmentPlanningCalculation     RetirmentPlanningCalculation[]
   WealthGainCalculation            WealthGainCalculation[]
   RecurringDepositCalculation      RecurringDepositCalculation[]
+  FixedDepositCalculation          FixedDepositCalculation[]
+  PpfCalculation                   PpfCalculation[]
 }
 
 enum Plan {
@@ -397,24 +399,6 @@ model RecurringDepositCalculation {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-type RecurringDepositCalculationFormData {
-  monthlyInvestment Float
-  rateOfInterest    Float
-  duration          Float
-  durationType      Float
-}
-
-model RecurringDepositCalculation {
-  id        String                              @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String                              @db.ObjectId
-  name      String
-  formData  RecurringDepositCalculationFormData
-  createdAt DateTime                            @default(now())
-  updatedAt DateTime                            @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
 type FixedDepositCalculationFormData {
   totalInvestment Float
   rateOfInterest  Float
@@ -429,6 +413,23 @@ model FixedDepositCalculation {
   formData  FixedDepositCalculationFormData
   createdAt DateTime                        @default(now())
   updatedAt DateTime                        @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type PpfCalculationFormData {
+  yearlyInvestment Float
+  timePeriod       Float
+  RateOfInterest   Float
+}
+
+model PpfCalculation {
+  id        String                 @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                 @db.ObjectId
+  name      String
+  formData  PpfCalculationFormData
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

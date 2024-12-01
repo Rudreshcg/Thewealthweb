@@ -14,42 +14,38 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-    FIXED_DEPOSIT_CALCULATIONS_API_URL,
-    FIXED_DEPOSIT_CALCULATIONS_QUERY_KEY
+  PPF_CALCULATIONS_API_URL,
+    PPF_CALCULATIONS_QUERY_KEY
 } from "@/constants/api";
 import useCalculator from "@/hooks/useCalculator";
-import { calculateFixedDepositCalculation } from "@/lib/calculatorFns";
+import { calculatePpfCalculation } from "@/lib/calculatorFns";
 import { getCalculations } from "@/lib/queryFns/calculations";
-import { fixedDepositCalculationFormDataScheme } from "@/schemas";
+import { ppfCalculationFormDataScheme } from "@/schemas";
 import {
-  IFixedDepositCalculationFormData,
-  FixedDepositCalculationProps,
+  IPpfCalculationFormData,
+  PpfCalculationProps,
 } from "@/types/calculations";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PpfCalculation } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import Report from "./Report";
 import {FaDownload} from "react-icons/fa";
 import React from "react";
-import DynamicFormLabel from "@/components/Form/DynamicFormLabel";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {durationType} from "@/constants/data";
-import {FixedDepositCalculation} from "@prisma/client";
 
-const defaultValues: IFixedDepositCalculationFormData = {
-    totalInvestment: 100000,
-    rateOfInterest: 6.5,
-    duration: 5,
-    durationType: 12,
+const defaultValues: IPpfCalculationFormData = {
+    yearlyInvestment: 10000,
+    timePeriod: 15,
+    RateOfInterest: 7.1,
 };
 const handlePrint = () => {
     window.print();
 };
 
 const Calculator = () => {
-  const form = useForm<IFixedDepositCalculationFormData>({
-    resolver: zodResolver(fixedDepositCalculationFormDataScheme),
+  const form = useForm<IPpfCalculationFormData>({
+    resolver: zodResolver(ppfCalculationFormDataScheme),
     defaultValues,
   });
 
@@ -74,15 +70,15 @@ const Calculator = () => {
     handleImportStart,
     closeImportModal,
   } = useCalculator<
-    IFixedDepositCalculationFormData,
-    FixedDepositCalculationProps,
-    FixedDepositCalculation
+    IPpfCalculationFormData,
+    PpfCalculationProps,
+    PpfCalculation
   >({
-    apiUrl: FIXED_DEPOSIT_CALCULATIONS_API_URL,
-    queryKey: FIXED_DEPOSIT_CALCULATIONS_QUERY_KEY,
+    apiUrl: PPF_CALCULATIONS_API_URL,
+    queryKey: PPF_CALCULATIONS_QUERY_KEY,
     defaultValues,
     form,
-    calcFn: calculateFixedDepositCalculation,
+    calcFn: calculatePpfCalculation,
   });
 
   const { status: sessionStatus } = useSession();
@@ -91,9 +87,9 @@ const Calculator = () => {
     data: calculations,
     isLoading: isCalculationsLoading,
     isFetching,
-  } = useQuery<FixedDepositCalculation[] | null>({
-    queryKey: [FIXED_DEPOSIT_CALCULATIONS_QUERY_KEY],
-    queryFn: () => getCalculations(FIXED_DEPOSIT_CALCULATIONS_API_URL),
+  } = useQuery<PpfCalculation[] | null>({
+    queryKey: [PPF_CALCULATIONS_QUERY_KEY],
+    queryFn: () => getCalculations(PPF_CALCULATIONS_API_URL),
     staleTime: 1_000 * 60 * 10, // 10 minutes
     enabled: sessionStatus === "authenticated",
   });
@@ -127,18 +123,45 @@ const Calculator = () => {
                   <FormGroup>
                       <FormField
                           control={form.control}
-                          name="totalInvestment"
+                          name="yearlyInvestment"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Total Investment</FormLabel>
+                                  <FormLabel>Yearly Investment</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="totalInvestment"
+                                          name="yearlyInvestment"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("totalInvestment", 100000);
+                                              form.setValue("yearlyInvestment", 25000);
+                                          }}
+                                      />
+                                  </FormControl>
+                                  <FormMessage/>
+                              </FormItem>
+                          )}
+                      />
+                  </FormGroup>
+                  <FormGroup inline>
+                      <FormField
+                          control={form.control}
+                          name="timePeriod"
+                          render={({field}) => (
+                              <FormItem className="w-full">
+                                  <FormLabel>timePeriod (Yr)</FormLabel>
+
+                                  <FormControl>
+                                      <Input
+                                          {...field}
+                                          name="timePeriod"
+                                          placeholder="10"
+                                          step="0.01"
+                                          type="number"
+                                          max={40}
+                                          min={1}
+                                          onBlur={(e) => {
+                                              ifFieldIsEmpty(e) && form.setValue("timePeriod", 15);
                                           }}
                                       />
                                   </FormControl>
@@ -150,84 +173,24 @@ const Calculator = () => {
                   <FormGroup>
                       <FormField
                           control={form.control}
-                          name="rateOfInterest"
+                          name="RateOfInterest"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Rate of Interest</FormLabel>
+                                  <FormLabel>Expected Return Rate</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="rateOfInterest"
+                                          name="RateOfInterest"
                                           iconType="percentage"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("rateOfInterest", 12);
+                                              form.setValue("RateOfInterest", 7.1);
                                           }}
+                                          disabled
                                       />
                                   </FormControl>
                                   <FormMessage/>
-                              </FormItem>
-                          )}
-                      />
-                  </FormGroup>
-
-                  <FormGroup inline>
-                      <FormField
-                          control={form.control}
-                          name="duration"
-                          render={({field}) => (
-                              <FormItem className="w-full">
-                                  <FormLabel>Duration</FormLabel>
-
-                                  <FormControl>
-                                      <Input
-                                          {...field}
-                                          name="duration"
-                                          placeholder="10"
-                                          step="0.01"
-                                          type="number"
-                                          max={10}
-                                          min={1}
-                                          onBlur={(e) => {
-                                              ifFieldIsEmpty(e) && form.setValue("duration", 5);
-                                          }}
-                                      />
-                                  </FormControl>
-                                  <FormMessage/>
-                              </FormItem>
-                          )}
-                      />
-
-                      <FormField
-                          control={form.control}
-                          name="durationType"
-                          render={({ field }) => (
-                              <FormItem className="w-full">
-                                  <DynamicFormLabel label="Duration Type" shortLabel="Type" />
-
-                                  <Select
-                                      onValueChange={field.onChange}
-                                      value={String(field.value)}
-                                  >
-                                      <FormControl>
-                                          <SelectTrigger>
-                                              <SelectValue placeholder="Select a duration type" />
-                                          </SelectTrigger>
-                                      </FormControl>
-
-                                      <SelectContent>
-                                          {durationType.map((multiplier) => (
-                                              <SelectItem
-                                                  key={`durationMultiplier-${multiplier.value}`}
-                                                  value={String(multiplier.value)}
-                                              >
-                                                  {multiplier.label}
-                                              </SelectItem>
-                                          ))}
-                                      </SelectContent>
-                                  </Select>
-                                  <FormMessage />
                               </FormItem>
                           )}
                       />
