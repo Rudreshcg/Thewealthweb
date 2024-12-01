@@ -24,6 +24,12 @@ const numberFieldSchema = (fieldName = 'Number') => {
 	});
 };
 
+const booleanValidation = (fieldName = 'Boolean') => {
+	return z.coerce.boolean({
+		required_error: `${fieldName} is required`,
+	});
+};
+
 const positiveNumberFieldSchema = (fieldName = 'Number') => {
 	return z.coerce
 		.number({
@@ -193,4 +199,15 @@ export const xirrCalculationFormDataScheme = z.object({
 	amountInvested: positiveNumberFieldSchemaWithMaxAndMin('Amount Invested', 100, 10000000),
 	amountAtMaturity: positiveNumberFieldSchemaWithMaxAndMin('Amount Invested', 100, 10000000),
 	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
+});
+
+export const retirmentPlanningCalculationFormDataScheme = z.object({
+	currentAge: positiveNumberFieldSchemaWithMaxAndMin("Current Age", 15, 60),
+	desiredRetirementAge: positiveNumberFieldSchemaWithMaxAndMin("desiredRetirementAge", 15, 70),
+	lifeExpectancy: positiveNumberFieldSchemaWithMaxAndMin("Life Expectancy", 30, 100),
+	monthlyIncomeRequiredInRetirementYears: positiveNumberFieldSchemaWithMaxAndMin("Monthly Income Required In Retirement Years", 1, 1000000000),
+	expectedInflationRate: positiveNumberFieldSchemaWithMaxAndMin("Expected Inflation Rate", 3, 15),
+	expectedReturnOnInvestmentPreRetirement: positiveNumberFieldSchemaWithMaxAndMin("Expected Return On Investment Pre-Retirement", 1, 30),
+	expectedReturnOnInvestmentPostRetirement: positiveNumberFieldSchemaWithMaxAndMin("Expected Return On Investment Post-Retirement", 1, 30),
+	existingRetirementFund: positiveNumberFieldSchemaWithMaxAndMin("Expected Return On Investment Post-Retirement", 0, 10000000000),
 });

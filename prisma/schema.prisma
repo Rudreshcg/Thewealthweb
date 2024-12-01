@@ -58,6 +58,7 @@ model User {
   LumpsumCalculation               LumpsumCalculation[]
   StepUpSipCalculation             StepUpSipCalculation[]
   XirrCalculation                  XirrCalculation[]
+  RetirmentPlanningCalculation     RetirmentPlanningCalculation[]
 }
 
 enum Plan {
@@ -331,6 +332,28 @@ model XirrCalculation {
   formData  XirrCalculationFormData
   createdAt DateTime                @default(now())
   updatedAt DateTime                @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type RetirmentPlanningCalculationFormData {
+  currentAge                               Float
+  desiredRetirementAge                     Float
+  lifeExpectancy                           Float
+  monthlyIncomeRequiredInRetirementYears   Float
+  expectedInflationRate                    Float
+  expectedReturnOnInvestmentPreRetirement  Float
+  expectedReturnOnInvestmentPostRetirement Float
+  existingRetirementFund                   Float
+}
+
+model RetirmentPlanningCalculation {
+  id        String                               @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                               @db.ObjectId
+  name      String
+  formData  RetirmentPlanningCalculationFormData
+  createdAt DateTime                             @default(now())
+  updatedAt DateTime                             @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

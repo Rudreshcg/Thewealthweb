@@ -13,7 +13,7 @@ import {
 	priceToEarningsRatioFormDataSchema,
 	sipCalculationFormDataScheme,
 	lumpsumCalculationFormDataScheme,
-	stepUpSipCalculationFormDataScheme, xirrCalculationFormDataScheme,
+	stepUpSipCalculationFormDataScheme, xirrCalculationFormDataScheme, retirmentPlanningCalculationFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -174,6 +174,20 @@ export type IXirrCalculationFormData = z.infer<typeof xirrCalculationFormDataSch
 export interface XirrCalculationProps extends IXirrCalculationFormData {
 	xirr: number;
 	totalReturn: number;
+}
+
+export interface StepUpSipCalculationProps extends IStepUpSipCalculationFormData {
+	investedAmount: number;
+	estimatedReturn: number;
+	totalValue: number;
+}
+
+export type IRetirmentPlanningCalculationFormData = z.infer<typeof retirmentPlanningCalculationFormDataScheme>;
+
+export interface RetirmentPlanningCalculationProps extends IRetirmentPlanningCalculationFormData {
+	AnnualIncomeRequiredImmediatelyAfterRetirement: number;
+	additionalRetirementFundWhichNeedsToBeAccumulatedIs: number;
+	monthlySavingsRequiredToAccumulateTheFundIs: number;
 }
 export type CalculationType =
 	| BreakEvenPointCalculation

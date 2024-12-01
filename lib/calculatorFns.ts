@@ -24,7 +24,9 @@ import {
 	LumpsumCalculationProps,
 	ILumpsumCalculationFormData,
 	IStepUpSipCalculationFormData,
-	StepUpSipCalculationProps, XirrCalculationProps, IXirrCalculationFormData,
+	StepUpSipCalculationProps,
+	XirrCalculationProps,
+	IXirrCalculationFormData, IRetirmentPlanningCalculationFormData, RetirmentPlanningCalculationProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -389,4 +391,39 @@ export const calculateXirrCalculation = (
 	// Convert XIRR to percentage
 	xirr = xirr * 100;
 	return { amountInvested, amountAtMaturity, timePeriod, xirr, totalReturn};
+};
+
+export const calculateRetirmentPlanningCalculation = (
+	formData: IRetirmentPlanningCalculationFormData
+): RetirmentPlanningCalculationProps => {
+
+	const { currentAge, desiredRetirementAge, lifeExpectancy, monthlyIncomeRequiredInRetirementYears, expectedInflationRate, expectedReturnOnInvestmentPreRetirement, expectedReturnOnInvestmentPostRetirement, existingRetirementFund} = formData;
+	// Calculate the number of years in retirement
+	const retirementYears = lifeExpectancy - desiredRetirementAge;
+	// Calculate the number of years to retirement
+	const yearsToRetirement = desiredRetirementAge - currentAge;
+	// Calculate the annual inflation-adjusted income required immediately after retirement
+	const AnnualIncomeRequiredImmediatelyAfterRetirement = monthlyIncomeRequiredInRetirementYears * 12 * Math.pow(1 + expectedInflationRate / 100, yearsToRetirement);
+	// Calculate the corpus required at the beginning of retirement to sustain the retirement income
+	const additionalRetirementFundWhichNeedsToBeAccumulatedIs = AnnualIncomeRequiredImmediatelyAfterRetirement * ( (1 - Math.pow(1 + expectedReturnOnInvestmentPostRetirement / 100, -retirementYears)) / (expectedReturnOnInvestmentPostRetirement / 100) );
+	// Calculate the monthly savings required to accumulate the retirement fund
+	const futureValue = additionalRetirementFundWhichNeedsToBeAccumulatedIs - existingRetirementFund;
+	const monthlySavingsRequiredToAccumulateTheFundIs = futureValue * (expectedReturnOnInvestmentPreRetirement / 100 / 12) / (Math.pow(1 + expectedReturnOnInvestmentPreRetirement / 100 / 12, yearsToRetirement * 12) - 1);
+
+	console.log("inputs: ");
+	console.log("currentAge : "+ currentAge);
+	console.log("desiredRetirementAge : "+ desiredRetirementAge);
+	console.log("lifeExpectancy : "+ lifeExpectancy);
+	console.log("monthlyIncomeRequiredInRetirementYears : "+ monthlyIncomeRequiredInRetirementYears);
+	console.log("expectedInflationRate : "+ expectedInflationRate);
+	console.log("expectedReturnOnInvestmentPreRetirement : "+ expectedReturnOnInvestmentPreRetirement);
+	console.log("expectedReturnOnInvestmentPostRetirement : "+ expectedReturnOnInvestmentPostRetirement);
+	console.log("existingRetirementFund : "+ existingRetirementFund);
+
+	console.log("output: ");
+	console.log("AnnualIncomeRequiredImmediatelyAfterRetirement : "+ AnnualIncomeRequiredImmediatelyAfterRetirement);
+	console.log("additionalRetirementFundWhichNeedsToBeAccumulatedIs : "+ additionalRetirementFundWhichNeedsToBeAccumulatedIs);
+	console.log("monthlySavingsRequiredToAccumulateTheFundIs : "+ monthlySavingsRequiredToAccumulateTheFundIs);
+
+	return {currentAge, desiredRetirementAge, lifeExpectancy, monthlyIncomeRequiredInRetirementYears, expectedInflationRate, expectedReturnOnInvestmentPreRetirement, expectedReturnOnInvestmentPostRetirement, existingRetirementFund, AnnualIncomeRequiredImmediatelyAfterRetirement, additionalRetirementFundWhichNeedsToBeAccumulatedIs, monthlySavingsRequiredToAccumulateTheFundIs};
 };

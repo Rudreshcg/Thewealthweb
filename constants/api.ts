@@ -18,6 +18,7 @@ export const DOLLAR_COST_AVERAGE_CALCULATIONS_API_URL =
   "/api/dollar-cost-average-calculations" as const;
 export const ENTERPRICE_VALUE_CALCULATIONS_API_URL =
   "/api/enterprise-value-calculations" as const;
+
 export const MF_SIP_CALCULATIONS_API_URL =
     "/api/mf-sip-calculator" as const;
 export const MF_LUMPSUM_CALCULATIONS_API_URL =
@@ -26,6 +27,8 @@ export const STEP_UP_SIP_CALCULATIONS_API_URL =
     "/api/step-up-sip-calculator" as const;
 export const XIRR_CALCULATIONS_API_URL =
     "/api/xirr-calculator" as const;
+export const RETIRMENT_PLANNING_CALCULATIONS_API_URL =
+    "/api/retirement-planning-calculator" as const;
 
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
@@ -42,6 +45,7 @@ export const API_URLS = [
   MF_LUMPSUM_CALCULATIONS_API_URL,
   STEP_UP_SIP_CALCULATIONS_API_URL,
   XIRR_CALCULATIONS_API_URL,
+  RETIRMENT_PLANNING_CALCULATIONS_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -75,7 +79,8 @@ export const STEP_UP_SIP_CALCULATIONS_QUERY_KEY =
     "step-up-sip-calculator" as const;
 export const XIRR_CALCULATIONS_QUERY_KEY =
     "xirr-calculator" as const;
-
+export const RETIRMENT_PLANNING_CALCULATIONS_QUERY_KEY =
+    "retirement-planning-calculator" as const;
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
   BREAK_EVEN_POINT_CALCULATIONS_QUERY_KEY,
@@ -91,4 +96,5 @@ export const QUERY_KEYS = [
   MF_LUMPSUM_CALCULATIONS_QUERY_KEY,
   STEP_UP_SIP_CALCULATIONS_QUERY_KEY,
   XIRR_CALCULATIONS_QUERY_KEY,
+  RETIRMENT_PLANNING_CALCULATIONS_QUERY_KEY,
 ] as const;
