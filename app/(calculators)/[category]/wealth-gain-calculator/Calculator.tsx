@@ -14,16 +14,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  MF_LUMPSUM_CALCULATIONS_API_URL,
-  MF_LUMPSUM_CALCULATIONS_QUERY_KEY
+    WEALTH_GAIN_CALCULATIONS_API_URL,
+    WEALTH_GAIN_CALCULATIONS_QUERY_KEY
 } from "@/constants/api";
 import useCalculator from "@/hooks/useCalculator";
-import { calculateLumpsumCalculation } from "@/lib/calculatorFns";
+import { calculateWealthGainCalculation} from "@/lib/calculatorFns";
 import { getCalculations } from "@/lib/queryFns/calculations";
-import { lumpsumCalculationFormDataScheme } from "@/schemas";
+import { wealthGainCalculationFormDataScheme } from "@/schemas";
 import {
-  ILumpsumCalculationFormData,
-    LumpsumCalculationProps,
+  IWealthGainCalculationFormData,
+  WealthGainCalculationProps,
 } from "@/types/calculations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
@@ -31,20 +31,26 @@ import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import Report from "./Report";
 import {FaDownload} from "react-icons/fa";
-import {LumpsumCalculation} from "@prisma/client";
+import DynamicFormLabel from "@/components/Form/DynamicFormLabel";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import { investmentFrequencies } from "@/constants/data";
+import React from "react";
+import {WealthGainCalculation} from "@prisma/client";
 
-const defaultValues: ILumpsumCalculationFormData = {
-  totalInvestment: 25000,
-  expectedReturnRate:12,
-  timePeriod: 10,
+const defaultValues: IWealthGainCalculationFormData = {
+    initialInvestment:0,
+    periodicInvestment: 10000,
+    investmentFrequency: 12,
+    expectedRateOfGrowth: 12,
+    timePeriod: 10,
 };
 const handlePrint = () => {
     window.print();
 };
 
 const Calculator = () => {
-  const form = useForm<ILumpsumCalculationFormData>({
-    resolver: zodResolver(lumpsumCalculationFormDataScheme),
+  const form = useForm<IWealthGainCalculationFormData>({
+    resolver: zodResolver(wealthGainCalculationFormDataScheme),
     defaultValues,
   });
 
@@ -69,15 +75,15 @@ const Calculator = () => {
     handleImportStart,
     closeImportModal,
   } = useCalculator<
-    ILumpsumCalculationFormData,
-    LumpsumCalculationProps,
-    LumpsumCalculation
+    IWealthGainCalculationFormData,
+    WealthGainCalculationProps,
+    WealthGainCalculation
   >({
-    apiUrl: MF_LUMPSUM_CALCULATIONS_API_URL,
-    queryKey: MF_LUMPSUM_CALCULATIONS_QUERY_KEY,
+    apiUrl: WEALTH_GAIN_CALCULATIONS_API_URL,
+    queryKey: WEALTH_GAIN_CALCULATIONS_QUERY_KEY,
     defaultValues,
     form,
-    calcFn: calculateLumpsumCalculation,
+    calcFn: calculateWealthGainCalculation,
   });
 
   const { status: sessionStatus } = useSession();
@@ -86,9 +92,9 @@ const Calculator = () => {
     data: calculations,
     isLoading: isCalculationsLoading,
     isFetching,
-  } = useQuery<LumpsumCalculation[] | null>({
-    queryKey: [MF_LUMPSUM_CALCULATIONS_QUERY_KEY],
-    queryFn: () => getCalculations(MF_LUMPSUM_CALCULATIONS_API_URL),
+  } = useQuery<WealthGainCalculation[] | null>({
+    queryKey: [WEALTH_GAIN_CALCULATIONS_QUERY_KEY],
+    queryFn: () => getCalculations(WEALTH_GAIN_CALCULATIONS_API_URL),
     staleTime: 1_000 * 60 * 10, // 10 minutes
     enabled: sessionStatus === "authenticated",
   });
@@ -122,18 +128,43 @@ const Calculator = () => {
                   <FormGroup>
                       <FormField
                           control={form.control}
-                          name="totalInvestment"
+                          name="initialInvestment"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Total Investment</FormLabel>
+                                  <FormLabel>Initial Investment</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="totalInvestment"
+                                          name="initialInvestment"
+                                          iconType="currency"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("totalInvestment", 25000);
+                                              form.setValue("initialInvestment", 0);
+                                          }}
+                                      />
+                                  </FormControl>
+                                  <FormMessage/>
+                              </FormItem>
+                          )}
+                      />
+                  </FormGroup>
+                  <FormGroup>
+                      <FormField
+                          control={form.control}
+                          name="periodicInvestment"
+                          render={({field}) => (
+                              <FormItem className="w-full">
+                                  <FormLabel>Periodic Investment</FormLabel>
+
+                                  <FormControl>
+                                      <NumberInputWithIcon
+                                          {...field}
+                                          name="periodicInvestment"
+                                          iconType="currency"
+                                          onBlur={(e) => {
+                                              ifFieldIsEmpty(e) &&
+                                              form.setValue("periodicInvestment", 10000);
                                           }}
                                       />
                                   </FormControl>
@@ -144,19 +175,56 @@ const Calculator = () => {
 
                       <FormField
                           control={form.control}
-                          name="expectedReturnRate"
+                          name="investmentFrequency"
+                          render={({ field }) => (
+                              <FormItem className="w-full">
+                                  <DynamicFormLabel
+                                      label="investmentFrequency"
+                                      shortLabel="Frequency"
+                                  />
+
+                                  <Select
+                                      onValueChange={field.onChange}
+                                      value={String(field.value)}
+                                  >
+                                      <FormControl>
+                                          <SelectTrigger>
+                                              <SelectValue placeholder="Select a duration type" />
+                                          </SelectTrigger>
+                                      </FormControl>
+
+                                      <SelectContent>
+                                          {investmentFrequencies.map((multiplier) => (
+                                              <SelectItem
+                                                  key={`investmentFrequency-${multiplier.value}`}
+                                                  value={String(multiplier.value)}
+                                              >
+                                                  {multiplier.label}
+                                              </SelectItem>
+                                          ))}
+                                      </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                              </FormItem>
+                          )}
+                      />
+                  </FormGroup>
+                  <FormGroup>
+                      <FormField
+                          control={form.control}
+                          name="expectedRateOfGrowth"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Expected Return Rate</FormLabel>
+                                  <FormLabel>Expected Rate of Growth</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="expectedReturnRate"
+                                          name="expectedRateOfGrowth"
                                           iconType="percentage"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("expectedReturnRate", 12);
+                                              form.setValue("expectedRateOfGrowth", 12);
                                           }}
                                       />
                                   </FormControl>
@@ -165,8 +233,7 @@ const Calculator = () => {
                           )}
                       />
                   </FormGroup>
-
-                  <FormGroup inline>
+                      <FormGroup inline>
                       <FormField
                           control={form.control}
                           name="timePeriod"

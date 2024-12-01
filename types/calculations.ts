@@ -13,7 +13,10 @@ import {
 	priceToEarningsRatioFormDataSchema,
 	sipCalculationFormDataScheme,
 	lumpsumCalculationFormDataScheme,
-	stepUpSipCalculationFormDataScheme, xirrCalculationFormDataScheme, retirmentPlanningCalculationFormDataScheme,
+	stepUpSipCalculationFormDataScheme,
+	xirrCalculationFormDataScheme,
+	retirmentPlanningCalculationFormDataScheme,
+	wealthGainCalculationFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -189,6 +192,15 @@ export interface RetirmentPlanningCalculationProps extends IRetirmentPlanningCal
 	additionalRetirementFundWhichNeedsToBeAccumulatedIs: number;
 	monthlySavingsRequiredToAccumulateTheFundIs: number;
 }
+
+export type IWealthGainCalculationFormData = z.infer<typeof wealthGainCalculationFormDataScheme>;
+
+export interface WealthGainCalculationProps extends IWealthGainCalculationFormData {
+	investedAmount: number;
+	estimatedReturn: number;
+	totalValue: number;
+}
+
 export type CalculationType =
 	| BreakEvenPointCalculation
 	| MarkupCalculation

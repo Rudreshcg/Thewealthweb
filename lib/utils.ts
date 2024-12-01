@@ -1,5 +1,11 @@
 import {calculators} from "@/constants/calculators";
-import {contributionFrequencies, currencies, depositFrequencies, durationMultipliers,} from "@/constants/data";
+import {
+  contributionFrequencies,
+  currencies,
+  depositFrequencies,
+  durationMultipliers,
+  investmentFrequencies,
+} from "@/constants/data";
 import {type ClassValue, clsx} from "clsx";
 import {twMerge} from "tailwind-merge";
 
@@ -123,4 +129,11 @@ export const formatCurrencyK = (
       maximumFractionDigits: 0,
     }).format(0);
   }
+};
+
+export const getInvestmentFrequencyShortLabel = (value: number) => {
+  return (
+      investmentFrequencies.find((duration) => duration.value === value)
+          ?.shortLabel || "y"
+  );
 };

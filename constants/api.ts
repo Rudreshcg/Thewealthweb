@@ -29,6 +29,8 @@ export const XIRR_CALCULATIONS_API_URL =
     "/api/xirr-calculator" as const;
 export const RETIRMENT_PLANNING_CALCULATIONS_API_URL =
     "/api/retirement-planning-calculator" as const;
+export const WEALTH_GAIN_CALCULATIONS_API_URL =
+    "/api/wealth-gain-calculator" as const;
 
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
@@ -46,6 +48,7 @@ export const API_URLS = [
   STEP_UP_SIP_CALCULATIONS_API_URL,
   XIRR_CALCULATIONS_API_URL,
   RETIRMENT_PLANNING_CALCULATIONS_API_URL,
+  WEALTH_GAIN_CALCULATIONS_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -81,6 +84,9 @@ export const XIRR_CALCULATIONS_QUERY_KEY =
     "xirr-calculator" as const;
 export const RETIRMENT_PLANNING_CALCULATIONS_QUERY_KEY =
     "retirement-planning-calculator" as const;
+export const WEALTH_GAIN_CALCULATIONS_QUERY_KEY =
+    "wealth-gain-calculator" as const;
+
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
   BREAK_EVEN_POINT_CALCULATIONS_QUERY_KEY,
@@ -97,4 +103,5 @@ export const QUERY_KEYS = [
   STEP_UP_SIP_CALCULATIONS_QUERY_KEY,
   XIRR_CALCULATIONS_QUERY_KEY,
   RETIRMENT_PLANNING_CALCULATIONS_QUERY_KEY,
+  WEALTH_GAIN_CALCULATIONS_QUERY_KEY,
 ] as const;

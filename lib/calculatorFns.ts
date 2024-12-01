@@ -26,7 +26,10 @@ import {
 	IStepUpSipCalculationFormData,
 	StepUpSipCalculationProps,
 	XirrCalculationProps,
-	IXirrCalculationFormData, IRetirmentPlanningCalculationFormData, RetirmentPlanningCalculationProps,
+	IXirrCalculationFormData,
+	IRetirmentPlanningCalculationFormData,
+	RetirmentPlanningCalculationProps,
+	IWealthGainCalculationFormData, WealthGainCalculationProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -317,14 +320,6 @@ export const calculateLumpsumCalculation = (
 	const totalValue = totalInvestment * Math.pow((1 + ratePerYear), timePeriodInYears);
 	const estimatedReturn = totalValue - totalInvestment;
 
-	console.log("totalInvestment: "+ totalInvestment);
-	console.log("expectedReturnRate: "+ expectedReturnRate);
-	console.log("timePeriod: "+ timePeriod)
-
-	// Calculated Result
-	console.log("totalValue: "+ totalValue);
-	console.log("estimatedReturn: "+ estimatedReturn);
-
 	return { totalInvestment, expectedReturnRate, timePeriod, estimatedReturn, totalValue };
 };
 
@@ -426,4 +421,47 @@ export const calculateRetirmentPlanningCalculation = (
 	console.log("monthlySavingsRequiredToAccumulateTheFundIs : "+ monthlySavingsRequiredToAccumulateTheFundIs);
 
 	return {currentAge, desiredRetirementAge, lifeExpectancy, monthlyIncomeRequiredInRetirementYears, expectedInflationRate, expectedReturnOnInvestmentPreRetirement, expectedReturnOnInvestmentPostRetirement, existingRetirementFund, AnnualIncomeRequiredImmediatelyAfterRetirement, additionalRetirementFundWhichNeedsToBeAccumulatedIs, monthlySavingsRequiredToAccumulateTheFundIs};
+
+
+
+};
+
+export const calculateWealthGainCalculation = (
+	formData: IWealthGainCalculationFormData
+): WealthGainCalculationProps => {
+	const {
+		initialInvestment,
+		periodicInvestment,
+		investmentFrequency,
+		expectedRateOfGrowth,
+		timePeriod,
+	} = formData;
+
+	let investedAmount = initialInvestment;
+	let totalValue = initialInvestment;
+	const ratePerPeriod = expectedRateOfGrowth / (investmentFrequency * 100);
+	const periods = timePeriod * investmentFrequency;
+	for (let i = 1; i <= periods; i++) {
+		totalValue = totalValue * (1 + ratePerPeriod) + periodicInvestment;
+		investedAmount += periodicInvestment;
+	}
+	const estimatedReturn = totalValue - investedAmount;
+	    console.log("initialInvestment: "+ initialInvestment);
+		console.log("periodicInvestment: "+ periodicInvestment);
+		console.log("investmentFrequency: "+ investmentFrequency);
+		console.log("expectedRateOfGrowth: "+ expectedRateOfGrowth);
+		console.log("timePeriod: "+ timePeriod);
+		console.log("investedAmount: "+ investedAmount);
+		console.log("estimatedReturn: "+ estimatedReturn);
+		console.log("totalValue: "+ totalValue);
+	return {
+		initialInvestment,
+		periodicInvestment,
+		investmentFrequency,
+		expectedRateOfGrowth,
+		timePeriod,
+		investedAmount,
+		estimatedReturn,
+		totalValue
+	};
 };

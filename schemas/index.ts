@@ -196,8 +196,8 @@ export const stepUpSipCalculationFormDataScheme = z.object({
 });
 
 export const xirrCalculationFormDataScheme = z.object({
-	amountInvested: positiveNumberFieldSchemaWithMaxAndMin('Amount Invested', 100, 10000000),
-	amountAtMaturity: positiveNumberFieldSchemaWithMaxAndMin('Amount Invested', 100, 10000000),
+	amountInvested: positiveNumberFieldSchemaWithMaxAndMin('Amount Invested', 100, 10000000000),
+	amountAtMaturity: positiveNumberFieldSchemaWithMaxAndMin('Amount Invested', 100, 10000000000),
 	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
 });
 
@@ -210,4 +210,12 @@ export const retirmentPlanningCalculationFormDataScheme = z.object({
 	expectedReturnOnInvestmentPreRetirement: positiveNumberFieldSchemaWithMaxAndMin("Expected Return On Investment Pre-Retirement", 1, 30),
 	expectedReturnOnInvestmentPostRetirement: positiveNumberFieldSchemaWithMaxAndMin("Expected Return On Investment Post-Retirement", 1, 30),
 	existingRetirementFund: positiveNumberFieldSchemaWithMaxAndMin("Expected Return On Investment Post-Retirement", 0, 10000000000),
+});
+
+export const wealthGainCalculationFormDataScheme = z.object({
+	initialInvestment:positiveNumberFieldSchemaWithMaxAndMin("Initial Investment", 0, 10000000000),
+	periodicInvestment: positiveNumberFieldSchemaWithMaxAndMin("Periodic Investment", 0, 100000000),
+	investmentFrequency: positiveNumberFieldSchema('Investment frequency'),
+	expectedRateOfGrowth: positiveNumberFieldSchemaWithMaxAndMin("Expected Rate Of Growth", 1, 30),
+	timePeriod: positiveNumberFieldSchemaWithMaxAndMin("Time Period", 1, 40),
 });

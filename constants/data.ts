@@ -227,3 +227,10 @@ export const plans = [
 		paymentLink: process.env.NEXT_PUBLIC_STRIPE_YEARLY_PREMIUM_LINK,
 	},
 ];
+export const investmentFrequencies = [
+	// The value represents the contribution frequency per year in given option
+	{ value: 1, label: 'Yearly', shortLabel: 'y' },
+	{ value: 2, label: 'Half Yearly', shortLabel: 'hy' },
+	{ value: 4, label: 'Quarterly', shortLabel: 'q' },
+	{ value: 12, label: 'Monthly', shortLabel: 'm' },
+] as const;

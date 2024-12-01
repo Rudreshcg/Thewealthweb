@@ -59,6 +59,7 @@ model User {
   StepUpSipCalculation             StepUpSipCalculation[]
   XirrCalculation                  XirrCalculation[]
   RetirmentPlanningCalculation     RetirmentPlanningCalculation[]
+  WealthGainCalculation            WealthGainCalculation[]
 }
 
 enum Plan {
@@ -354,6 +355,25 @@ model RetirmentPlanningCalculation {
   formData  RetirmentPlanningCalculationFormData
   createdAt DateTime                             @default(now())
   updatedAt DateTime                             @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type WealthGainCalculationFormData {
+  initialInvestment    Float
+  periodicInvestment   Float
+  investmentFrequency  Float
+  expectedRateOfGrowth Float
+  timePeriod           Float
+}
+
+model WealthGainCalculation {
+  id        String                        @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                        @db.ObjectId
+  name      String
+  formData  WealthGainCalculationFormData
+  createdAt DateTime                      @default(now())
+  updatedAt DateTime                      @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
