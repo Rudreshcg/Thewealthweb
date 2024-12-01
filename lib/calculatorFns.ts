@@ -29,7 +29,10 @@ import {
 	IXirrCalculationFormData,
 	IRetirmentPlanningCalculationFormData,
 	RetirmentPlanningCalculationProps,
-	IWealthGainCalculationFormData, WealthGainCalculationProps,
+	IWealthGainCalculationFormData,
+	WealthGainCalculationProps,
+	IRecurringDepositCalculationFormData,
+	RecurringDepositCalculationProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -405,21 +408,6 @@ export const calculateRetirmentPlanningCalculation = (
 	const futureValue = additionalRetirementFundWhichNeedsToBeAccumulatedIs - existingRetirementFund;
 	const monthlySavingsRequiredToAccumulateTheFundIs = futureValue * (expectedReturnOnInvestmentPreRetirement / 100 / 12) / (Math.pow(1 + expectedReturnOnInvestmentPreRetirement / 100 / 12, yearsToRetirement * 12) - 1);
 
-	console.log("inputs: ");
-	console.log("currentAge : "+ currentAge);
-	console.log("desiredRetirementAge : "+ desiredRetirementAge);
-	console.log("lifeExpectancy : "+ lifeExpectancy);
-	console.log("monthlyIncomeRequiredInRetirementYears : "+ monthlyIncomeRequiredInRetirementYears);
-	console.log("expectedInflationRate : "+ expectedInflationRate);
-	console.log("expectedReturnOnInvestmentPreRetirement : "+ expectedReturnOnInvestmentPreRetirement);
-	console.log("expectedReturnOnInvestmentPostRetirement : "+ expectedReturnOnInvestmentPostRetirement);
-	console.log("existingRetirementFund : "+ existingRetirementFund);
-
-	console.log("output: ");
-	console.log("AnnualIncomeRequiredImmediatelyAfterRetirement : "+ AnnualIncomeRequiredImmediatelyAfterRetirement);
-	console.log("additionalRetirementFundWhichNeedsToBeAccumulatedIs : "+ additionalRetirementFundWhichNeedsToBeAccumulatedIs);
-	console.log("monthlySavingsRequiredToAccumulateTheFundIs : "+ monthlySavingsRequiredToAccumulateTheFundIs);
-
 	return {currentAge, desiredRetirementAge, lifeExpectancy, monthlyIncomeRequiredInRetirementYears, expectedInflationRate, expectedReturnOnInvestmentPreRetirement, expectedReturnOnInvestmentPostRetirement, existingRetirementFund, AnnualIncomeRequiredImmediatelyAfterRetirement, additionalRetirementFundWhichNeedsToBeAccumulatedIs, monthlySavingsRequiredToAccumulateTheFundIs};
 
 
@@ -446,14 +434,6 @@ export const calculateWealthGainCalculation = (
 		investedAmount += periodicInvestment;
 	}
 	const estimatedReturn = totalValue - investedAmount;
-	    console.log("initialInvestment: "+ initialInvestment);
-		console.log("periodicInvestment: "+ periodicInvestment);
-		console.log("investmentFrequency: "+ investmentFrequency);
-		console.log("expectedRateOfGrowth: "+ expectedRateOfGrowth);
-		console.log("timePeriod: "+ timePeriod);
-		console.log("investedAmount: "+ investedAmount);
-		console.log("estimatedReturn: "+ estimatedReturn);
-		console.log("totalValue: "+ totalValue);
 	return {
 		initialInvestment,
 		periodicInvestment,
@@ -463,5 +443,51 @@ export const calculateWealthGainCalculation = (
 		investedAmount,
 		estimatedReturn,
 		totalValue
+	};
+};
+
+export const calculateRecurringDepositCalculation = (
+	formData: IRecurringDepositCalculationFormData
+): RecurringDepositCalculationProps => {
+	const {
+		monthlyInvestment,
+		rateOfInterest,
+		duration,
+		durationType,
+
+	} = formData;
+
+	// Convert annual rate of interest to monthly rate of interest
+	const monthlyRateOfInterest = rateOfInterest / 100 / 12;
+	// Calculate the total number of months
+	const totalMonths = durationType * duration;
+	// Calculate the total invested amount
+	const investedAmount = monthlyInvestment * totalMonths;
+	// Calculate the total value (maturity amount) using the correct RD formula
+	const totalValue = monthlyInvestment * ((Math.pow(1 + monthlyRateOfInterest, totalMonths) - 1) / monthlyRateOfInterest) * (1 + monthlyRateOfInterest);
+	// Calculate the estimated return
+	const estimatedReturn = totalValue - investedAmount;
+
+
+
+	console.log("input: ");
+	console.log("monthlyInvestment: "+monthlyInvestment);
+	console.log("rateOfInterest: "+rateOfInterest);
+	console.log("duration: "+duration);
+	console.log("durationType: "+durationType);
+
+	console.log("output: ");
+	console.log("investedAmount: "+investedAmount);
+	console.log("estimatedReturn: "+estimatedReturn);
+	console.log("totalValue: "+totalValue);
+
+	return {
+		monthlyInvestment,
+		rateOfInterest,
+		duration,
+		durationType,
+		investedAmount,
+		estimatedReturn,
+		totalValue,
 	};
 };

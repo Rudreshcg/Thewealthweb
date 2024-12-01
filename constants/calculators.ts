@@ -109,7 +109,7 @@ export const calculators = [
   },
   {
     name: "Recurring Deposit (RD) Calculator",
-    url: "recurring-deposit-calculator",
+    url: "rd-calculator",
     category: "investment-calculators",
     description: "Calculates returns for regular deposits in RD schemes.",
   },

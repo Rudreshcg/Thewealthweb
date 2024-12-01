@@ -219,3 +219,10 @@ export const wealthGainCalculationFormDataScheme = z.object({
 	expectedRateOfGrowth: positiveNumberFieldSchemaWithMaxAndMin("Expected Rate Of Growth", 1, 30),
 	timePeriod: positiveNumberFieldSchemaWithMaxAndMin("Time Period", 1, 40),
 });
+
+export const recurringDepositCalculationFormDataScheme = z.object({
+	monthlyInvestment: positiveNumberFieldSchemaWithMaxAndMin('Monthly Investment', 100, 10000000),
+	rateOfInterest: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
+	duration: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
+	durationType: positiveNumberFieldSchema('Investment frequency'),
+});

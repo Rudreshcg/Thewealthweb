@@ -9,7 +9,7 @@ import {
 	getCurrencySymbol, getInvestmentFrequencyShortLabel,
 } from '@/lib/utils';
 import {LumpsumCalculationProps, WealthGainCalculationProps} from '@/types/calculations';
-import {Cell, Legend, Pie, PieChart, Tooltip} from "recharts";
+import {CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, Tooltip, XAxis, YAxis} from "recharts";
 
 interface ReportProps {
 	report: WealthGainCalculationProps;
@@ -31,10 +31,22 @@ const Report = ({ report }: ReportProps) => {
 		totalValue
 	} = report;
 
+	// For Pie Chart
 	const data = [
 		{ name: 'Total Invested', value: investedAmount },
 		{ name: 'Estimated Return', value: estimatedReturn },
 	];
+
+	/*// For Line Chart
+	const lineChartData: Array<{ period: number, value: number }> = [];
+	const ratePerPeriod = expectedRateOfGrowth / 100 / (12 / investmentFrequency);
+	let cumulativeValue = initialInvestment;
+
+	for (let i = 1; i <= timePeriod * (12 / investmentFrequency); i++) {
+		cumulativeValue = cumulativeValue * (1 + ratePerPeriod) + periodicInvestment;
+		lineChartData.push({ period: i, value: cumulativeValue });
+	}*/
+
 	return (
 		<ReportSection>
 			<ReportGroup
@@ -95,8 +107,18 @@ const Report = ({ report }: ReportProps) => {
 					<Legend/>
 				</PieChart>
 			</div>
+
+			{/*<div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+				<LineChart width={600} height={300} data={lineChartData}>
+					<CartesianGrid strokeDasharray="3 3"/>
+					<XAxis dataKey="period" label={{ value: 'Periods', position: 'insideBottom', offset: -5 }}/>
+					<YAxis label={{value: 'Value', angle: -90, position: 'insideLeft'}}/>
+					<Tooltip formatter={(value) => formatCurrency(value as number, currency)}/>
+					<Legend/> <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{r: 8}}/>
+				</LineChart>
+			</div>*/}
 		</ReportSection>
-);
+	);
 };
 
 export default Report;

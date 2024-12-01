@@ -16,7 +16,7 @@ import {
 	stepUpSipCalculationFormDataScheme,
 	xirrCalculationFormDataScheme,
 	retirmentPlanningCalculationFormDataScheme,
-	wealthGainCalculationFormDataScheme,
+	wealthGainCalculationFormDataScheme, recurringDepositCalculationFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -196,6 +196,14 @@ export interface RetirmentPlanningCalculationProps extends IRetirmentPlanningCal
 export type IWealthGainCalculationFormData = z.infer<typeof wealthGainCalculationFormDataScheme>;
 
 export interface WealthGainCalculationProps extends IWealthGainCalculationFormData {
+	investedAmount: number;
+	estimatedReturn: number;
+	totalValue: number;
+}
+// RD Calculation
+export type IRecurringDepositCalculationFormData = z.infer<typeof recurringDepositCalculationFormDataScheme>;
+
+export interface RecurringDepositCalculationProps extends IRecurringDepositCalculationFormData {
 	investedAmount: number;
 	estimatedReturn: number;
 	totalValue: number;

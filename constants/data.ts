@@ -234,3 +234,8 @@ export const investmentFrequencies = [
 	{ value: 4, label: 'Quarterly', shortLabel: 'q' },
 	{ value: 12, label: 'Monthly', shortLabel: 'm' },
 ] as const;
+
+export const durationType = [
+	{ value: 12, label: 'Years' },
+	{ value: 1, label: 'Months' },
+] as const;

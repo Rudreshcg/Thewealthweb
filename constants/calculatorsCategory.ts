@@ -41,16 +41,16 @@ export const calculatorsCategory = [
     description:
       "Projects wealth growth over time for different investment instruments.",
   },
-  {
+/*  {
     name: "Stock Return Calculator",
     url: "stock-return-calculator",
     category: "investment-calculators",
     description:
       "Calculates profit/loss and annualized return from stock investments.",
-  },
+  },*/
   {
     name: "Recurring Deposit (RD) Calculator",
-    url: "recurring-deposit-calculator",
+    url: "rd-calculator",
     category: "investment-calculators",
     description: "Calculates returns for regular deposits in RD schemes.",
   },
