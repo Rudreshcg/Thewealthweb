@@ -11,6 +11,14 @@ import {
 	markupFormDataSchema,
 	presentValueFormDataSchema,
 	priceToEarningsRatioFormDataSchema,
+	sipCalculationFormDataScheme,
+	lumpsumCalculationFormDataScheme,
+	stepUpSipCalculationFormDataScheme,
+	xirrCalculationFormDataScheme,
+	retirmentPlanningCalculationFormDataScheme,
+	wealthGainCalculationFormDataScheme,
+	recurringDepositCalculationFormDataScheme,
+	fixedDepositCalculationFormDataScheme, ppfCalculationFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -18,11 +26,17 @@ import {
 	CompoundInterestCalculation,
 	DollarCostAverageCalculation,
 	EnterpriseValueCalculation,
-	EventProbabilityCalculation,
-	InvestmentTimeCalculation,
+	EventProbabilityCalculation, FixedDepositCalculation,
+	InvestmentTimeCalculation, LumpsumCalculation,
 	MarkupCalculation,
 	PresentValueCalculation,
 	PriceToEarningsRatioCalculation,
+	RetirmentPlanningCalculation,
+	SipCalculation,
+	StepUpSipCalculation,
+	WealthGainCalculation,
+	XirrCalculation,
+	PpfCalculation,
 } from '@prisma/client';
 import { z } from 'zod';
 
@@ -139,6 +153,82 @@ export interface EnterpriseValueReportProps extends IEnterpriseValueFormData {
 	enterpriseValue: number;
 }
 
+// SIP Calculation
+export type ISipCalculationFormData = z.infer<typeof sipCalculationFormDataScheme>;
+
+export interface SipCalculationProps extends ISipCalculationFormData {
+	investedAmount: number;
+	estimatedReturn: number;
+	totalValue: number;
+}
+
+export type ILumpsumCalculationFormData = z.infer<typeof lumpsumCalculationFormDataScheme>;
+
+export interface LumpsumCalculationProps extends ILumpsumCalculationFormData {
+	estimatedReturn: number;
+	totalValue: number;
+}
+
+// SIP Calculation
+export type IStepUpSipCalculationFormData = z.infer<typeof stepUpSipCalculationFormDataScheme>;
+
+export interface StepUpSipCalculationProps extends IStepUpSipCalculationFormData {
+	investedAmount: number;
+	estimatedReturn: number;
+	totalValue: number;
+}
+
+export type IXirrCalculationFormData = z.infer<typeof xirrCalculationFormDataScheme>;
+
+export interface XirrCalculationProps extends IXirrCalculationFormData {
+	xirr: number;
+	totalReturn: number;
+}
+
+export interface StepUpSipCalculationProps extends IStepUpSipCalculationFormData {
+	investedAmount: number;
+	estimatedReturn: number;
+	totalValue: number;
+}
+
+export type IRetirmentPlanningCalculationFormData = z.infer<typeof retirmentPlanningCalculationFormDataScheme>;
+
+export interface RetirmentPlanningCalculationProps extends IRetirmentPlanningCalculationFormData {
+	AnnualIncomeRequiredImmediatelyAfterRetirement: number;
+	additionalRetirementFundWhichNeedsToBeAccumulatedIs: number;
+	monthlySavingsRequiredToAccumulateTheFundIs: number;
+}
+
+export type IWealthGainCalculationFormData = z.infer<typeof wealthGainCalculationFormDataScheme>;
+
+export interface WealthGainCalculationProps extends IWealthGainCalculationFormData {
+	investedAmount: number;
+	estimatedReturn: number;
+	totalValue: number;
+}
+// RD Calculation
+export type IRecurringDepositCalculationFormData = z.infer<typeof recurringDepositCalculationFormDataScheme>;
+
+export interface RecurringDepositCalculationProps extends IRecurringDepositCalculationFormData {
+	investedAmount: number;
+	estimatedReturn: number;
+	totalValue: number;
+}
+// Fixed Deposit.
+export type IFixedDepositCalculationFormData = z.infer<typeof fixedDepositCalculationFormDataScheme>;
+
+export interface FixedDepositCalculationProps extends IFixedDepositCalculationFormData {
+	estimatedReturn: number;
+	totalValue: number;
+}
+
+export type IPpfCalculationFormData = z.infer<typeof ppfCalculationFormDataScheme>;
+
+export interface PpfCalculationProps extends IPpfCalculationFormData {
+	investedAmount: number;
+	totalInterest: number;
+	maturityValue: number;
+}
 export type CalculationType =
 	| BreakEvenPointCalculation
 	| MarkupCalculation
@@ -149,4 +239,12 @@ export type CalculationType =
 	| EventProbabilityCalculation
 	| PriceToEarningsRatioCalculation
 	| DollarCostAverageCalculation
-	| EnterpriseValueCalculation;
+	| EnterpriseValueCalculation
+	| SipCalculation
+	| LumpsumCalculation
+	| XirrCalculation
+	| StepUpSipCalculation
+	| RetirmentPlanningCalculation
+	| WealthGainCalculation
+	| FixedDepositCalculation
+	| PpfCalculation;

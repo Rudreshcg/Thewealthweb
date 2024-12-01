@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = "mongodb+srv://thimmegowdatp01:pPFXR2mixpU0LYXg@cluster0.lmteg.mongodb.net/thewealthweb?retryWrites=true&w=majority&appName=Cluster0"
 }
 
 model Account {
@@ -53,7 +53,16 @@ model User {
   PriceToEarningsRatioCalculations PriceToEarningsRatioCalculation[]
   DollarCostAverageCalculations    DollarCostAverageCalculation[]
   EnterpriseValueCalculations      EnterpriseValueCalculation[]
+  SipCalculation                   SipCalculation[]
   Subscription                     Subscription?
+  LumpsumCalculation               LumpsumCalculation[]
+  StepUpSipCalculation             StepUpSipCalculation[]
+  XirrCalculation                  XirrCalculation[]
+  RetirmentPlanningCalculation     RetirmentPlanningCalculation[]
+  WealthGainCalculation            WealthGainCalculation[]
+  RecurringDepositCalculation      RecurringDepositCalculation[]
+  FixedDepositCalculation          FixedDepositCalculation[]
+  PpfCalculation                   PpfCalculation[]
 }
 
 enum Plan {
@@ -258,6 +267,169 @@ model EnterpriseValueCalculation {
   formData  EnterpriseValueCalculationFormData
   createdAt DateTime                           @default(now())
   updatedAt DateTime                           @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type SipCalculationFormData {
+  monthlyInvestment  Float
+  expectedReturnRate Float
+  timePeriod         Float
+}
+
+model SipCalculation {
+  id        String                 @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                 @db.ObjectId
+  name      String
+  formData  SipCalculationFormData
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type LumpsumCalculationFormData {
+  totalInvestment    Float
+  expectedReturnRate Float
+  timePeriod         Float
+}
+
+model LumpsumCalculation {
+  id        String                     @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                     @db.ObjectId
+  name      String
+  formData  LumpsumCalculationFormData
+  createdAt DateTime                   @default(now())
+  updatedAt DateTime                   @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type StepUpSipCalculationFormData {
+  monthlyInvestment  Float
+  annualStepUp       Float
+  expectedReturnRate Float
+  timePeriod         Float
+}
+
+model StepUpSipCalculation {
+  id        String                       @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                       @db.ObjectId
+  name      String
+  formData  StepUpSipCalculationFormData
+  createdAt DateTime                     @default(now())
+  updatedAt DateTime                     @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type XirrCalculationFormData {
+  amountInvested   Float
+  amountAtMaturity Float
+  timePeriod       Float
+}
+
+model XirrCalculation {
+  id        String                  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                  @db.ObjectId
+  name      String
+  formData  XirrCalculationFormData
+  createdAt DateTime                @default(now())
+  updatedAt DateTime                @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type RetirmentPlanningCalculationFormData {
+  currentAge                               Float
+  desiredRetirementAge                     Float
+  lifeExpectancy                           Float
+  monthlyIncomeRequiredInRetirementYears   Float
+  expectedInflationRate                    Float
+  expectedReturnOnInvestmentPreRetirement  Float
+  expectedReturnOnInvestmentPostRetirement Float
+  existingRetirementFund                   Float
+}
+
+model RetirmentPlanningCalculation {
+  id        String                               @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                               @db.ObjectId
+  name      String
+  formData  RetirmentPlanningCalculationFormData
+  createdAt DateTime                             @default(now())
+  updatedAt DateTime                             @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type WealthGainCalculationFormData {
+  initialInvestment    Float
+  periodicInvestment   Float
+  investmentFrequency  Float
+  expectedRateOfGrowth Float
+  timePeriod           Float
+}
+
+model WealthGainCalculation {
+  id        String                        @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                        @db.ObjectId
+  name      String
+  formData  WealthGainCalculationFormData
+  createdAt DateTime                      @default(now())
+  updatedAt DateTime                      @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type RecurringDepositCalculationFormData {
+  monthlyInvestment Float
+  rateOfInterest    Float
+  duration          Float
+  durationType      Float
+}
+
+model RecurringDepositCalculation {
+  id        String                              @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                              @db.ObjectId
+  name      String
+  formData  RecurringDepositCalculationFormData
+  createdAt DateTime                            @default(now())
+  updatedAt DateTime                            @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type FixedDepositCalculationFormData {
+  totalInvestment Float
+  rateOfInterest  Float
+  duration        Float
+  durationType    Float
+}
+
+model FixedDepositCalculation {
+  id        String                          @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                          @db.ObjectId
+  name      String
+  formData  FixedDepositCalculationFormData
+  createdAt DateTime                        @default(now())
+  updatedAt DateTime                        @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type PpfCalculationFormData {
+  yearlyInvestment Float
+  timePeriod       Float
+  RateOfInterest   Float
+}
+
+model PpfCalculation {
+  id        String                 @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                 @db.ObjectId
+  name      String
+  formData  PpfCalculationFormData
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

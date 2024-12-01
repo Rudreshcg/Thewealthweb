@@ -23,7 +23,7 @@ const Footer = () => {
 						</div>
 					</div>
 
-					<div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 col-span-12 xl:col-span-8">
+					<div className="grid sm:grid-cols-2 md:grid-cols-4 gap-16 col-span-12 xl:col-span-8">
 						{footerLinks.map((section) => (
 							<div key={`section-${section.title}`}>
 								<div className="mb-4 xl:h-12 flex items-end">

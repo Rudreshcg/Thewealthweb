@@ -19,6 +19,23 @@ import {
 	MarkupReportProps,
 	PresentValueReportProps,
 	PriceToEarningsRatioReportProps,
+	ISipCalculationFormData,
+	SipCalculationProps,
+	LumpsumCalculationProps,
+	ILumpsumCalculationFormData,
+	IStepUpSipCalculationFormData,
+	StepUpSipCalculationProps,
+	XirrCalculationProps,
+	IXirrCalculationFormData,
+	IRetirmentPlanningCalculationFormData,
+	RetirmentPlanningCalculationProps,
+	IWealthGainCalculationFormData,
+	WealthGainCalculationProps,
+	IRecurringDepositCalculationFormData,
+	RecurringDepositCalculationProps,
+	IFixedDepositCalculationFormData,
+	FixedDepositCalculationProps,
+	IPpfCalculationFormData, PpfCalculationProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -28,6 +45,26 @@ export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps =>
 	const markup = (profit / cost) * 100;
 
 	return { cost, salesPrice, profit, markup };
+};
+
+export const calculateAnnualizedReturn = (
+	formData: IAnnualizedReturnFormData
+): AnnualizedReturnReportProps => {
+	const { startingBalance, endingBalance, duration, durationMultiplier } = formData;
+
+	// Time in years
+	const t = (duration * durationMultiplier) / 12;
+	const annualizedReturn = ((endingBalance / startingBalance) ** (1 / t) - 1) * 100;
+	const percentReturn = ((endingBalance - startingBalance) / startingBalance) * 100;
+
+	return {
+		startingBalance,
+		endingBalance,
+		duration,
+		durationMultiplier,
+		annualizedReturn,
+		percentReturn,
+	};
 };
 
 export const calcualteBreakEvenPoint = (
@@ -83,26 +120,6 @@ export const calculatePresentValue = (formData: IPresentValueFormData): PresentV
 	const PV = FV * (1 / (1 + r) ** n);
 
 	return { startingBalance, discountRate, duration, durationMultiplier, presentValue: PV };
-};
-
-export const calculateAnnualizedReturn = (
-	formData: IAnnualizedReturnFormData
-): AnnualizedReturnReportProps => {
-	const { startingBalance, endingBalance, duration, durationMultiplier } = formData;
-
-	// Time in years
-	const t = (duration * durationMultiplier) / 12;
-	const annualizedReturn = ((endingBalance / startingBalance) ** (1 / t) - 1) * 100;
-	const percentReturn = ((endingBalance - startingBalance) / startingBalance) * 100;
-
-	return {
-		startingBalance,
-		endingBalance,
-		duration,
-		durationMultiplier,
-		annualizedReturn,
-		percentReturn,
-	};
 };
 
 export const calcualteCoumpoundInterest = (
@@ -283,4 +300,261 @@ export const calculateEnterpriseValue = (
 	const enterpriseValue = marketCap + debt - cash;
 
 	return { sharePrice, sharesOutstanding, cash, debt, marketCap, enterpriseValue };
+};
+
+export const calculateSIPCalculation = (
+	formData: ISipCalculationFormData
+): SipCalculationProps => {
+	const {monthlyInvestment, expectedReturnRate, timePeriod} = formData;
+
+	const months = timePeriod * 12;
+	const ratePerMonth = expectedReturnRate / (12 * 100);
+	const investedAmount = monthlyInvestment * months;
+	const totalValue = monthlyInvestment * ((Math.pow(1 + ratePerMonth, months) - 1) / ratePerMonth) * (1 + ratePerMonth);
+	const estimatedReturn = totalValue - investedAmount;
+
+	return { monthlyInvestment, expectedReturnRate, timePeriod, investedAmount, estimatedReturn, totalValue };
+};
+
+export const calculateLumpsumCalculation = (
+	formData: ILumpsumCalculationFormData
+): LumpsumCalculationProps => {
+	const {totalInvestment, expectedReturnRate, timePeriod} = formData;
+
+	const timePeriodInYears = timePeriod;
+	const ratePerYear = expectedReturnRate / 100;
+	const totalValue = totalInvestment * Math.pow((1 + ratePerYear), timePeriodInYears);
+	const estimatedReturn = totalValue - totalInvestment;
+
+	return { totalInvestment, expectedReturnRate, timePeriod, estimatedReturn, totalValue };
+};
+
+export const calculateStepUpSIPCalculation = (
+	formData: IStepUpSipCalculationFormData
+): StepUpSipCalculationProps => {
+	const { monthlyInvestment, annualStepUp, expectedReturnRate, timePeriod } = formData;
+	let totalValue = 0;
+	let investedAmount = 0;
+
+	const stepUpRate = annualStepUp / 100;
+	const ratePerMonth = expectedReturnRate / (12 * 100);
+
+	for (let year = 1; year <= timePeriod; year++) {
+		// Adjust the investment amount for the current year
+		const currentInvestment = monthlyInvestment * Math.pow(1 + stepUpRate, year - 1);
+		// Total investment for this year
+		const yearlyInvestment = currentInvestment * 12;
+		investedAmount += yearlyInvestment;
+
+		// Calculate the value for each month in the current year
+		let yearlyValue = 0;
+		for (let month = 1; month <= 12; month++) {
+			yearlyValue += currentInvestment * Math.pow(1 + ratePerMonth, (timePeriod * 12) - ((year - 1) * 12 + month));
+		}
+		totalValue += yearlyValue;
+	}
+
+	const estimatedReturn = totalValue - investedAmount;
+
+	return { monthlyInvestment, annualStepUp, expectedReturnRate, timePeriod, investedAmount, estimatedReturn, totalValue };
+};
+
+
+export const calculateXirrCalculation = (
+	formData: IXirrCalculationFormData
+): XirrCalculationProps => {
+	const { amountInvested, amountAtMaturity, timePeriod } = formData;
+	// Total Return Calculation
+	const totalReturn = ((amountAtMaturity / amountInvested) - 1) * 100;
+
+	// XIRR Calculation using Newton-Raphson Method
+	const xirrFunction = (rate: number) => {
+		return amountInvested * Math.pow(1 + rate, timePeriod) - amountAtMaturity;
+	};
+	const xirrFunctionDerivative = (rate: number) => {
+		return amountInvested * timePeriod * Math.pow(1 + rate, timePeriod - 1);
+	};
+	let xirr = 0;
+	let guess = 0.1;
+	// Initial guess for the rate
+	const tolerance = 0.0001;
+	// Tolerance level for convergence
+	const maxIterations = 100;
+	// Maximum number of iterations
+	for (let i = 0; i < maxIterations; i++) {
+		const value = xirrFunction(guess);
+		const derivative = xirrFunctionDerivative(guess);
+		const newGuess = guess - value / derivative;
+		if (Math.abs(newGuess - guess) < tolerance) {
+			xirr = newGuess; break;
+		} guess = newGuess;
+	}
+	// Convert XIRR to percentage
+	xirr = xirr * 100;
+	return { amountInvested, amountAtMaturity, timePeriod, xirr, totalReturn};
+};
+
+export const calculateRetirmentPlanningCalculation = (
+	formData: IRetirmentPlanningCalculationFormData
+): RetirmentPlanningCalculationProps => {
+
+	const { currentAge, desiredRetirementAge, lifeExpectancy, monthlyIncomeRequiredInRetirementYears, expectedInflationRate, expectedReturnOnInvestmentPreRetirement, expectedReturnOnInvestmentPostRetirement, existingRetirementFund} = formData;
+	// Calculate the number of years in retirement
+	const retirementYears = lifeExpectancy - desiredRetirementAge;
+	// Calculate the number of years to retirement
+	const yearsToRetirement = desiredRetirementAge - currentAge;
+	// Calculate the annual inflation-adjusted income required immediately after retirement
+	const AnnualIncomeRequiredImmediatelyAfterRetirement = monthlyIncomeRequiredInRetirementYears * 12 * Math.pow(1 + expectedInflationRate / 100, yearsToRetirement);
+	// Calculate the corpus required at the beginning of retirement to sustain the retirement income
+	const additionalRetirementFundWhichNeedsToBeAccumulatedIs = AnnualIncomeRequiredImmediatelyAfterRetirement * ( (1 - Math.pow(1 + expectedReturnOnInvestmentPostRetirement / 100, -retirementYears)) / (expectedReturnOnInvestmentPostRetirement / 100) );
+	// Calculate the monthly savings required to accumulate the retirement fund
+	const futureValue = additionalRetirementFundWhichNeedsToBeAccumulatedIs - existingRetirementFund;
+	const monthlySavingsRequiredToAccumulateTheFundIs = futureValue * (expectedReturnOnInvestmentPreRetirement / 100 / 12) / (Math.pow(1 + expectedReturnOnInvestmentPreRetirement / 100 / 12, yearsToRetirement * 12) - 1);
+
+	return {currentAge, desiredRetirementAge, lifeExpectancy, monthlyIncomeRequiredInRetirementYears, expectedInflationRate, expectedReturnOnInvestmentPreRetirement, expectedReturnOnInvestmentPostRetirement, existingRetirementFund, AnnualIncomeRequiredImmediatelyAfterRetirement, additionalRetirementFundWhichNeedsToBeAccumulatedIs, monthlySavingsRequiredToAccumulateTheFundIs};
+
+
+
+};
+
+export const calculateWealthGainCalculation = (
+	formData: IWealthGainCalculationFormData
+): WealthGainCalculationProps => {
+	const {
+		initialInvestment,
+		periodicInvestment,
+		investmentFrequency,
+		expectedRateOfGrowth,
+		timePeriod,
+	} = formData;
+
+	let investedAmount = initialInvestment;
+	let totalValue = initialInvestment;
+	const ratePerPeriod = expectedRateOfGrowth / (investmentFrequency * 100);
+	const periods = timePeriod * investmentFrequency;
+	for (let i = 1; i <= periods; i++) {
+		totalValue = totalValue * (1 + ratePerPeriod) + periodicInvestment;
+		investedAmount += periodicInvestment;
+	}
+	const estimatedReturn = totalValue - investedAmount;
+	return {
+		initialInvestment,
+		periodicInvestment,
+		investmentFrequency,
+		expectedRateOfGrowth,
+		timePeriod,
+		investedAmount,
+		estimatedReturn,
+		totalValue
+	};
+};
+
+export const calculateRecurringDepositCalculation = (
+	formData: IRecurringDepositCalculationFormData
+): RecurringDepositCalculationProps => {
+	const {
+		monthlyInvestment,
+		rateOfInterest,
+		duration,
+		durationType,
+
+	} = formData;
+
+	// Convert annual rate of interest to monthly rate of interest
+	const monthlyRateOfInterest = rateOfInterest / 100 / 12;
+	// Calculate the total number of months
+	const totalMonths = durationType * duration;
+	// Calculate the total invested amount
+	const investedAmount = monthlyInvestment * totalMonths;
+	// Calculate the total value (maturity amount) using the correct RD formula
+	const totalValue = monthlyInvestment * ((Math.pow(1 + monthlyRateOfInterest, totalMonths) - 1) / monthlyRateOfInterest) * (1 + monthlyRateOfInterest);
+	// Calculate the estimated return
+	const estimatedReturn = totalValue - investedAmount;
+
+
+
+	console.log("input: ");
+	console.log("monthlyInvestment: "+monthlyInvestment);
+	console.log("rateOfInterest: "+rateOfInterest);
+	console.log("duration: "+duration);
+	console.log("durationType: "+durationType);
+
+	console.log("output: ");
+	console.log("investedAmount: "+investedAmount);
+	console.log("estimatedReturn: "+estimatedReturn);
+	console.log("totalValue: "+totalValue);
+
+	return {
+		monthlyInvestment,
+		rateOfInterest,
+		duration,
+		durationType,
+		investedAmount,
+		estimatedReturn,
+		totalValue,
+	};
+};
+
+
+export const calculateFixedDepositCalculation = (
+	formData: IFixedDepositCalculationFormData
+): FixedDepositCalculationProps => {
+	const {
+		totalInvestment,
+		rateOfInterest,
+		duration,
+		durationType,
+
+	} = formData;
+	// Convert annual rate of interest to decimal
+	const annualRateOfInterest = rateOfInterest / 100;
+	// Calculate the number of years (assuming durationType is 12 for years)
+	const totalYears = durationType === 12 ? duration : duration / 12;
+	// Calculate the total value (maturity amount) using the compound interest formula
+	const totalValue = totalInvestment * Math.pow((1 + annualRateOfInterest), (totalYears));
+	// Calculate the estimated return (interest earned)
+	const estimatedReturn = totalValue - totalInvestment;
+
+	return {
+		totalInvestment,
+		rateOfInterest,
+		duration,
+		durationType,
+		estimatedReturn,
+		totalValue,
+	};
+};
+
+export const calculatePpfCalculation = (
+	formData: IPpfCalculationFormData
+): PpfCalculationProps => {
+	const {
+		yearlyInvestment,
+		timePeriod,
+		RateOfInterest,
+	} = formData;
+
+	// Convert the annual interest rate from percentage to decimal
+	const annualRateOfInterest = RateOfInterest / 100;
+	// Initialize variables for total invested amount, total interest, and maturity value
+	let investedAmount = 0;
+	let totalInterest = 0;
+	let maturityValue = 0;
+
+	// Calculate the maturity value, interest earned, and total invested amount
+	for (let year = 1; year <= timePeriod; year++) {
+		investedAmount += yearlyInvestment;
+		maturityValue = (maturityValue + yearlyInvestment) * (1 + annualRateOfInterest);
+	}
+	// Calculate the total interest earned
+	totalInterest = maturityValue - investedAmount;
+
+	return {
+		yearlyInvestment,
+		timePeriod,
+		RateOfInterest,
+		investedAmount,
+		totalInterest,
+		maturityValue,
+	};
 };

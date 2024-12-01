@@ -24,6 +24,12 @@ const numberFieldSchema = (fieldName = 'Number') => {
 	});
 };
 
+const booleanValidation = (fieldName = 'Boolean') => {
+	return z.coerce.boolean({
+		required_error: `${fieldName} is required`,
+	});
+};
+
 const positiveNumberFieldSchema = (fieldName = 'Number') => {
 	return z.coerce
 		.number({
@@ -51,6 +57,13 @@ const positiveNumberFieldSchemaWithMax = (fieldName = 'Number', max: number) => 
 	return positiveNumberFieldSchema(fieldName).max(max, {
 		message: `${fieldName} cannot be greater than ${max}`,
 	});
+};
+
+const positiveNumberFieldSchemaWithMaxAndMin = (fieldName = 'Number', min: number, max: number) => {
+	return positiveNumberFieldSchema(fieldName).max(max, {
+		message: `${fieldName} cannot be greater than ${max}`,
+	})
+		.min(min, {message: `${fieldName} cannot be smaller than ${min}`});
 };
 
 export const markupFormDataSchema = z.object({
@@ -161,4 +174,68 @@ export const enterpriseValueFormDataSchema = z.object({
 	sharesOutstanding: positiveIntegerFieldSchema('Shares outstanding'),
 	cash: positiveNumberFieldSchema('Cash'),
 	debt: positiveNumberFieldSchema('Debt'),
+});
+
+export const sipCalculationFormDataScheme = z.object({
+	monthlyInvestment: positiveNumberFieldSchemaWithMaxAndMin('Monthly Investment', 100, 10000000),
+	expectedReturnRate: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
+	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
+});
+
+export const lumpsumCalculationFormDataScheme = z.object({
+	totalInvestment: positiveNumberFieldSchemaWithMaxAndMin('Monthly Investment', 500, 10000000),
+	expectedReturnRate: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
+	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
+});
+
+export const stepUpSipCalculationFormDataScheme = z.object({
+	monthlyInvestment: positiveNumberFieldSchemaWithMaxAndMin('Monthly Investment', 100, 10000000),
+	annualStepUp: positiveNumberFieldSchemaWithMaxAndMin('Annual Step Up', 1, 50),
+	expectedReturnRate: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
+	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
+});
+
+export const xirrCalculationFormDataScheme = z.object({
+	amountInvested: positiveNumberFieldSchemaWithMaxAndMin('Amount Invested', 100, 10000000000),
+	amountAtMaturity: positiveNumberFieldSchemaWithMaxAndMin('Amount Invested', 100, 10000000000),
+	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 40),
+});
+
+export const retirmentPlanningCalculationFormDataScheme = z.object({
+	currentAge: positiveNumberFieldSchemaWithMaxAndMin("Current Age", 15, 60),
+	desiredRetirementAge: positiveNumberFieldSchemaWithMaxAndMin("desiredRetirementAge", 15, 70),
+	lifeExpectancy: positiveNumberFieldSchemaWithMaxAndMin("Life Expectancy", 30, 100),
+	monthlyIncomeRequiredInRetirementYears: positiveNumberFieldSchemaWithMaxAndMin("Monthly Income Required In Retirement Years", 1, 1000000000),
+	expectedInflationRate: positiveNumberFieldSchemaWithMaxAndMin("Expected Inflation Rate", 3, 15),
+	expectedReturnOnInvestmentPreRetirement: positiveNumberFieldSchemaWithMaxAndMin("Expected Return On Investment Pre-Retirement", 1, 30),
+	expectedReturnOnInvestmentPostRetirement: positiveNumberFieldSchemaWithMaxAndMin("Expected Return On Investment Post-Retirement", 1, 30),
+	existingRetirementFund: positiveNumberFieldSchemaWithMaxAndMin("Expected Return On Investment Post-Retirement", 0, 10000000000),
+});
+
+export const wealthGainCalculationFormDataScheme = z.object({
+	initialInvestment:positiveNumberFieldSchemaWithMaxAndMin("Initial Investment", 0, 10000000000),
+	periodicInvestment: positiveNumberFieldSchemaWithMaxAndMin("Periodic Investment", 0, 100000000),
+	investmentFrequency: positiveNumberFieldSchema('Investment frequency'),
+	expectedRateOfGrowth: positiveNumberFieldSchemaWithMaxAndMin("Expected Rate Of Growth", 1, 30),
+	timePeriod: positiveNumberFieldSchemaWithMaxAndMin("Time Period", 1, 40),
+});
+
+export const recurringDepositCalculationFormDataScheme = z.object({
+	monthlyInvestment: positiveNumberFieldSchemaWithMaxAndMin('Monthly Investment', 100, 10000000),
+	rateOfInterest: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
+	duration: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 25),
+	durationType: positiveNumberFieldSchema('Investment frequency'),
+});
+
+export const fixedDepositCalculationFormDataScheme = z.object({
+	totalInvestment: positiveNumberFieldSchemaWithMaxAndMin('Monthly Investment', 5000, 100000000),
+	rateOfInterest: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
+	duration: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 25),
+	durationType: positiveNumberFieldSchema('Investment frequency'),
+});
+
+export const ppfCalculationFormDataScheme = z.object({
+	yearlyInvestment: positiveNumberFieldSchemaWithMaxAndMin('Monthly Investment', 500, 200000),
+	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 15, 50),
+	RateOfInterest: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 7.1, 7.1),
 });
