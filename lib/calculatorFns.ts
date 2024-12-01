@@ -32,7 +32,7 @@ import {
 	IWealthGainCalculationFormData,
 	WealthGainCalculationProps,
 	IRecurringDepositCalculationFormData,
-	RecurringDepositCalculationProps,
+	RecurringDepositCalculationProps, IFixedDepositCalculationFormData, FixedDepositCalculationProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -487,6 +487,43 @@ export const calculateRecurringDepositCalculation = (
 		duration,
 		durationType,
 		investedAmount,
+		estimatedReturn,
+		totalValue,
+	};
+};
+
+
+export const calculateFixedDepositCalculation = (
+	formData: IFixedDepositCalculationFormData
+): FixedDepositCalculationProps => {
+	const {
+		totalInvestment,
+		rateOfInterest,
+		duration,
+		durationType,
+
+	} = formData;
+	// Convert annual rate of interest to decimal
+	const annualRateOfInterest = rateOfInterest / 100;
+	// Calculate the number of years (assuming durationType is 12 for years)
+	const totalYears = durationType === 12 ? duration : duration / 12;
+	// Calculate the total value (maturity amount) using the compound interest formula
+	const totalValue = totalInvestment * Math.pow((1 + annualRateOfInterest), (totalYears));
+	// Calculate the estimated return (interest earned)
+	const estimatedReturn = totalValue - totalInvestment;
+
+	console.log("totalInvestment: "+totalInvestment);
+	console.log("rateOfInterest: "+rateOfInterest);
+	console.log("duration: "+duration);
+	console.log("durationType: "+durationType);
+	console.log("estimatedReturn: "+estimatedReturn);
+	console.log("totalValue: "+totalValue);
+
+	return {
+		totalInvestment,
+		rateOfInterest,
+		duration,
+		durationType,
 		estimatedReturn,
 		totalValue,
 	};

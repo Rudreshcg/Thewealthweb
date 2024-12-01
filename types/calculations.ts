@@ -16,7 +16,9 @@ import {
 	stepUpSipCalculationFormDataScheme,
 	xirrCalculationFormDataScheme,
 	retirmentPlanningCalculationFormDataScheme,
-	wealthGainCalculationFormDataScheme, recurringDepositCalculationFormDataScheme,
+	wealthGainCalculationFormDataScheme,
+	recurringDepositCalculationFormDataScheme,
+	fixedDepositCalculationFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -24,12 +26,12 @@ import {
 	CompoundInterestCalculation,
 	DollarCostAverageCalculation,
 	EnterpriseValueCalculation,
-	EventProbabilityCalculation,
+	EventProbabilityCalculation, FixedDepositCalculation,
 	InvestmentTimeCalculation, LumpsumCalculation,
 	MarkupCalculation,
 	PresentValueCalculation,
-	PriceToEarningsRatioCalculation,
-	SipCalculation,
+	PriceToEarningsRatioCalculation, RetirmentPlanningCalculation,
+	SipCalculation, StepUpSipCalculation, WealthGainCalculation,
 	XirrCalculation,
 } from '@prisma/client';
 import { z } from 'zod';
@@ -208,7 +210,13 @@ export interface RecurringDepositCalculationProps extends IRecurringDepositCalcu
 	estimatedReturn: number;
 	totalValue: number;
 }
+// Fixed Deposit.
+export type IFixedDepositCalculationFormData = z.infer<typeof fixedDepositCalculationFormDataScheme>;
 
+export interface FixedDepositCalculationProps extends IFixedDepositCalculationFormData {
+	estimatedReturn: number;
+	totalValue: number;
+}
 export type CalculationType =
 	| BreakEvenPointCalculation
 	| MarkupCalculation
@@ -222,4 +230,8 @@ export type CalculationType =
 	| EnterpriseValueCalculation
 	| SipCalculation
 	| LumpsumCalculation
-	| XirrCalculation;
+	| XirrCalculation
+	| StepUpSipCalculation
+	| RetirmentPlanningCalculation
+	| WealthGainCalculation
+	| FixedDepositCalculation;

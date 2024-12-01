@@ -33,6 +33,8 @@ export const WEALTH_GAIN_CALCULATIONS_API_URL =
     "/api/wealth-gain-calculator" as const;
 export const RECURRING_DEPOSIT_CALCULATIONS_API_URL =
     "/api/rd-calculator" as const;
+export const FIXED_DEPOSIT_CALCULATIONS_API_URL =
+    "/api/fixed-deposit-calculator" as const;
 
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
@@ -52,6 +54,7 @@ export const API_URLS = [
   RETIRMENT_PLANNING_CALCULATIONS_API_URL,
   WEALTH_GAIN_CALCULATIONS_API_URL,
   RECURRING_DEPOSIT_CALCULATIONS_API_URL,
+  FIXED_DEPOSIT_CALCULATIONS_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -92,6 +95,8 @@ export const WEALTH_GAIN_CALCULATIONS_QUERY_KEY =
 
 export const RECURRING_DEPOSIT_CALCULATIONS_QUERY_KEY =
     "rd-calculator" as const;
+export const FIXED_DEPOSIT_CALCULATIONS_QUERY_KEY =
+    "fixed-deposit-calculator" as const;
 
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
@@ -111,4 +116,5 @@ export const QUERY_KEYS = [
   RETIRMENT_PLANNING_CALCULATIONS_QUERY_KEY,
   WEALTH_GAIN_CALCULATIONS_QUERY_KEY,
   RECURRING_DEPOSIT_CALCULATIONS_QUERY_KEY,
+  FIXED_DEPOSIT_CALCULATIONS_QUERY_KEY,
 ] as const;
