@@ -1,7 +1,7 @@
 export const categories = [
   {
-    name: "Investment Calculators",
-    url: "investment-calculators",
+    name: "Common Investment Calculators",
+    url: "common-investment-calculators",
     description:
       "These calculators focus on growing wealth through stocks, mutual funds, bonds, and other investment instruments.",
   },
