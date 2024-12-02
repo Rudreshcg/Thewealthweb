@@ -26,38 +26,6 @@ const CurrencyIcon = ({
 		);
 
 		switch (currency) {
-			case 'eur':
-				return (
-					<>
-						<Euro {...props} className={cn('h-4 w-4', className)} aria-hidden />
-						{SRCurrencyName}
-					</>
-				);
-			case 'usd':
-				return (
-					<>
-						<DollarSign {...props} className={cn('h-4 w-4', className)} aria-hidden />
-						{SRCurrencyName}
-					</>
-				);
-			case 'gbp':
-				return (
-					<>
-						<PoundSterling
-							{...props}
-							className={cn('h-4 w-4', className)}
-							aria-hidden
-						/>
-						{SRCurrencyName}
-					</>
-				);
-			case 'jpy':
-				return (
-					<>
-						<JapaneseYen {...props} className={cn('h-4 w-4', className)} aria-hidden />
-						{SRCurrencyName}
-					</>
-				);
 			case 'inr':
 				return (
 					<>

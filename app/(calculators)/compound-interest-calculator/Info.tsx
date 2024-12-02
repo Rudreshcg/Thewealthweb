@@ -30,7 +30,7 @@ const Info = () => {
 						all of the previously accumulated interest.
 					</li>
 					<li>
-						Generating &quot;interest on interest&quot; (koronkorko in Finnish) is known
+						Generating &quot;interest on interest&quot; (TheWealthWeb in Finnish) is known
 						as the power of compound interest.
 					</li>
 					<li>

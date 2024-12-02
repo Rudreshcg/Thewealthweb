@@ -1,6 +1,6 @@
 import { FaCode, FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa';
 
-export const appName = 'KoronKorko';
+export const appName = 'TheWealthWeb';
 
 export const XsScreen = 480;
 export const SmScreen = 640;

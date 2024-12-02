@@ -39,7 +39,7 @@ const Logo = () => {
 				{src ? (
 					<Image
 						src={src}
-						alt="KoronKorko Logo"
+						alt="TheWealthWeb Logo"
 						className="h-[34px] w-[34px] cursor-pointer select-none min-h-[34px] min-w-[34px]"
 					/>
 				) : (
@@ -47,7 +47,7 @@ const Logo = () => {
 				)}
 
 				<p aria-hidden className="font-bold text-2xl hidden xs:block">
-					{userData?.plan === 'premium' ? 'Premium' : 'KoronKorko'}
+					{userData?.plan === 'premium' ? 'Premium' : 'TheWealthWeb'}
 				</p>
 			</Link>
 		</div>

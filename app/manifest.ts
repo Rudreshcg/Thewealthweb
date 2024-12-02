@@ -2,10 +2,9 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
 	return {
-		name: 'KoronKorko',
-		short_name: 'KoronKorko',
+		short_name: 'TheWealthWeb',
 		description:
-			'KoronKorko is a finance web-application with various types of easy to use finance calculators.',
+			'TheWealthWeb is a finance web-application with various types of easy to use finance calculators.',
 		start_url: '/',
 		display: 'standalone',
 		background_color: '#1B181F',

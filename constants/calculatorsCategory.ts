@@ -363,7 +363,7 @@ export const calculatorsCategory = [
   // 10. Mutual Fund Calculators:
   {
     name: "SIP (Systematic Investment Plan)",
-    url: "sip",
+    url: "mf-sip-calculator",
     category: "mutual-fund-calculators",
     description:
       "Calculates the future value of periodic investments based on tenure and expected return rate.",
@@ -377,7 +377,7 @@ export const calculatorsCategory = [
   },
   {
     name: "Lump Sum Calculator",
-    url: "lump-sum-calculator",
+    url: "mf-lumpsum-calculator",
     category: "mutual-fund-calculators",
     description:
       "Estimates the maturity value of a one-time investment in a mutual fund.",

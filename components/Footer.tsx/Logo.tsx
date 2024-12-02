@@ -24,7 +24,7 @@ const Logo = ({ className, ...props }: LogoProps) => {
 				<Image
 					{...props}
 					src={src}
-					alt="KoronKorko Logo"
+					alt="TheWealthWeb Logo"
 					className={cn(
 						'h-[50px] w-[50px] cursor-pointer select-none min-h-[50px] min-w-[50px]',
 						className

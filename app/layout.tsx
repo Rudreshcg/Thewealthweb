@@ -19,7 +19,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
 	title: `Home - ${appName}`,
 	description:
-		'KoronKorko is a finance web-application with various types of easy to use finance calculators.',
+		'TheWealthWeb is a finance web-application with various types of easy to use finance calculators.',
 };
 
 export default function RootLayout({

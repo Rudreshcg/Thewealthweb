@@ -103,7 +103,7 @@ const LoginModal = () => {
 				{/* Login Modal */}
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Login to KoronKorko</DialogTitle>
+						<DialogTitle>Login to TheWealthWeb</DialogTitle>
 					</DialogHeader>
 
 					<form className="gap-2 flex flex-col" onSubmit={(e) => e.preventDefault()}>
