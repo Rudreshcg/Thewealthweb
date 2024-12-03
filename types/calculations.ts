@@ -18,7 +18,7 @@ import {
 	retirmentPlanningCalculationFormDataScheme,
 	wealthGainCalculationFormDataScheme,
 	recurringDepositCalculationFormDataScheme,
-	fixedDepositCalculationFormDataScheme, ppfCalculationFormDataScheme,
+	fixedDepositCalculationFormDataScheme, ppfCalculationFormDataScheme, homeLoanEmiCalculationFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -36,7 +36,7 @@ import {
 	StepUpSipCalculation,
 	WealthGainCalculation,
 	XirrCalculation,
-	PpfCalculation,
+	PpfCalculation, HomeLoanEmiCalculation,
 } from '@prisma/client';
 import { z } from 'zod';
 
@@ -229,6 +229,19 @@ export interface PpfCalculationProps extends IPpfCalculationFormData {
 	totalInterest: number;
 	maturityValue: number;
 }
+
+
+export type IHomeLoanEmiCalculationFormData = z.infer<typeof homeLoanEmiCalculationFormDataScheme>;
+
+export interface HomeLoanEmiCalculationProps extends IHomeLoanEmiCalculationFormData {
+	monthlyEmi: number;
+	principalAmount: number;
+	totalInterest: number;
+	totalAmount: number;
+	monthlyBreakdown: Array<any>;
+	yearlyBreakdown: Array<any>;
+}
+
 export type CalculationType =
 	| BreakEvenPointCalculation
 	| MarkupCalculation
@@ -247,4 +260,5 @@ export type CalculationType =
 	| RetirmentPlanningCalculation
 	| WealthGainCalculation
 	| FixedDepositCalculation
-	| PpfCalculation;
+	| PpfCalculation
+	| HomeLoanEmiCalculation ;

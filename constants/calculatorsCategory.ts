@@ -140,6 +140,11 @@ export const calculatorsCategory = [
         "Calculate the enterprise value of a company, given its market capitalization, total debt, and total cash. Additionally, logged in users can save their calculations.",
   },
 
+
+
+
+
+
   //2. Loan and Credit Calculators
   {
     name: "Home Loan EMI Calculator",

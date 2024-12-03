@@ -239,3 +239,11 @@ export const ppfCalculationFormDataScheme = z.object({
 	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 15, 50),
 	RateOfInterest: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 7.1, 7.1),
 });
+
+export const homeLoanEmiCalculationFormDataScheme = z.object({
+	loanAmount: positiveNumberFieldSchemaWithMaxAndMin('Loan Amount', 100000, 100000000),
+	rateOfInterest: positiveNumberFieldSchemaWithMaxAndMin('Rate of Interest', 1, 20),
+	loanTenure: positiveNumberFieldSchemaWithMaxAndMin('Load Tenure', 1, 30),
+	tenureType: positiveNumberFieldSchema('tenureType'),
+
+});

@@ -19,6 +19,7 @@ export const DOLLAR_COST_AVERAGE_CALCULATIONS_API_URL =
 export const ENTERPRICE_VALUE_CALCULATIONS_API_URL =
   "/api/enterprise-value-calculations" as const;
 
+// common calculators:
 export const MF_SIP_CALCULATIONS_API_URL =
     "/api/mf-sip-calculator" as const;
 export const MF_LUMPSUM_CALCULATIONS_API_URL =
@@ -37,6 +38,11 @@ export const FIXED_DEPOSIT_CALCULATIONS_API_URL =
     "/api/fixed-deposit-calculator" as const;
 export const PPF_CALCULATIONS_API_URL =
     "/api/ppf-calculator" as const;
+
+// Loan and credit calculators:
+export const HOME_LOAN_EMI_CALCULATIONS_API_URL =
+    "/api/home-loan-emi-calculator" as const;
+
 
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
@@ -58,6 +64,7 @@ export const API_URLS = [
   RECURRING_DEPOSIT_CALCULATIONS_API_URL,
   FIXED_DEPOSIT_CALCULATIONS_API_URL,
   PPF_CALCULATIONS_API_URL,
+  HOME_LOAN_EMI_CALCULATIONS_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -95,13 +102,16 @@ export const RETIRMENT_PLANNING_CALCULATIONS_QUERY_KEY =
     "retirement-planning-calculator" as const;
 export const WEALTH_GAIN_CALCULATIONS_QUERY_KEY =
     "wealth-gain-calculator" as const;
-
 export const RECURRING_DEPOSIT_CALCULATIONS_QUERY_KEY =
     "rd-calculator" as const;
 export const FIXED_DEPOSIT_CALCULATIONS_QUERY_KEY =
     "fixed-deposit-calculator" as const;
 export const PPF_CALCULATIONS_QUERY_KEY =
     "ppf-calculator" as const;
+
+// Loan and credit calculators:
+export const HOME_LOAN_EMI_CALCULATIONS_QUERY_KEY =
+    "home-loan-emi-calculator" as const;
 
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
@@ -123,4 +133,5 @@ export const QUERY_KEYS = [
   RECURRING_DEPOSIT_CALCULATIONS_QUERY_KEY,
   FIXED_DEPOSIT_CALCULATIONS_QUERY_KEY,
   PPF_CALCULATIONS_QUERY_KEY,
+  HOME_LOAN_EMI_CALCULATIONS_QUERY_KEY,
 ] as const;

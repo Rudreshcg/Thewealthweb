@@ -35,7 +35,7 @@ import {
 	RecurringDepositCalculationProps,
 	IFixedDepositCalculationFormData,
 	FixedDepositCalculationProps,
-	IPpfCalculationFormData, PpfCalculationProps,
+	IPpfCalculationFormData, PpfCalculationProps, IHomeLoanEmiCalculationFormData, HomeLoanEmiCalculationProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -556,5 +556,66 @@ export const calculatePpfCalculation = (
 		investedAmount,
 		totalInterest,
 		maturityValue,
+	};
+};
+
+
+export const calculateHomeLoanEmiCalculation = (
+	formData: IHomeLoanEmiCalculationFormData
+): HomeLoanEmiCalculationProps => {
+	const { loanAmount, rateOfInterest, loanTenure, tenureType } = formData;
+
+	const monthlyRate = rateOfInterest / (12 * 100);
+	const numPayments = loanTenure * tenureType;
+
+	const emi = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, numPayments) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+	let balance = loanAmount;
+	let totalInterest = 0;
+	let totalPrincipal = 0;
+
+	const monthlyBreakdown: Array<any> = [];
+	const yearlyBreakdown: Array<any> = [];
+
+	for (let i = 0; i < numPayments; i++) {
+		const interest = balance * monthlyRate;
+		const principal = emi - interest;
+		balance -= principal;
+		totalInterest += interest;
+		totalPrincipal += principal;
+
+		monthlyBreakdown.push({
+			month: i + 1,
+			year: Math.floor(i / 12) + 1,
+			principalPaid: principal,
+			interestCharged: interest,
+			totalPayment: emi,
+			balance: balance < 0 ? 0 : balance
+		});
+
+		if ((i + 1) % 12 === 0 || i === numPayments - 1) {
+			const yearlyPrincipal = monthlyBreakdown.filter(m => m.year === Math.floor(i / 12) + 1).reduce((acc, curr) => acc + curr.principalPaid, 0);
+			const yearlyInterest = monthlyBreakdown.filter(m => m.year === Math.floor(i / 12) + 1).reduce((acc, curr) => acc + curr.interestCharged, 0);
+
+			yearlyBreakdown.push({
+				year: Math.floor(i / 12) + 1,
+				principalPaid: yearlyPrincipal,
+				interestCharged: yearlyInterest,
+				totalPayment: emi * (i === numPayments - 1 ? (i % 12 + 1) : 12),
+				balance: balance < 0 ? 0 : balance
+			});
+		}
+	}
+
+	return {
+		loanAmount,
+		rateOfInterest,
+		loanTenure,
+		tenureType,
+		monthlyEmi: emi,
+		principalAmount: loanAmount,
+		totalInterest,
+		totalAmount: emi * numPayments,
+		monthlyBreakdown,
+		yearlyBreakdown
 	};
 };

@@ -144,4 +144,42 @@ export const calculators = [
     description:
       "Projects returns for investments in the Public Provident Fund.",
   },
+
+  //2. Loan and Credit Calculators
+  {
+    name: "Home Loan EMI Calculator",
+    url: "home-loan-emi-calculator",
+    category: "loan-and-credit-calculators",
+    description: "Computes monthly EMIs for home loans",
+  },
+  {
+    name: "Personal Loan Calculator",
+    url: "personal-loan-calculator",
+    category: "loan-and-credit-calculators",
+    description: "Estimates EMIs and interest for personal loans.",
+  },
+  {
+    name: "Car Loan Calculator",
+    url: "car-loan-calculator",
+    category: "loan-and-credit-calculators",
+    description: "Calculates EMIs and interest for auto loans.",
+  },
+  {
+    name: "Education Loan Calculator",
+    url: "education-loan-calculator",
+    category: "loan-and-credit-calculators",
+    description: "Estimates payments for education loans.",
+  },
+  {
+    name: "Debt Payoff Calculator",
+    url: "debt-payoff-calculator",
+    category: "loan-and-credit-calculators",
+    description: "Helps in planning to pay off debts within a specific period.",
+  },
+  {
+    name: "Credit Card Payoff Calculator",
+    url: "credit-card-payoff-calculator",
+    category: "loan-and-credit-calculators",
+    description: "Shows how long it will take to clear a credit card balance.",
+  },
 ] as const;
