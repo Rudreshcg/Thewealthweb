@@ -141,10 +141,6 @@ export const calculatorsCategory = [
   },
 
 
-
-
-
-
   //2. Loan and Credit Calculators
   {
     name: "Home Loan EMI Calculator",
@@ -153,10 +149,16 @@ export const calculatorsCategory = [
     description: "Computes monthly EMIs for home loans",
   },
   {
-    name: "Personal Loan Calculator",
-    url: "personal-loan-calculator",
+    name: "Personal Loan EMI Calculator",
+    url: "personal-loan-emi-calculator",
     category: "loan-and-credit-calculators",
     description: "Estimates EMIs and interest for personal loans.",
+  },
+  {
+    name: "Auto Loan Calculator",
+    url: "auto-loan-calculator",
+    category: "loan-and-credit-calculators",
+    description: "Calculates EMIs and interest for auto loans.",
   },
   {
     name: "Car Loan Calculator",
@@ -171,14 +173,8 @@ export const calculatorsCategory = [
     description: "Estimates payments for education loans.",
   },
   {
-    name: "Debt Payoff Calculator",
-    url: "debt-payoff-calculator",
-    category: "loan-and-credit-calculators",
-    description: "Helps in planning to pay off debts within a specific period.",
-  },
-  {
-    name: "Credit Card Payoff Calculator",
-    url: "credit-card-payoff-calculator",
+    name: "Credit Card Calculator",
+    url: "credit-card-calculator",
     category: "loan-and-credit-calculators",
     description: "Shows how long it will take to clear a credit card balance.",
   },
@@ -365,6 +361,7 @@ export const calculatorsCategory = [
       "Estimates an individual's total net worth by subtracting liabilities from assets.",
   },
 
+
   // 10. Mutual Fund Calculators:
   {
     name: "SIP (Systematic Investment Plan)",
@@ -416,13 +413,6 @@ export const calculatorsCategory = [
       "Calculates the annualized growth rate of a mutual fund investment over time.",
   },
   {
-    name: "Redemption Value Calculator",
-    url: "redemption-value-calculator",
-    category: "mutual-fund-calculators",
-    description:
-      "Estimates the total amount received after redeeming mutual fund units, considering exit loads.",
-  },
-  {
     name: "NAV (Net Asset Value) Calculator",
     url: "nav-calculator",
     category: "mutual-fund-calculators",
@@ -437,13 +427,6 @@ export const calculatorsCategory = [
       "Evaluates how the expense ratio affects the overall returns of a mutual fund.",
   },
   {
-    name: "Tax-Saving Mutual Fund Calculator",
-    url: "tax-saving-mutual-fund-calculator",
-    category: "mutual-fund-calculators",
-    description:
-      "Projects returns and tax benefits for investments in ELSS (Equity Linked Savings Schemes).",
-  },
-  {
     name: "SIP Delay Calculator",
     url: "sip-delay-calculator",
     category: "mutual-fund-calculators",
@@ -451,21 +434,7 @@ export const calculatorsCategory = [
       "Shows the impact of delaying SIP investments by a certain period.",
   },
   {
-    name: "Fund Comparison Calculator",
-    url: "fund-comparison-calculator",
-    category: "mutual-fund-calculators",
-    description:
-      "Compares the historical performance of two or more mutual funds.",
-  },
-  {
-    name: "Rebalancing Calculator",
-    url: "rebalancing-calculator",
-    category: "mutual-fund-calculators",
-    description:
-      "Helps adjust investments between equity and debt funds to maintain a desired portfolio allocation.",
-  },
-  {
-    name: "Risk-Adjusted Return Calculator",
+    name: "Risk Adjusted Return Calculator",
     url: "risk-ajusted-return-calculator",
     category: "mutual-fund-calculators",
     description:
@@ -485,20 +454,7 @@ export const calculatorsCategory = [
     description:
       "Computes real returns after accounting for inflation over the investment period.",
   },
-  {
-    name: "Multi-SIP Calculator",
-    url: "multi-sip-calculator",
-    category: "mutual-fund-calculators",
-    description:
-      "Calculates combined returns for multiple SIPs running concurrently in different mutual funds.",
-  },
-  {
-    name: "Dividend Payout Calculator",
-    url: "dividend-payout-calculator",
-    category: "mutual-fund-calculators",
-    description:
-      "Estimates the earnings from dividend-paying mutual funds over a specific tenure.",
-  },
+
   {
     name: "Child Education Fund Calculator",
     url: "child-education-fund-calculator",
@@ -507,11 +463,39 @@ export const calculatorsCategory = [
       "Tailored to project the SIP required for building a corpus for a child’s education.",
   },
 
-  // {
-  //   name: "",
-  //   url: "",
-  //   category: "loan-and-credit-calculators",
-  //   description:
-  //     "",
-  // },
+  /*  {
+  name: "Redemption Value Calculator",
+  url: "redemption-value-calculator",
+  category: "mutual-fund-calculators",
+  description:
+    "Estimates the total amount received after redeeming mutual fund units, considering exit loads.",
+},*/
+  /* {
+ name: "Dividend Payout Calculator",
+ url: "dividend-payout-calculator",
+ category: "mutual-fund-calculators",
+ description:
+   "Estimates the earnings from dividend-paying mutual funds over a specific tenure.",
+},*/
+  /*  {
+  name: "Fund Comparison Calculator",
+  url: "fund-comparison-calculator",
+  category: "mutual-fund-calculators",
+  description:
+    "Compares the historical performance of two or more mutual funds.",
+},*/
+  /*  {
+      name: "Rebalancing Calculator",
+      url: "rebalancing-calculator",
+      category: "mutual-fund-calculators",
+      description:
+        "Helps adjust investments between equity and debt funds to maintain a desired portfolio allocation.",
+    },*/
+  /* {
+ name: "Tax-Saving Mutual Fund Calculator",
+ url: "tax-saving-mutual-fund-calculator",
+ category: "mutual-fund-calculators",
+ description:
+   "Projects returns and tax benefits for investments in ELSS (Equity Linked Savings Schemes).",
+},*/
 ] as const;

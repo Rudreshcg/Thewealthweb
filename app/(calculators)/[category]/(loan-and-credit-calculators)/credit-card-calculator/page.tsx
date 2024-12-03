@@ -1,0 +1,29 @@
+import BackButton from "@/components/Form/BackButton";
+import CalculatorContainer from "@/components/Form/CalculatorContainer";
+import TypographyH1 from "@/components/TypographyH1";
+import { appName } from "@/constants/data";
+import { getCalculatorWithPathname } from "@/lib/utils";
+import { Metadata } from "next";
+const calculator = getCalculatorWithPathname("credit-card-calculator");
+import Calculator from "@/app/(calculators)/[category]/(loan-and-credit-calculators)/home-loan-emi-calculator/Calculator";
+
+export const metadata: Metadata = {
+  title: `${calculator.name} - ${appName}`,
+  description: calculator.description,
+};
+
+const page = () => {
+  return (
+    <>
+      <TypographyH1>{calculator.name}</TypographyH1>
+
+      <CalculatorContainer>
+        <BackButton />
+
+        <Calculator />
+      </CalculatorContainer>
+    </>
+  );
+};
+
+export default page;

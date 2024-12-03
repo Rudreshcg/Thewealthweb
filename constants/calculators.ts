@@ -154,15 +154,21 @@ export const calculators = [
   },
   {
     name: "Personal Loan Calculator",
-    url: "personal-loan-calculator",
+    url: "personal-loan-emi-calculator",
     category: "loan-and-credit-calculators",
     description: "Estimates EMIs and interest for personal loans.",
+  },
+  {
+    name: "Auto Loan Calculator",
+    url: "auto-loan-calculator",
+    category: "loan-and-credit-calculators",
+    description: "Calculates EMIs and interest for auto loans.",
   },
   {
     name: "Car Loan Calculator",
     url: "car-loan-calculator",
     category: "loan-and-credit-calculators",
-    description: "Calculates EMIs and interest for auto loans.",
+    description: "Calculates EMIs and interest for Car loans.",
   },
   {
     name: "Education Loan Calculator",
@@ -171,14 +177,8 @@ export const calculators = [
     description: "Estimates payments for education loans.",
   },
   {
-    name: "Debt Payoff Calculator",
-    url: "debt-payoff-calculator",
-    category: "loan-and-credit-calculators",
-    description: "Helps in planning to pay off debts within a specific period.",
-  },
-  {
-    name: "Credit Card Payoff Calculator",
-    url: "credit-card-payoff-calculator",
+    name: "Credit Card Calculator",
+    url: "credit-card-calculator",
     category: "loan-and-credit-calculators",
     description: "Shows how long it will take to clear a credit card balance.",
   },

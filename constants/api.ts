@@ -42,7 +42,8 @@ export const PPF_CALCULATIONS_API_URL =
 // Loan and credit calculators:
 export const HOME_LOAN_EMI_CALCULATIONS_API_URL =
     "/api/home-loan-emi-calculator" as const;
-
+export const PERSONAL_LOAN_EMI_CALCULATIONS_API_URL =
+    "/api/personal-loan-emi-calculator" as const;
 
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
@@ -65,6 +66,7 @@ export const API_URLS = [
   FIXED_DEPOSIT_CALCULATIONS_API_URL,
   PPF_CALCULATIONS_API_URL,
   HOME_LOAN_EMI_CALCULATIONS_API_URL,
+  PERSONAL_LOAN_EMI_CALCULATIONS_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -112,7 +114,8 @@ export const PPF_CALCULATIONS_QUERY_KEY =
 // Loan and credit calculators:
 export const HOME_LOAN_EMI_CALCULATIONS_QUERY_KEY =
     "home-loan-emi-calculator" as const;
-
+export const PERSONAL_LOAN_EMI_CALCULATIONS_QUERY_KEY =
+    "personal-loan-emi-calculator" as const;
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
   BREAK_EVEN_POINT_CALCULATIONS_QUERY_KEY,
@@ -134,4 +137,5 @@ export const QUERY_KEYS = [
   FIXED_DEPOSIT_CALCULATIONS_QUERY_KEY,
   PPF_CALCULATIONS_QUERY_KEY,
   HOME_LOAN_EMI_CALCULATIONS_QUERY_KEY,
+  PERSONAL_LOAN_EMI_CALCULATIONS_QUERY_KEY,
 ] as const;

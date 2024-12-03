@@ -64,6 +64,7 @@ model User {
   FixedDepositCalculation          FixedDepositCalculation[]
   PpfCalculation                   PpfCalculation[]
   HomeLoanEmiCalculation           HomeLoanEmiCalculation[]
+  PersonalLoanEmiCalculation       PersonalLoanEmiCalculation[]
 }
 
 enum Plan {
@@ -449,6 +450,24 @@ model HomeLoanEmiCalculation {
   formData  HomeLoanEmiCalculationFormData
   createdAt DateTime                       @default(now())
   updatedAt DateTime                       @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type PersonalLoanEmiCalculationFormData {
+  loanAmount     Float
+  rateOfInterest Float
+  loanTenure     Float
+  tenureType     Float
+}
+
+model PersonalLoanEmiCalculation {
+  id        String                             @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                             @db.ObjectId
+  name      String
+  formData  PersonalLoanEmiCalculationFormData
+  createdAt DateTime                           @default(now())
+  updatedAt DateTime                           @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
