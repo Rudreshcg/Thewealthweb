@@ -6,7 +6,7 @@ import { getCalculatorWithPathname } from "@/lib/utils";
 import { Metadata } from "next";
 import Calculator from "./Calculator";
 
-const calculator = getCalculatorWithPathname("rd-calculator");
+const calculator = getCalculatorWithPathname("goal-planner-sip");
 
 export const metadata: Metadata = {
   title: `${calculator.name} - ${appName}`,

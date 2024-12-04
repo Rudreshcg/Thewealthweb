@@ -6,7 +6,7 @@ import { getCalculatorWithPathname } from "@/lib/utils";
 import { Metadata } from "next";
 import Calculator from "./Calculator";
 
-const calculator = getCalculatorWithPathname("mf-lumpsum-calculator");
+const calculator = getCalculatorWithPathname("cagr-calculator");
 
 export const metadata: Metadata = {
   title: `${calculator.name} - ${appName}`,

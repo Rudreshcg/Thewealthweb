@@ -239,3 +239,8 @@ export const durationType = [
 	{ value: 12, label: 'Years' },
 	{ value: 1, label: 'Months' },
 ] as const;
+
+export const tenureFrequency = [
+	{ value: 12, label: 'Months' },
+	{ value: 1, label: 'Years' },
+] as const;

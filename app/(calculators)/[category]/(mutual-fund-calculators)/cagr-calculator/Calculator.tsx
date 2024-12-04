@@ -14,16 +14,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  MF_LUMPSUM_CALCULATIONS_API_URL,
-  MF_LUMPSUM_CALCULATIONS_QUERY_KEY
+    CAGR_CALCULATIONS_API_URL,
+    CAGR_CALCULATIONS_QUERY_KEY
 } from "@/constants/api";
 import useCalculator from "@/hooks/useCalculator";
-import { calculateLumpsumCalculation } from "@/lib/calculatorFns";
+import { calculateCagrCalculation } from "@/lib/calculatorFns";
 import { getCalculations } from "@/lib/queryFns/calculations";
-import { lumpsumCalculationFormDataScheme } from "@/schemas";
+import { cagrCalculationFormDataScheme } from "@/schemas";
 import {
-  ILumpsumCalculationFormData,
-    LumpsumCalculationProps,
+  ICagrCalculationFormData,
+    CagrCalculationProps,
 } from "@/types/calculations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
@@ -31,20 +31,20 @@ import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import Report from "./Report";
 import {FaDownload} from "react-icons/fa";
-import {LumpsumCalculation} from "@prisma/client";
+import {CagrCalculation} from "@prisma/client";
 
-const defaultValues: ILumpsumCalculationFormData = {
-  totalInvestment: 25000,
-  expectedReturnRate:12,
-  timePeriod: 10,
+const defaultValues: ICagrCalculationFormData = {
+    initialInvestment: 5000,
+    finalInvestment: 25000,
+    durationOfInvestment: 5,
 };
 const handlePrint = () => {
     window.print();
 };
 
 const Calculator = () => {
-  const form = useForm<ILumpsumCalculationFormData>({
-    resolver: zodResolver(lumpsumCalculationFormDataScheme),
+  const form = useForm<ICagrCalculationFormData>({
+    resolver: zodResolver(cagrCalculationFormDataScheme),
     defaultValues,
   });
 
@@ -69,15 +69,15 @@ const Calculator = () => {
     handleImportStart,
     closeImportModal,
   } = useCalculator<
-    ILumpsumCalculationFormData,
-    LumpsumCalculationProps,
-    LumpsumCalculation
+    ICagrCalculationFormData,
+    CagrCalculationProps,
+    CagrCalculation
   >({
-    apiUrl: MF_LUMPSUM_CALCULATIONS_API_URL,
-    queryKey: MF_LUMPSUM_CALCULATIONS_QUERY_KEY,
+    apiUrl: CAGR_CALCULATIONS_API_URL,
+    queryKey: CAGR_CALCULATIONS_QUERY_KEY,
     defaultValues,
     form,
-    calcFn: calculateLumpsumCalculation,
+    calcFn: calculateCagrCalculation,
   });
 
   const { status: sessionStatus } = useSession();
@@ -86,9 +86,9 @@ const Calculator = () => {
     data: calculations,
     isLoading: isCalculationsLoading,
     isFetching,
-  } = useQuery<LumpsumCalculation[] | null>({
-    queryKey: [MF_LUMPSUM_CALCULATIONS_QUERY_KEY],
-    queryFn: () => getCalculations(MF_LUMPSUM_CALCULATIONS_API_URL),
+  } = useQuery<CagrCalculation[] | null>({
+    queryKey: [CAGR_CALCULATIONS_QUERY_KEY],
+    queryFn: () => getCalculations(CAGR_CALCULATIONS_API_URL),
     staleTime: 1_000 * 60 * 10, // 10 minutes
     enabled: sessionStatus === "authenticated",
   });
@@ -122,41 +122,18 @@ const Calculator = () => {
                   <FormGroup>
                       <FormField
                           control={form.control}
-                          name="totalInvestment"
+                          name="initialInvestment"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Total Investment</FormLabel>
+                                  <FormLabel>Initial Investment</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="totalInvestment"
+                                          name="initialInvestment"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("totalInvestment", 25000);
-                                          }}
-                                      />
-                                  </FormControl>
-                                  <FormMessage/>
-                              </FormItem>
-                          )}
-                      />
-
-                      <FormField
-                          control={form.control}
-                          name="expectedReturnRate"
-                          render={({field}) => (
-                              <FormItem className="w-full">
-                                  <FormLabel>Expected Return Rate</FormLabel>
-
-                                  <FormControl>
-                                      <NumberInputWithIcon
-                                          {...field}
-                                          name="expectedReturnRate"
-                                          iconType="percentage"
-                                          onBlur={(e) => {
-                                              ifFieldIsEmpty(e) &&
-                                              form.setValue("expectedReturnRate", 12);
+                                              form.setValue("initialInvestment", 5000);
                                           }}
                                       />
                                   </FormControl>
@@ -165,26 +142,47 @@ const Calculator = () => {
                           )}
                       />
                   </FormGroup>
+                  <FormField
+                      control={form.control}
+                      name="finalInvestment"
+                      render={({field}) => (
+                          <FormItem className="w-full">
+                              <FormLabel>Final Investment</FormLabel>
 
+                              <FormControl>
+                                  <NumberInputWithIcon
+                                      {...field}
+                                      name="finalInvestment"
+                                      onBlur={(e) => {
+                                          ifFieldIsEmpty(e) &&
+                                          form.setValue("finalInvestment", 25000);
+                                      }}
+                                  />
+                              </FormControl>
+                              <FormMessage/>
+                          </FormItem>
+                      )}
+                  />
+                  <FormGroup />
                   <FormGroup inline>
                       <FormField
                           control={form.control}
-                          name="timePeriod"
+                          name="durationOfInvestment"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Time Period (Yr)</FormLabel>
+                                  <FormLabel>Duration of Investment (Yr)</FormLabel>
 
                                   <FormControl>
                                       <Input
                                           {...field}
-                                          name="timePeriod"
+                                          name="durationOfInvestment"
                                           placeholder="10"
                                           step="0.01"
                                           type="number"
                                           max={40}
                                           min={1}
                                           onBlur={(e) => {
-                                              ifFieldIsEmpty(e) && form.setValue("timePeriod", 10);
+                                              ifFieldIsEmpty(e) && form.setValue("durationOfInvestment", 5);
                                           }}
                                       />
                                   </FormControl>

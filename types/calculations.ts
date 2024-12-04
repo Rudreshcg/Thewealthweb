@@ -22,6 +22,9 @@ import {
 	ppfCalculationFormDataScheme,
 	homeLoanEmiCalculationFormDataScheme,
 	personalLoanEmiCalculationFormDataScheme,
+	swpCalculationFormDataScheme,
+	goalPlannerSipFormDataScheme,
+	cagrCalculationFormDataScheme, navCalculationFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -254,6 +257,31 @@ export interface PersonalLoanEmiCalculationProps extends IPersonalLoanEmiCalcula
 	totalAmount: number;
 	monthlyBreakdown: Array<any>;
 	yearlyBreakdown: Array<any>;
+}
+
+export type ISwpCalculationFormData = z.infer<typeof swpCalculationFormDataScheme>;
+
+export interface SwpCalculationProps extends ISwpCalculationFormData {
+	totalWithdrawal: number
+	finalValue: number
+}
+
+export type IGoalPlannerSipFormData = z.infer<typeof goalPlannerSipFormDataScheme>;
+
+export interface GoalPlannerSipProps extends IGoalPlannerSipFormData {
+	investmentPerTenure: number
+}
+
+export type ICagrCalculationFormData = z.infer<typeof cagrCalculationFormDataScheme>;
+
+export interface CagrCalculationProps extends ICagrCalculationFormData {
+	cagr: number
+}
+
+export type INavCalculationFormData = z.infer<typeof navCalculationFormDataScheme>;
+
+export interface NavCalculationProps extends INavCalculationFormData {
+	navPerShare: number
 }
 export type CalculationType =
 	| BreakEvenPointCalculation

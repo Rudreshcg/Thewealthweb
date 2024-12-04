@@ -400,7 +400,7 @@ export const calculatorsCategory = [
   },
   {
     name: "Mutual Fund Goal Planner",
-    url: "mutual-fund-goal-planner",
+    url: "goal-planner-sip",
     category: "mutual-fund-calculators",
     description:
       "Helps investors determine the monthly SIP required to achieve a specific financial goal.",
@@ -462,40 +462,4 @@ export const calculatorsCategory = [
     description:
       "Tailored to project the SIP required for building a corpus for a child’s education.",
   },
-
-  /*  {
-  name: "Redemption Value Calculator",
-  url: "redemption-value-calculator",
-  category: "mutual-fund-calculators",
-  description:
-    "Estimates the total amount received after redeeming mutual fund units, considering exit loads.",
-},*/
-  /* {
- name: "Dividend Payout Calculator",
- url: "dividend-payout-calculator",
- category: "mutual-fund-calculators",
- description:
-   "Estimates the earnings from dividend-paying mutual funds over a specific tenure.",
-},*/
-  /*  {
-  name: "Fund Comparison Calculator",
-  url: "fund-comparison-calculator",
-  category: "mutual-fund-calculators",
-  description:
-    "Compares the historical performance of two or more mutual funds.",
-},*/
-  /*  {
-      name: "Rebalancing Calculator",
-      url: "rebalancing-calculator",
-      category: "mutual-fund-calculators",
-      description:
-        "Helps adjust investments between equity and debt funds to maintain a desired portfolio allocation.",
-    },*/
-  /* {
- name: "Tax-Saving Mutual Fund Calculator",
- url: "tax-saving-mutual-fund-calculator",
- category: "mutual-fund-calculators",
- description:
-   "Projects returns and tax benefits for investments in ELSS (Equity Linked Savings Schemes).",
-},*/
 ] as const;

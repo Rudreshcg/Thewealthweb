@@ -12,18 +12,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
-  MF_LUMPSUM_CALCULATIONS_API_URL,
-  MF_LUMPSUM_CALCULATIONS_QUERY_KEY
+    NAV_CALCULATIONS_API_URL,
+    NAV_CALCULATIONS_QUERY_KEY
 } from "@/constants/api";
 import useCalculator from "@/hooks/useCalculator";
-import { calculateLumpsumCalculation } from "@/lib/calculatorFns";
 import { getCalculations } from "@/lib/queryFns/calculations";
-import { lumpsumCalculationFormDataScheme } from "@/schemas";
+import { navCalculationFormDataScheme } from "@/schemas";
 import {
-  ILumpsumCalculationFormData,
-    LumpsumCalculationProps,
+  INavCalculationFormData,
+    NavCalculationProps,
 } from "@/types/calculations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
@@ -31,20 +29,21 @@ import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import Report from "./Report";
 import {FaDownload} from "react-icons/fa";
-import {LumpsumCalculation} from "@prisma/client";
+import {NavCalculation} from "@prisma/client";
+import {calculateNavCalculation} from "@/lib/calculatorFns";
 
-const defaultValues: ILumpsumCalculationFormData = {
-  totalInvestment: 25000,
-  expectedReturnRate:12,
-  timePeriod: 10,
+const defaultValues: INavCalculationFormData = {
+    totalAssets: 25000,
+    totalLiabilities: 2500,
+    sharesOutstanding: 50,
 };
 const handlePrint = () => {
     window.print();
 };
 
 const Calculator = () => {
-  const form = useForm<ILumpsumCalculationFormData>({
-    resolver: zodResolver(lumpsumCalculationFormDataScheme),
+  const form = useForm<INavCalculationFormData>({
+    resolver: zodResolver(navCalculationFormDataScheme),
     defaultValues,
   });
 
@@ -69,15 +68,15 @@ const Calculator = () => {
     handleImportStart,
     closeImportModal,
   } = useCalculator<
-    ILumpsumCalculationFormData,
-    LumpsumCalculationProps,
-    LumpsumCalculation
+    INavCalculationFormData,
+    NavCalculationProps,
+    NavCalculation
   >({
-    apiUrl: MF_LUMPSUM_CALCULATIONS_API_URL,
-    queryKey: MF_LUMPSUM_CALCULATIONS_QUERY_KEY,
+    apiUrl: NAV_CALCULATIONS_API_URL,
+    queryKey: NAV_CALCULATIONS_QUERY_KEY,
     defaultValues,
     form,
-    calcFn: calculateLumpsumCalculation,
+    calcFn: calculateNavCalculation,
   });
 
   const { status: sessionStatus } = useSession();
@@ -86,9 +85,9 @@ const Calculator = () => {
     data: calculations,
     isLoading: isCalculationsLoading,
     isFetching,
-  } = useQuery<LumpsumCalculation[] | null>({
-    queryKey: [MF_LUMPSUM_CALCULATIONS_QUERY_KEY],
-    queryFn: () => getCalculations(MF_LUMPSUM_CALCULATIONS_API_URL),
+  } = useQuery<NavCalculation[] | null>({
+    queryKey: [NAV_CALCULATIONS_QUERY_KEY],
+    queryFn: () => getCalculations(NAV_CALCULATIONS_API_URL),
     staleTime: 1_000 * 60 * 10, // 10 minutes
     enabled: sessionStatus === "authenticated",
   });
@@ -122,18 +121,18 @@ const Calculator = () => {
                   <FormGroup>
                       <FormField
                           control={form.control}
-                          name="totalInvestment"
+                          name="totalAssets"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Total Investment</FormLabel>
+                                  <FormLabel>Total Assets</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="totalInvestment"
+                                          name="totalAssets"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("totalInvestment", 25000);
+                                              form.setValue("totalAssets", 25000);
                                           }}
                                       />
                                   </FormControl>
@@ -141,22 +140,22 @@ const Calculator = () => {
                               </FormItem>
                           )}
                       />
-
+                  </ FormGroup>
+                  <FormGroup>
                       <FormField
                           control={form.control}
-                          name="expectedReturnRate"
+                          name="totalAssets"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Expected Return Rate</FormLabel>
+                                  <FormLabel>Total Assets</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="expectedReturnRate"
-                                          iconType="percentage"
+                                          name="totalAssets"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("expectedReturnRate", 12);
+                                              form.setValue("totalAssets", 2500);
                                           }}
                                       />
                                   </FormControl>
@@ -165,35 +164,30 @@ const Calculator = () => {
                           )}
                       />
                   </FormGroup>
+              <FormGroup>
+                  <FormField
+                      control={form.control}
+                      name="sharesOutstanding"
+                      render={({field}) => (
+                          <FormItem className="w-full">
+                              <FormLabel>Shares Outstanding</FormLabel>
 
-                  <FormGroup inline>
-                      <FormField
-                          control={form.control}
-                          name="timePeriod"
-                          render={({field}) => (
-                              <FormItem className="w-full">
-                                  <FormLabel>Time Period (Yr)</FormLabel>
-
-                                  <FormControl>
-                                      <Input
-                                          {...field}
-                                          name="timePeriod"
-                                          placeholder="10"
-                                          step="0.01"
-                                          type="number"
-                                          max={40}
-                                          min={1}
-                                          onBlur={(e) => {
-                                              ifFieldIsEmpty(e) && form.setValue("timePeriod", 10);
-                                          }}
-                                      />
-                                  </FormControl>
-                                  <FormMessage/>
-                              </FormItem>
-                          )}
-                      />
-                  </FormGroup>
-                  <SubmitButton/>
+                              <FormControl>
+                                  <NumberInputWithIcon
+                                      {...field}
+                                      name="sharesOutstanding"
+                                      onBlur={(e) => {
+                                          ifFieldIsEmpty(e) &&
+                                          form.setValue("sharesOutstanding", 50);
+                                      }}
+                                  />
+                              </FormControl>
+                              <FormMessage/>
+                          </FormItem>
+                      )}
+                  />
+              </FormGroup>
+              <SubmitButton/>
               </form>
           </Form>
         </FormContainer>

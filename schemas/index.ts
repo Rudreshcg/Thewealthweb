@@ -255,3 +255,29 @@ export const personalLoanEmiCalculationFormDataScheme = z.object({
 	tenureType: positiveNumberFieldSchema('tenureType'),
 
 });
+
+export const swpCalculationFormDataScheme = z.object({
+	totalInvestment: positiveNumberFieldSchemaWithMaxAndMin('Total Investment', 10000, 10000000),
+	withdrawalPerMonth: positiveNumberFieldSchemaWithMaxAndMin('Withdrawal Per Month', 500, 1000000),
+	expectedReturnRate: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
+	timePeriod: positiveNumberFieldSchemaWithMaxAndMin('Time Period', 1, 30),
+});
+
+export const goalPlannerSipFormDataScheme = z.object({
+	targetedWealth: positiveNumberFieldSchemaWithMaxAndMin('Targeted Wealth', 1000, 1000000000000),
+	investmentFrequency: positiveNumberFieldSchema('Investment frequency'),
+	expectedRateOfReturn: positiveNumberFieldSchemaWithMaxAndMin('Expected Return Rate', 1, 30),
+	tenure: positiveNumberFieldSchemaWithMaxAndMin('Tenure in Year', 1, 30),
+});
+
+export const cagrCalculationFormDataScheme = z.object({
+	initialInvestment: positiveNumberFieldSchemaWithMaxAndMin('Initial Investment', 1000, 10000000),
+	finalInvestment: positiveNumberFieldSchemaWithMaxAndMin('Final Investment', 1000, 10000000),
+	durationOfInvestment: positiveNumberFieldSchemaWithMaxAndMin('Duration of Investment', 1, 40),
+});
+
+export const navCalculationFormDataScheme = z.object({
+	totalAssets: positiveNumberFieldSchemaWithMaxAndMin('Total Assets', 1, 10000000),
+	totalLiabilities: positiveNumberFieldSchemaWithMaxAndMin('Total Liabilities', 1, 10000000),
+	sharesOutstanding: positiveNumberFieldSchemaWithMaxAndMin('Shares Outstanding', 1, 10000000),
+});

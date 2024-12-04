@@ -182,4 +182,98 @@ export const calculators = [
     category: "loan-and-credit-calculators",
     description: "Shows how long it will take to clear a credit card balance.",
   },
+
+  // 10. Mutual Fund Calculators:
+  {
+    name: "SIP (Systematic Investment Plan)",
+    url: "mf-sip-calculator",
+    category: "mutual-fund-calculators",
+    description:
+        "Calculates the future value of periodic investments based on tenure and expected return rate.",
+  },
+  {
+    name: "Step-Up SIP Calculator",
+    url: "step-up-sip-calculator",
+    category: "mutual-fund-calculators",
+    description:
+        "Considers annual increments in SIP contributions for a more dynamic growth projection.",
+  },
+  {
+    name: "Lump Sum Calculator",
+    url: "mf-lumpsum-calculator",
+    category: "mutual-fund-calculators",
+    description:
+        "Estimates the maturity value of a one-time investment in a mutual fund.",
+  },
+  {
+    name: "XIRR (Extended Internal Rate of Return) Calculator",
+    url: "xirr-calculator",
+    category: "mutual-fund-calculators",
+    description:
+        "Calculates the annualized returns for investments with irregular cash flows.",
+  },
+  {
+    name: "SWP (Systematic Withdrawal Plan) Calculator",
+    url: "swp-calculator",
+    category: "mutual-fund-calculators",
+    description:
+        "Computes the remaining balance after periodic withdrawals from a mutual fund.",
+  },
+  {
+    name: "Mutual Fund Goal Planner",
+    url: "goal-planner-sip",
+    category: "mutual-fund-calculators",
+    description:
+        "Helps investors determine the monthly SIP required to achieve a specific financial goal.",
+  },
+  {
+    name: "CAGR (Compound Annual Growth Rate) Calculator",
+    url: "cagr-calculator",
+    category: "mutual-fund-calculators",
+    description:
+        "Calculates the annualized growth rate of a mutual fund investment over time.",
+  },
+  {
+    name: "NAV (Net Asset Value) Calculator",
+    url: "nav-calculator",
+    category: "mutual-fund-calculators",
+    description:
+        "Computes the current market value of the investment based on units held and current NAV.",
+  },
+  {
+    name: "Expense Ratio Impact Calculator",
+    url: "expense-ratio-impact-calculator",
+    category: "mutual-fund-calculators",
+    description:
+        "Evaluates how the expense ratio affects the overall returns of a mutual fund.",
+  },
+  {
+    name: "SIP Delay Calculator",
+    url: "sip-delay-calculator",
+    category: "mutual-fund-calculators",
+    description:
+        "Shows the impact of delaying SIP investments by a certain period.",
+  },
+  {
+    name: "Risk Adjusted Return Calculator",
+    url: "risk-adjusted-return-calculator",
+    category: "mutual-fund-calculators",
+    description:
+        "Evaluates the returns of a mutual fund concerning the risks taken (e.g., using Sharpe Ratio).",
+  },
+  {
+    name: "Inflation-Adjusted Return Calculator",
+    url: "inflation-adjusted-return-calculator",
+    category: "mutual-fund-calculators",
+    description:
+        "Computes real returns after accounting for inflation over the investment period.",
+  },
+
+  {
+    name: "Child Education Fund Calculator",
+    url: "child-education-fund-calculator",
+    category: "mutual-fund-calculators",
+    description:
+        "Tailored to project the SIP required for building a corpus for a child’s education.",
+  },
 ] as const;

@@ -35,7 +35,15 @@ import {
 	RecurringDepositCalculationProps,
 	IFixedDepositCalculationFormData,
 	FixedDepositCalculationProps,
-	IPpfCalculationFormData, PpfCalculationProps, IHomeLoanEmiCalculationFormData, HomeLoanEmiCalculationProps,
+	IPpfCalculationFormData,
+	PpfCalculationProps,
+	IHomeLoanEmiCalculationFormData,
+	HomeLoanEmiCalculationProps,
+	SwpCalculationProps,
+	ISwpCalculationFormData,
+	IGoalPlannerSipFormData,
+	GoalPlannerSipProps,
+	ICagrCalculationFormData, CagrCalculationProps, INavCalculationFormData, NavCalculationProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -506,13 +514,9 @@ export const calculateFixedDepositCalculation = (
 		durationType,
 
 	} = formData;
-	// Convert annual rate of interest to decimal
 	const annualRateOfInterest = rateOfInterest / 100;
-	// Calculate the number of years (assuming durationType is 12 for years)
 	const totalYears = durationType === 12 ? duration : duration / 12;
-	// Calculate the total value (maturity amount) using the compound interest formula
 	const totalValue = totalInvestment * Math.pow((1 + annualRateOfInterest), (totalYears));
-	// Calculate the estimated return (interest earned)
 	const estimatedReturn = totalValue - totalInvestment;
 
 	return {
@@ -534,19 +538,15 @@ export const calculatePpfCalculation = (
 		RateOfInterest,
 	} = formData;
 
-	// Convert the annual interest rate from percentage to decimal
 	const annualRateOfInterest = RateOfInterest / 100;
-	// Initialize variables for total invested amount, total interest, and maturity value
 	let investedAmount = 0;
-	let totalInterest = 0;
 	let maturityValue = 0;
+	let totalInterest;
 
-	// Calculate the maturity value, interest earned, and total invested amount
 	for (let year = 1; year <= timePeriod; year++) {
 		investedAmount += yearlyInvestment;
 		maturityValue = (maturityValue + yearlyInvestment) * (1 + annualRateOfInterest);
 	}
-	// Calculate the total interest earned
 	totalInterest = maturityValue - investedAmount;
 
 	return {
@@ -617,5 +617,126 @@ export const calculateHomeLoanEmiCalculation = (
 		totalAmount: emi * numPayments,
 		monthlyBreakdown,
 		yearlyBreakdown
+	};
+};
+
+export const calculateSwpCalculation = (
+	formData: ISwpCalculationFormData
+): SwpCalculationProps => {
+	const {
+		totalInvestment,
+		withdrawalPerMonth,
+		expectedReturnRate,
+		timePeriod,
+	} = formData;
+
+	const monthlyRate = expectedReturnRate / 12 / 100;
+	let balance = totalInvestment;
+	let totalWithdrawal = 0;
+	const totalMonths = timePeriod * 12;
+
+	for (let i = 0; i < totalMonths; i++) {
+		if (balance <= 0) break;
+
+		const interestEarned = balance * monthlyRate;
+		balance += interestEarned;
+		if (balance < withdrawalPerMonth) {
+			totalWithdrawal += balance;
+			balance = 0;
+		} else {
+			balance -= withdrawalPerMonth;
+			totalWithdrawal += withdrawalPerMonth;
+		}
+	}
+
+	const finalValue = balance;
+	return {
+		totalInvestment,
+		withdrawalPerMonth,
+		expectedReturnRate,
+		timePeriod,
+		totalWithdrawal,
+		finalValue,
+	};
+};
+
+export const calculateGoalPlannerSip = (
+	formData: IGoalPlannerSipFormData
+): GoalPlannerSipProps => {
+	const {
+		targetedWealth,
+		investmentFrequency,
+		expectedRateOfReturn,
+		tenure,
+	} = formData;
+
+	let periodicRate: number;
+	let totalPeriods: number;
+
+	if (investmentFrequency === 12) {
+		periodicRate = expectedRateOfReturn / (12 * 100);
+		totalPeriods = tenure * 12;
+	} else {
+		periodicRate = expectedRateOfReturn / 100;
+		totalPeriods = tenure;
+	}
+
+	const investmentPerTenure = targetedWealth * periodicRate / (Math.pow(1 + periodicRate, totalPeriods) - 1);
+
+	console.log("targetedWealth: " + targetedWealth);
+	console.log("investmentFrequency: " + investmentFrequency);
+	console.log("expectedRateOfReturn: " + expectedRateOfReturn);
+	console.log("tenure: " + tenure);
+	console.log("investmentPerTenure: " + investmentPerTenure);
+
+	return {
+		targetedWealth,
+		investmentFrequency,
+		expectedRateOfReturn,
+		tenure,
+		investmentPerTenure,
+	};
+};
+
+export const calculateCagrCalculation = (
+	formData: ICagrCalculationFormData
+): CagrCalculationProps => {
+	const {
+		initialInvestment,
+		finalInvestment,
+		durationOfInvestment,
+	} = formData;
+
+	const cagr = (Math.pow(finalInvestment / initialInvestment, 1 / durationOfInvestment) - 1) * 100;
+
+	console.log("initialInvestment: " + initialInvestment);
+	console.log("finalInvestment: " + finalInvestment);
+	console.log("durationOfInvestment: " + durationOfInvestment);
+	console.log("cagr: " + cagr.toFixed(2) + "%");
+
+	return {
+		initialInvestment,
+		finalInvestment,
+		durationOfInvestment,
+		cagr: parseFloat(cagr.toFixed(2)),
+	};
+};
+
+export const calculateNavCalculation = (
+	formData: INavCalculationFormData
+): NavCalculationProps => {
+	const {
+		totalAssets,
+		totalLiabilities,
+		sharesOutstanding,
+	} = formData;
+
+	const navPerShare = (totalAssets - totalLiabilities) / sharesOutstanding;
+
+	return {
+		totalAssets,
+		totalLiabilities,
+		sharesOutstanding,
+		navPerShare,
 	};
 };

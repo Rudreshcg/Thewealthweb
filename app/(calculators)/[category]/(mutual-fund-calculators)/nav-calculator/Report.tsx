@@ -1,88 +1,57 @@
+import React from 'react';
 import ReportDivider from '@/components/Report/ReportDivider';
 import ReportGroup from '@/components/Report/ReportGroup';
 import ReportSection from '@/components/Report/ReportSection';
 import useCurrencyStore from '@/hooks/useCurrency';
-import { formatCurrency, formatPercentage, getCurrencySymbol, getDurationLabel } from '@/lib/utils';
-import { LumpsumCalculationProps } from '@/types/calculations';
-import {Cell, Legend, Pie, PieChart, Tooltip} from "recharts";
+import { formatCurrency, getCurrencySymbol } from '@/lib/utils';
+import { NavCalculationProps } from '@/types/calculations';
 
 interface ReportProps {
-	report: LumpsumCalculationProps;
+	report: NavCalculationProps;
 }
-
-const COLORS = ['#5367ff', '#88D66C'];
 
 const Report = ({ report }: ReportProps) => {
 	const { currency } = useCurrencyStore();
 
 	const {
-		totalInvestment,
-		expectedReturnRate,
-		timePeriod,
-		estimatedReturn,
-		totalValue,
+		totalAssets,
+		totalLiabilities,
+		sharesOutstanding,
+		navPerShare,
 	} = report;
 
-	const data = [
-		{ name: 'Total Invested', value: totalInvestment },
-		{ name: 'Estimated Return', value: estimatedReturn },
-	];
 	return (
 		<ReportSection>
 			<ReportGroup
-				header={`Monthly Investment ${getCurrencySymbol(currency)}`}
-				value={formatCurrency(totalInvestment, currency)}
-			/>
-			<ReportGroup
-				header={`Expected Return Rate %`}
-				value={isFinite(expectedReturnRate) ? formatPercentage(expectedReturnRate) : 'N/A'}
+				fullWidth
+				header={`Total Assets ${getCurrencySymbol(currency)}`}
+				value={formatCurrency(totalAssets, currency)}
 			/>
 			<ReportGroup
 				fullWidth
-				header="Duration (Yr)"
-				value={`${timePeriod.toFixed(2)} Years`}
+				header={`Total Liabilities ${getCurrencySymbol(currency)}`}
+				value={formatCurrency(totalLiabilities, currency)}
+			/>
+			<ReportGroup
+				fullWidth
+				header="Number of Outstanding Shares"
+				value={`${sharesOutstanding}`}
 			/>
 
-			<ReportDivider/>
+			<ReportDivider />
+			<ReportGroup
+				header={`Net Asset Value (NAV) Per Share`}
+				value={isFinite(navPerShare) ? formatCurrency(navPerShare, currency) : 'N/A'}
+			/>
+			<ReportDivider />
 
-			<ReportGroup
-				header={`Invested Amount ${getCurrencySymbol(currency)}`}
-				value={formatCurrency(totalInvestment, currency)}
-			/>
-			<ReportGroup
-				header={`Estimated Return Rate ${getCurrencySymbol(currency)}`}
-				value={formatCurrency(estimatedReturn, currency)}
-			/>
-			<ReportGroup
-				header={`Total Value ${getCurrencySymbol(currency)}`}
-				value={formatCurrency(totalValue, currency)}
-			/>
-			<ReportDivider/>
-			<div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-				{/*backgroundColor: '#ECEBDE'}*/}
-				<PieChart width={340} height={340}>
-					<Pie
-						data={data}
-						cx="50%"
-						cy="50%"
-						innerRadius={75}
-						outerRadius={120}
-						fill="#8884d8"
-						// paddingAngle={2}
-						dataKey="value"
-						startAngle={90} // Adjust the start angle
-						endAngle={-270} // Adjust the end angle
-					>
-						{data.map((entry, index) => (
-							<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
-						))}
-					</Pie>
-					<Tooltip formatter={(value) => formatCurrency(value as number, currency)}/>
-					<Legend/>
-				</PieChart>
-			</div>
+			<h3>NAV Summary</h3>
+			<p>
+				The Net Asset Value (NAV) per share is calculated by subtracting the total liabilities from the total assets
+				and dividing the result by the number of outstanding shares. This gives us the value of each share.
+			</p>
 		</ReportSection>
-);
+	);
 };
 
 export default Report;

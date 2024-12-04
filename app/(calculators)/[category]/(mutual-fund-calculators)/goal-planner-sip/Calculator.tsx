@@ -14,42 +14,42 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-    RECURRING_DEPOSIT_CALCULATIONS_API_URL,
-    RECURRING_DEPOSIT_CALCULATIONS_QUERY_KEY
+    GOAL_PLANNER_SIP_API_URL,
+    GOAL_PLANNER_SIP_QUERY_KEY
 } from "@/constants/api";
 import useCalculator from "@/hooks/useCalculator";
-import { calculateRecurringDepositCalculation } from "@/lib/calculatorFns";
+import { calculateGoalPlannerSip } from "@/lib/calculatorFns";
 import { getCalculations } from "@/lib/queryFns/calculations";
-import { recurringDepositCalculationFormDataScheme } from "@/schemas";
+import { goalPlannerSipFormDataScheme } from "@/schemas";
 import {
-  IRecurringDepositCalculationFormData,
-    RecurringDepositCalculationProps,
+  IGoalPlannerSipFormData,
+    GoalPlannerSipProps,
 } from "@/types/calculations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RecurringDepositCalculation } from "@prisma/client";
+import {GoalPlannerSip} from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import Report from "./Report";
-import {FaDownload} from "react-icons/fa";
-import React, {useState} from "react";
+import { FaDownload } from "react-icons/fa";
+import React from "react";
 import DynamicFormLabel from "@/components/Form/DynamicFormLabel";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {durationMultipliers, durationType} from "@/constants/data";
+import {durationType, tenureFrequency} from "@/constants/data";
 
-const defaultValues: IRecurringDepositCalculationFormData = {
-    monthlyInvestment: 50000,
-    rateOfInterest: 6.5,
-    duration: 3,
-    durationType: 12,
+const defaultValues: IGoalPlannerSipFormData = {
+    targetedWealth: 1000000,
+    investmentFrequency: 1,
+    expectedRateOfReturn: 12,
+    tenure: 10,
 };
 const handlePrint = () => {
     window.print();
 };
 
 const Calculator = () => {
-  const form = useForm<IRecurringDepositCalculationFormData>({
-    resolver: zodResolver(recurringDepositCalculationFormDataScheme),
+  const form = useForm<IGoalPlannerSipFormData>({
+    resolver: zodResolver(goalPlannerSipFormDataScheme),
     defaultValues,
   });
 
@@ -74,15 +74,15 @@ const Calculator = () => {
     handleImportStart,
     closeImportModal,
   } = useCalculator<
-    IRecurringDepositCalculationFormData,
-    RecurringDepositCalculationProps,
-    RecurringDepositCalculation
+    IGoalPlannerSipFormData,
+    GoalPlannerSipProps,
+    GoalPlannerSip
   >({
-    apiUrl: RECURRING_DEPOSIT_CALCULATIONS_API_URL,
-    queryKey: RECURRING_DEPOSIT_CALCULATIONS_QUERY_KEY,
+    apiUrl: GOAL_PLANNER_SIP_API_URL,
+    queryKey: GOAL_PLANNER_SIP_QUERY_KEY,
     defaultValues,
     form,
-    calcFn: calculateRecurringDepositCalculation,
+    calcFn: calculateGoalPlannerSip,
   });
 
   const { status: sessionStatus } = useSession();
@@ -91,9 +91,9 @@ const Calculator = () => {
     data: calculations,
     isLoading: isCalculationsLoading,
     isFetching,
-  } = useQuery<RecurringDepositCalculation[] | null>({
-    queryKey: [RECURRING_DEPOSIT_CALCULATIONS_QUERY_KEY],
-    queryFn: () => getCalculations(RECURRING_DEPOSIT_CALCULATIONS_API_URL),
+  } = useQuery<GoalPlannerSip[] | null>({
+    queryKey: [GOAL_PLANNER_SIP_QUERY_KEY],
+    queryFn: () => getCalculations(GOAL_PLANNER_SIP_API_URL),
     staleTime: 1_000 * 60 * 10, // 10 minutes
     enabled: sessionStatus === "authenticated",
   });
@@ -127,18 +127,18 @@ const Calculator = () => {
                   <FormGroup>
                       <FormField
                           control={form.control}
-                          name="monthlyInvestment"
+                          name="targetedWealth"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Monthly Investment</FormLabel>
+                                  <FormLabel>Targeted Wealth</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="monthlyInvestment"
+                                          name="targetedWealth"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("monthlyInvestment", 25000);
+                                              form.setValue("targetedWealth", 1000000);
                                           }}
                                       />
                                   </FormControl>
@@ -146,23 +146,55 @@ const Calculator = () => {
                               </FormItem>
                           )}
                       />
+                      <FormField
+                          control={form.control}
+                          name="investmentFrequency"
+                          render={({ field }) => (
+                              <FormItem className="w-full">
+                                  <DynamicFormLabel label="Investment Frequency" shortLabel="Frequency" />
+
+                                  <Select
+                                      onValueChange={field.onChange}
+                                      value={String(field.value)}
+                                  >
+                                      <FormControl>
+                                          <SelectTrigger>
+                                              <SelectValue placeholder="Select a Investment Frequency" />
+                                          </SelectTrigger>
+                                      </FormControl>
+
+                                      <SelectContent>
+                                          {tenureFrequency.map((multiplier) => (
+                                              <SelectItem
+                                                  key={`durationMultiplier-${multiplier.value}`}
+                                                  value={String(multiplier.value)}
+                                              >
+                                                  {multiplier.label}
+                                              </SelectItem>
+                                          ))}
+                                      </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                              </FormItem>
+                          )}
+                      />
                   </FormGroup>
                   <FormGroup>
                       <FormField
                           control={form.control}
-                          name="rateOfInterest"
+                          name="expectedRateOfReturn"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Rate of Interest</FormLabel>
+                                  <FormLabel>Expected Rate of Return</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="rateOfInterest"
+                                          name="expectedRateOfReturn"
                                           iconType="percentage"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("rateOfInterest", 12);
+                                              form.setValue("expectedRateOfReturn", 12);
                                           }}
                                       />
                                   </FormControl>
@@ -175,59 +207,24 @@ const Calculator = () => {
                   <FormGroup inline>
                       <FormField
                           control={form.control}
-                          name="duration"
+                          name="tenure"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Duration</FormLabel>
+                                  <FormLabel>Tenure (in Years)</FormLabel>
 
                                   <FormControl>
                                       <Input
                                           {...field}
-                                          name="duration"
+                                          name="tenure"
                                           placeholder="10"
                                           step="0.01"
                                           type="number"
-                                          max={10}
-                                          min={1}
                                           onBlur={(e) => {
-                                              ifFieldIsEmpty(e) && form.setValue("duration", 3);
+                                              ifFieldIsEmpty(e) && form.setValue("tenure", 10);
                                           }}
                                       />
                                   </FormControl>
                                   <FormMessage/>
-                              </FormItem>
-                          )}
-                      />
-
-                      <FormField
-                          control={form.control}
-                          name="durationType"
-                          render={({ field }) => (
-                              <FormItem className="w-full">
-                                  <DynamicFormLabel label="Duration Type" shortLabel="Type" />
-
-                                  <Select
-                                      onValueChange={field.onChange}
-                                      value={String(field.value)}
-                                  >
-                                      <FormControl>
-                                          <SelectTrigger>
-                                              <SelectValue placeholder="Select a duration type" />
-                                          </SelectTrigger>
-                                      </FormControl>
-
-                                      <SelectContent>
-                                          {durationType.map((multiplier) => (
-                                              <SelectItem
-                                                  key={`durationMultiplier-${multiplier.value}`}
-                                                  value={String(multiplier.value)}
-                                              >
-                                                  {multiplier.label}
-                                              </SelectItem>
-                                          ))}
-                                      </SelectContent>
-                                  </Select>
-                                  <FormMessage />
                               </FormItem>
                           )}
                       />

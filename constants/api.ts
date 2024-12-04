@@ -45,6 +45,16 @@ export const HOME_LOAN_EMI_CALCULATIONS_API_URL =
 export const PERSONAL_LOAN_EMI_CALCULATIONS_API_URL =
     "/api/personal-loan-emi-calculator" as const;
 
+// Mutual Fund calculations
+export const SWP_CALCULATIONS_API_URL =
+    "/api/swp-calculator" as const;
+export const GOAL_PLANNER_SIP_API_URL =
+    "/api/goal-planner-sip" as const;
+export const CAGR_CALCULATIONS_API_URL =
+    "/api/cagr-calculator" as const;
+export const NAV_CALCULATIONS_API_URL =
+    "/api/nav-calculator" as const;
+
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
   BREAK_EVEN_POINT_CALCULATIONS_API_URL,
@@ -67,6 +77,10 @@ export const API_URLS = [
   PPF_CALCULATIONS_API_URL,
   HOME_LOAN_EMI_CALCULATIONS_API_URL,
   PERSONAL_LOAN_EMI_CALCULATIONS_API_URL,
+  SWP_CALCULATIONS_API_URL,
+  GOAL_PLANNER_SIP_API_URL,
+  CAGR_CALCULATIONS_API_URL,
+  NAV_CALCULATIONS_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -116,6 +130,17 @@ export const HOME_LOAN_EMI_CALCULATIONS_QUERY_KEY =
     "home-loan-emi-calculator" as const;
 export const PERSONAL_LOAN_EMI_CALCULATIONS_QUERY_KEY =
     "personal-loan-emi-calculator" as const;
+
+// Mutual Fund Calculation:
+export const SWP_CALCULATIONS_QUERY_KEY =
+    "swp-calculator" as const;
+export const GOAL_PLANNER_SIP_QUERY_KEY =
+    "goal-planner-sip" as const;
+export const CAGR_CALCULATIONS_QUERY_KEY =
+    "cagr-calculator" as const;
+export const NAV_CALCULATIONS_QUERY_KEY =
+    "nav-calculator" as const;
+
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
   BREAK_EVEN_POINT_CALCULATIONS_QUERY_KEY,
@@ -138,4 +163,8 @@ export const QUERY_KEYS = [
   PPF_CALCULATIONS_QUERY_KEY,
   HOME_LOAN_EMI_CALCULATIONS_QUERY_KEY,
   PERSONAL_LOAN_EMI_CALCULATIONS_QUERY_KEY,
+  SWP_CALCULATIONS_QUERY_KEY,
+  GOAL_PLANNER_SIP_QUERY_KEY,
+  CAGR_CALCULATIONS_QUERY_KEY,
+  NAV_CALCULATIONS_QUERY_KEY,
 ] as const;

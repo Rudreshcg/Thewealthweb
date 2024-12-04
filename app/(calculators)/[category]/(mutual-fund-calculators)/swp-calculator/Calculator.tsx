@@ -14,14 +14,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  STEP_UP_SIP_CALCULATIONS_API_URL,
-  STEP_UP_SIP_CALCULATIONS_QUERY_KEY
+    SWP_CALCULATIONS_API_URL,
+    SWP_CALCULATIONS_QUERY_KEY
 } from "@/constants/api";
 import useCalculator from "@/hooks/useCalculator";
 import { getCalculations } from "@/lib/queryFns/calculations";
 import {
-  IStepUpSipCalculationFormData,
-  StepUpSipCalculationProps,
+  ISwpCalculationFormData,
+  SwpCalculationProps,
 } from "@/types/calculations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
@@ -30,15 +30,15 @@ import { useForm } from "react-hook-form";
 import Report from "./Report";
 import {FaDownload} from "react-icons/fa";
 import React from "react";
-import {calculateStepUpSIPCalculation} from "@/lib/calculatorFns";
-import {stepUpSipCalculationFormDataScheme} from "@/schemas";
-import {StepUpSipCalculation} from "@prisma/client";
+import {calculateSwpCalculation} from "@/lib/calculatorFns";
+import {swpCalculationFormDataScheme} from "@/schemas";
+import {SwpCalculation} from "@prisma/client";
 
-const defaultValues: IStepUpSipCalculationFormData = {
-  monthlyInvestment: 25000,
-  annualStepUp: 10,
-  expectedReturnRate:12,
-  timePeriod: 10,
+const defaultValues: ISwpCalculationFormData = {
+    totalInvestment: 500000,
+    withdrawalPerMonth: 10000,
+    expectedReturnRate: 8,
+    timePeriod: 5,
 };
 const handlePrint = () => {
     window.print();
@@ -46,8 +46,8 @@ const handlePrint = () => {
 
 
 const Calculator = () => {
-  const form = useForm<IStepUpSipCalculationFormData>({
-    resolver: zodResolver(stepUpSipCalculationFormDataScheme),
+  const form = useForm<ISwpCalculationFormData>({
+    resolver: zodResolver(swpCalculationFormDataScheme),
     defaultValues,
   });
 
@@ -72,15 +72,15 @@ const Calculator = () => {
     handleImportStart,
     closeImportModal,
   } = useCalculator<
-    IStepUpSipCalculationFormData,
-    StepUpSipCalculationProps,
-    StepUpSipCalculation
+    ISwpCalculationFormData,
+    SwpCalculationProps,
+    SwpCalculation
   >({
-    apiUrl: STEP_UP_SIP_CALCULATIONS_API_URL,
-    queryKey: STEP_UP_SIP_CALCULATIONS_QUERY_KEY,
+    apiUrl: SWP_CALCULATIONS_API_URL,
+    queryKey: SWP_CALCULATIONS_QUERY_KEY,
     defaultValues,
     form,
-    calcFn: calculateStepUpSIPCalculation,
+    calcFn: calculateSwpCalculation,
   });
 
   const { status: sessionStatus } = useSession();
@@ -89,9 +89,9 @@ const Calculator = () => {
     data: calculations,
     isLoading: isCalculationsLoading,
     isFetching,
-  } = useQuery<StepUpSipCalculation[] | null>({
-    queryKey: [STEP_UP_SIP_CALCULATIONS_QUERY_KEY],
-    queryFn: () => getCalculations(STEP_UP_SIP_CALCULATIONS_API_URL),
+  } = useQuery<SwpCalculation[] | null>({
+    queryKey: [SWP_CALCULATIONS_QUERY_KEY],
+    queryFn: () => getCalculations(SWP_CALCULATIONS_API_URL),
     staleTime: 1_000 * 60 * 10, // 10 minutes
     enabled: sessionStatus === "authenticated",
   });
@@ -125,18 +125,18 @@ const Calculator = () => {
                   <FormGroup>
                       <FormField
                           control={form.control}
-                          name="monthlyInvestment"
+                          name="totalInvestment"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Monthly Investment</FormLabel>
+                                  <FormLabel>Total Investment</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="monthlyInvestment"
+                                          name="totalInvestment"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("monthlyInvestment", 25000);
+                                              form.setValue("totalInvestment", 500000);
                                           }}
                                       />
                                   </FormControl>
@@ -146,19 +146,18 @@ const Calculator = () => {
                       />
                       <FormField
                           control={form.control}
-                          name="annualStepUp"
+                          name="withdrawalPerMonth"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Annual Step Up</FormLabel>
+                                  <FormLabel>withdrawal per Month</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="annualStepUp"
-                                          iconType="percentage"
+                                          name="withdrawalPerMonth"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("annualStepUp", 10);
+                                              form.setValue("withdrawalPerMonth", 10000);
                                           }}
                                       />
                                   </FormControl>
@@ -168,7 +167,7 @@ const Calculator = () => {
                       />
                   </FormGroup>
 
-                  <FormGroup inline>
+                  <FormGroup>
                       <FormField
                           control={form.control}
                           name="expectedReturnRate"
@@ -183,7 +182,7 @@ const Calculator = () => {
                                           iconType="percentage"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("expectedReturnRate", 12);
+                                              form.setValue("expectedReturnRate", 8);
                                           }}
                                       />
                                   </FormControl>
@@ -205,10 +204,10 @@ const Calculator = () => {
                                           placeholder="10"
                                           step="0.01"
                                           type="number"
-                                          max={40}
+                                          max={30}
                                           min={1}
                                           onBlur={(e) => {
-                                              ifFieldIsEmpty(e) && form.setValue("timePeriod", 10);
+                                              ifFieldIsEmpty(e) && form.setValue("timePeriod", 5);
                                           }}
                                       />
                                   </FormControl>

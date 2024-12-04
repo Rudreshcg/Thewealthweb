@@ -65,6 +65,8 @@ model User {
   PpfCalculation                   PpfCalculation[]
   HomeLoanEmiCalculation           HomeLoanEmiCalculation[]
   PersonalLoanEmiCalculation       PersonalLoanEmiCalculation[]
+  SwpCalculation                   SwpCalculation[]
+  GoalPlannerSip                   GoalPlannerSip[]
 }
 
 enum Plan {
@@ -468,6 +470,42 @@ model PersonalLoanEmiCalculation {
   formData  PersonalLoanEmiCalculationFormData
   createdAt DateTime                           @default(now())
   updatedAt DateTime                           @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type SwpCalculationFormData {
+  totalInvestment    Float
+  withdrawalPerMonth Float
+  expectedReturnRate Float
+  timePeriod         Float
+}
+
+model SwpCalculation {
+  id        String                 @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                 @db.ObjectId
+  name      String
+  formData  SwpCalculationFormData
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type GoalPlannerSipFormData {
+  investmentFrequency  Float
+  targetedWealth       Float
+  expectedRateOfReturn Float
+  tenure               Float
+}
+
+model GoalPlannerSip {
+  id        String                 @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                 @db.ObjectId
+  name      String
+  formData  GoalPlannerSipFormData
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -1,50 +1,74 @@
+import React from 'react';
+import {
+	LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
 import ReportDivider from '@/components/Report/ReportDivider';
 import ReportGroup from '@/components/Report/ReportGroup';
 import ReportSection from '@/components/Report/ReportSection';
 import useCurrencyStore from '@/hooks/useCurrency';
-import { formatCurrency, formatPercentage, getCurrencySymbol, getDurationLabel } from '@/lib/utils';
-import {StepUpSipCalculationProps} from '@/types/calculations';
-import {Cell, Legend, Pie, PieChart, Tooltip} from "recharts";
+import { formatCurrency, formatPercentage, getCurrencySymbol } from '@/lib/utils';
+import { SwpCalculationProps } from '@/types/calculations';
 
 interface ReportProps {
-	report: StepUpSipCalculationProps;
+	report: SwpCalculationProps;
 }
-
-const COLORS = ['#5367ff', '#88D66C'];
 
 const Report = ({ report }: ReportProps) => {
 	const { currency } = useCurrencyStore();
 
 	const {
-		monthlyInvestment,
-		annualStepUp,
+		totalInvestment,
+		withdrawalPerMonth,
 		expectedReturnRate,
 		timePeriod,
-		investedAmount,
-		estimatedReturn,
-		totalValue
+		totalWithdrawal,
+		finalValue,
 	} = report;
 
-	const data = [
-		{ name: 'Invested Amount', value: investedAmount },
-		{ name: 'Estimated Return', value: estimatedReturn },
-	];
+	// Generate data for the chart
+	const chartData = [];
+	let balance = totalInvestment;
+	const monthlyRate = expectedReturnRate / 12 / 100;
+	const totalMonths = timePeriod * 12;
+	let totalWithdrawn = 0;
+
+	for (let i = 0; i < totalMonths; i++) {
+		if (balance <= 0) break;
+		const interestEarned = balance * monthlyRate;
+		balance += interestEarned;
+
+		if (balance < withdrawalPerMonth) {
+			totalWithdrawn += balance;
+			balance = 0;
+		} else {
+			balance -= withdrawalPerMonth;
+			totalWithdrawn += withdrawalPerMonth;
+		}
+
+		const monthName = new Date(2023, i).toLocaleString('default', { month: 'short', year: 'numeric' });
+
+		chartData.push({
+			month: monthName,
+			Balance: Math.max(balance, 0),
+			"Total Withdrawal": totalWithdrawn,
+		});
+	}
+
 	return (
 		<ReportSection>
 			<ReportGroup
-				header={`Monthly Investment ${getCurrencySymbol(currency)}`}
-				value={formatCurrency(monthlyInvestment, currency)}
+				header={`Total Investment ${getCurrencySymbol(currency)}`}
+				value={formatCurrency(totalInvestment, currency)}
 			/>
 			<ReportGroup
-				header={`Annual Step-Up %`}
-				value={isFinite(annualStepUp) ? formatPercentage(annualStepUp) : 'N/A'}
+				header={`Withdrawal Per Month ${getCurrencySymbol(currency)}`}
+				value={formatCurrency(withdrawalPerMonth, currency)}
 			/>
 			<ReportGroup
 				header={`Expected Return Rate %`}
 				value={isFinite(expectedReturnRate) ? formatPercentage(expectedReturnRate) : 'N/A'}
 			/>
 			<ReportGroup
-				fullWidth
 				header="Duration (Yr)"
 				value={`${timePeriod.toFixed(2)} Years`}
 			/>
@@ -52,43 +76,35 @@ const Report = ({ report }: ReportProps) => {
 			<ReportDivider/>
 
 			<ReportGroup
-				header={`Invested Amount ${getCurrencySymbol(currency)}`}
-				value={formatCurrency(investedAmount, currency)}
+				fullWidth
+				header={`Total Withdrawal ${getCurrencySymbol(currency)}`}
+				value={formatCurrency(totalWithdrawal, currency)}
 			/>
 			<ReportGroup
-				header={`Estimated Return Rate ${getCurrencySymbol(currency)}`}
-				value={formatCurrency(estimatedReturn, currency)}
+				header={`Final Value ${getCurrencySymbol(currency)}`}
+				value={formatCurrency(finalValue, currency)}
 			/>
-			<ReportGroup
-				header={`Total Value ${getCurrencySymbol(currency)}`}
-				value={formatCurrency(totalValue, currency)}
-			/>
+
 			<ReportDivider/>
+
 			<div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-				{/*backgroundColor: '#ECEBDE'}*/}
-				<PieChart width={340} height={340}>
-					<Pie
-						data={data}
-						cx="50%"
-						cy="50%"
-						innerRadius={75}
-						outerRadius={120}
-						fill="#8884d8"
-						// paddingAngle={2}
-						dataKey="value"
-						startAngle={90} // Adjust the start angle
-						endAngle={-270} // Adjust the end angle
+				<ResponsiveContainer width="100%" height={400}>
+					<LineChart
+						data={chartData}
+						margin={{ top: 10, right: 30, left: 10, bottom: 0 }}
 					>
-						{data.map((entry, index) => (
-							<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
-						))}
-					</Pie>
-					<Tooltip formatter={(value) => formatCurrency(value as number, currency)}/>
-					<Legend/>
-				</PieChart>
+						<CartesianGrid strokeDasharray="3 3" />
+						<XAxis dataKey="month" />
+						<YAxis />
+						<Tooltip formatter={(value) => formatCurrency(value as number, currency)} />
+						<Legend />
+						<Line type="monotone" dataKey="Balance" stroke="#8884d8" activeDot={{ r: 8 }} />
+						<Line type="monotone" dataKey="Total Withdrawal" stroke="#82ca9d" />
+					</LineChart>
+				</ResponsiveContainer>
 			</div>
 		</ReportSection>
-);
+	);
 };
 
 export default Report;
