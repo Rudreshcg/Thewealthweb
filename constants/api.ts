@@ -58,6 +58,10 @@ export const SIP_DELAY_CALCULATOR_API_URL =
     "/api/sip-delay-calculator" as const;
 export const RISK_ADJUSTED_RETURN_CALCULATOR_API_URL =
     "/api/risk-adjusted-return-calculator" as const;
+export const INFLATION_ADJUSTED_RETURN_CALCULATOR_API_URL =
+    "/api/inflation-adjusted-return-calculator" as const;
+export const CHILD_EDUCATION_FUND_CALCULATOR_API_URL =
+    "/api/child-education-fund-calculator" as const;
 
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
@@ -87,6 +91,8 @@ export const API_URLS = [
   NAV_CALCULATIONS_API_URL,
   SIP_DELAY_CALCULATOR_API_URL,
   RISK_ADJUSTED_RETURN_CALCULATOR_API_URL,
+  INFLATION_ADJUSTED_RETURN_CALCULATOR_API_URL,
+  CHILD_EDUCATION_FUND_CALCULATOR_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -150,6 +156,10 @@ export const SIP_DELAY_CALCULATOR_QUERY_KEY =
     "sip-delay-calculator" as const;
 export const RISK_ADJUSTED_RETURN_CALCULATOR_QUERY_KEY =
     "risk-adjusted-return-calculator" as const;
+export const INFLATION_ADJUSTED_RETURN_CALCULATOR_QUERY_KEY =
+    "inflation-adjusted-return-calculator" as const;
+export const CHILD_EDUCATION_FUND_CALCULATOR_QUERY_KEY =
+    "child-education-fund-calculator" as const;
 
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
@@ -179,4 +189,6 @@ export const QUERY_KEYS = [
   NAV_CALCULATIONS_QUERY_KEY,
   SIP_DELAY_CALCULATOR_QUERY_KEY,
   RISK_ADJUSTED_RETURN_CALCULATOR_QUERY_KEY,
+  INFLATION_ADJUSTED_RETURN_CALCULATOR_QUERY_KEY,
+  CHILD_EDUCATION_FUND_CALCULATOR_QUERY_KEY,
 ] as const;

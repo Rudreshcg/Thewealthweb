@@ -295,3 +295,16 @@ export const riskAdjustedReturnCalculatorFormDataScheme = z.object({
 	riskFreeRate: positiveNumberFieldSchemaWithMaxAndMin('Risk Free Rate', 1, 40),
 	investmentRisk: positiveNumberFieldSchemaWithMaxAndMin('Investment Risk', 1, 40),
 });
+
+export const inflationAdjustedReturnCalculatorFormDataScheme = z.object({
+	investmentAmount: positiveNumberFieldSchemaWithMaxAndMin('Investment Amount', 1000, 1000000000),
+	inflationRate: positiveNumberFieldSchemaWithMaxAndMin('Inflation Rate', 1, 40),
+	numberOfYears: positiveNumberFieldSchemaWithMaxAndMin('Number of Years', 1, 40),
+});
+
+export const childEducationFundCalculatorFormDataScheme = z.object({
+	currentAgeOfChild: positiveNumberFieldSchemaWithMaxAndMin('Inflation Rate', 0, 17),
+	ageForHigherEducation: positiveNumberFieldSchemaWithMaxAndMin('Inflation Rate', 18, 57),
+	expectedAnnualRateOfReturn: positiveNumberFieldSchemaWithMaxAndMin('Inflation Rate', 1, 40),
+	presentCostOfHigherEducation: positiveNumberFieldSchemaWithMaxAndMin('Investment Amount', 1000, 10000000),
+});

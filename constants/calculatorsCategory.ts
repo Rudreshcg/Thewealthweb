@@ -440,13 +440,13 @@ export const calculatorsCategory = [
     description:
       "Evaluates the returns of a mutual fund concerning the risks taken (e.g., using Sharpe Ratio).",
   },
-  {
+/*  {
     name: "SIP Top-Up Benefit Calculator",
     url: "sip-top-up-benefit-calculator",
     category: "mutual-fund-calculators",
     description:
       "Projects how top-ups (increasing SIP amounts periodically) can improve returns.",
-  },
+  },*/
   {
     name: "Inflation-Adjusted Return Calculator",
     url: "inflation-adjusted-return-calculator",

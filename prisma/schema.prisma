@@ -43,32 +43,35 @@ model User {
   plan       Plan?   @default(free)
   customerId String?
 
-  MarkupCalculations               MarkupCalculation[]
-  BreakEvenPointCalculations       BreakEvenPointCalculation[]
-  InvestmentTimeCalculations       InvestmentTimeCalculation[]
-  PresentValueCalculations         PresentValueCalculation[]
-  AnnualizedReturnCalculations     AnnualizedReturnCalculation[]
-  CompoundInterestCalculations     CompoundInterestCalculation[]
-  EventProbabilityCalculations     EventProbabilityCalculation[]
-  PriceToEarningsRatioCalculations PriceToEarningsRatioCalculation[]
-  DollarCostAverageCalculations    DollarCostAverageCalculation[]
-  EnterpriseValueCalculations      EnterpriseValueCalculation[]
-  SipCalculation                   SipCalculation[]
-  Subscription                     Subscription?
-  LumpsumCalculation               LumpsumCalculation[]
-  StepUpSipCalculation             StepUpSipCalculation[]
-  XirrCalculation                  XirrCalculation[]
-  RetirmentPlanningCalculation     RetirmentPlanningCalculation[]
-  WealthGainCalculation            WealthGainCalculation[]
-  RecurringDepositCalculation      RecurringDepositCalculation[]
-  FixedDepositCalculation          FixedDepositCalculation[]
-  PpfCalculation                   PpfCalculation[]
-  HomeLoanEmiCalculation           HomeLoanEmiCalculation[]
-  PersonalLoanEmiCalculation       PersonalLoanEmiCalculation[]
-  SwpCalculation                   SwpCalculation[]
-  GoalPlannerSip                   GoalPlannerSip[]
-  CagrCalculation                  CagrCalculation[]
-  SipDelayCalculator               SipDelayCalculator[]
+  MarkupCalculations                MarkupCalculation[]
+  BreakEvenPointCalculations        BreakEvenPointCalculation[]
+  InvestmentTimeCalculations        InvestmentTimeCalculation[]
+  PresentValueCalculations          PresentValueCalculation[]
+  AnnualizedReturnCalculations      AnnualizedReturnCalculation[]
+  CompoundInterestCalculations      CompoundInterestCalculation[]
+  EventProbabilityCalculations      EventProbabilityCalculation[]
+  PriceToEarningsRatioCalculations  PriceToEarningsRatioCalculation[]
+  DollarCostAverageCalculations     DollarCostAverageCalculation[]
+  EnterpriseValueCalculations       EnterpriseValueCalculation[]
+  SipCalculation                    SipCalculation[]
+  Subscription                      Subscription?
+  LumpsumCalculation                LumpsumCalculation[]
+  StepUpSipCalculation              StepUpSipCalculation[]
+  XirrCalculation                   XirrCalculation[]
+  RetirmentPlanningCalculation      RetirmentPlanningCalculation[]
+  WealthGainCalculation             WealthGainCalculation[]
+  RecurringDepositCalculation       RecurringDepositCalculation[]
+  FixedDepositCalculation           FixedDepositCalculation[]
+  PpfCalculation                    PpfCalculation[]
+  HomeLoanEmiCalculation            HomeLoanEmiCalculation[]
+  PersonalLoanEmiCalculation        PersonalLoanEmiCalculation[]
+  SwpCalculation                    SwpCalculation[]
+  GoalPlannerSip                    GoalPlannerSip[]
+  CagrCalculation                   CagrCalculation[]
+  SipDelayCalculator                SipDelayCalculator[]
+  RiskAdjustedReturnCalculator      RiskAdjustedReturnCalculator[]
+  InflationAdjustedReturnCalculator InflationAdjustedReturnCalculator[]
+  ChildEducationFundCalculator      ChildEducationFundCalculator[]
 }
 
 enum Plan {
@@ -543,6 +546,59 @@ model SipDelayCalculator {
   formData  SipDelayCalculatorFormData
   createdAt DateTime                   @default(now())
   updatedAt DateTime                   @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type RiskAdjustedReturnCalculatorFormData {
+  investmentAmount Float
+  expectedReturn   Float
+  riskFreeRate     Float
+  investmentRisk   Float
+}
+
+model RiskAdjustedReturnCalculator {
+  id        String                               @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                               @db.ObjectId
+  name      String
+  formData  RiskAdjustedReturnCalculatorFormData
+  createdAt DateTime                             @default(now())
+  updatedAt DateTime                             @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type InflationAdjustedReturnCalculatorFormData {
+  investmentAmount Float
+  inflationRate    Float
+  numberOfYears    Float
+}
+
+model InflationAdjustedReturnCalculator {
+  id        String                                    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                                    @db.ObjectId
+  name      String
+  formData  InflationAdjustedReturnCalculatorFormData
+  createdAt DateTime                                  @default(now())
+  updatedAt DateTime                                  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type ChildEducationFundCalculatorFormData {
+  currentAgeOfChild            Float
+  ageForHigherEducation        Float
+  expectedAnnualRateOfReturn   Float
+  presentCostOfHigherEducation Float
+}
+
+model ChildEducationFundCalculator {
+  id        String                               @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                               @db.ObjectId
+  name      String
+  formData  ChildEducationFundCalculatorFormData
+  createdAt DateTime                             @default(now())
+  updatedAt DateTime                             @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

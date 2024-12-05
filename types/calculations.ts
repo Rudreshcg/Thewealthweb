@@ -28,6 +28,8 @@ import {
 	navCalculationFormDataScheme,
 	sipDelayCalculatorFormDataScheme,
 	riskAdjustedReturnCalculatorFormDataScheme,
+	inflationAdjustedReturnCalculatorFormDataScheme,
+	childEducationFundCalculatorFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -303,7 +305,21 @@ export type IRiskAdjustedReturnCalculatorFormData = z.infer<typeof riskAdjustedR
 export interface RiskAdjustedReturnCalculatorProps extends IRiskAdjustedReturnCalculatorFormData {
 	riskAdjustedReturn: number,
 }
+// inflationAdjustedReturn
+export type IInflationAdjustedReturnCalculatorFormData = z.infer<typeof inflationAdjustedReturnCalculatorFormDataScheme>;
 
+export interface InflationAdjustedReturnCalculatorProps extends IInflationAdjustedReturnCalculatorFormData {
+	inflationAdjustedReturn: number,
+	data: {year: number,nominalValue: number,adjustedValue: number }[]
+}
+
+export type IChildEducationFundCalculatorFormData = z.infer<typeof childEducationFundCalculatorFormDataScheme>;
+
+export interface ChildEducationFundCalculatorProps extends IChildEducationFundCalculatorFormData {
+	monthlyInvestmentRequired: number
+	costOfEducationConsideringInflation: number
+	yearsHaveToHigherEducation: number
+}
 
 export type CalculationType =
 	| BreakEvenPointCalculation

@@ -43,9 +43,17 @@ import {
 	ISwpCalculationFormData,
 	IGoalPlannerSipFormData,
 	GoalPlannerSipProps,
-	ICagrCalculationFormData, CagrCalculationProps, INavCalculationFormData, NavCalculationProps,
-	ISipDelayCalculatorFormData, SipDelayCalculatorProps,
-	IRiskAdjustedReturnCalculatorFormData, RiskAdjustedReturnCalculatorProps,
+	ICagrCalculationFormData,
+	CagrCalculationProps,
+	INavCalculationFormData,
+	NavCalculationProps,
+	ISipDelayCalculatorFormData,
+	SipDelayCalculatorProps,
+	IRiskAdjustedReturnCalculatorFormData,
+	RiskAdjustedReturnCalculatorProps,
+	IInflationAdjustedReturnCalculatorFormData,
+	InflationAdjustedReturnCalculatorProps,
+	ChildEducationFundCalculatorProps, IChildEducationFundCalculatorFormData,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -818,5 +826,65 @@ export const calculateRiskAdjustedReturnCalculator = (
 		riskFreeRate,
 		investmentRisk,
 		riskAdjustedReturn,
+	};
+};
+
+export const calculateInflationAdjustedReturnCalculator = (
+	formData: IInflationAdjustedReturnCalculatorFormData
+): InflationAdjustedReturnCalculatorProps => {
+	const {
+		investmentAmount,
+		inflationRate,
+		numberOfYears,
+	} = formData;
+
+	const data = Array.from({ length: numberOfYears + 1 }, (_, year) => {
+		const nominalValue = investmentAmount * Math.pow(1 + inflationRate / 100, year);
+		const adjustedValue = investmentAmount / Math.pow(1 + inflationRate / 100, year);
+		return {
+			year,
+			nominalValue,
+			adjustedValue,
+		};
+	});
+	const inflationAdjustedReturn = investmentAmount / Math.pow(1 + inflationRate / 100, numberOfYears);
+
+	return {
+		investmentAmount,
+		inflationRate,
+		numberOfYears,
+		inflationAdjustedReturn,
+		data
+	};
+};
+
+export const calculateChildEducationFundCalculator = (
+	formData: IChildEducationFundCalculatorFormData
+): ChildEducationFundCalculatorProps => {
+	const {
+		currentAgeOfChild,
+		ageForHigherEducation,
+		expectedAnnualRateOfReturn,
+		presentCostOfHigherEducation,
+	} = formData;
+
+	const inflationRate = 6;
+
+	const yearsHaveToHigherEducation = ageForHigherEducation - currentAgeOfChild;
+
+	const costOfEducationConsideringInflation = presentCostOfHigherEducation * Math.pow(1 + inflationRate / 100, yearsHaveToHigherEducation);
+
+	const monthlyRateOfReturn = expectedAnnualRateOfReturn / 12 / 100;
+	const monthsHaveToHigherEducation = yearsHaveToHigherEducation * 12;
+	const monthlyInvestmentRequired = costOfEducationConsideringInflation * monthlyRateOfReturn / (Math.pow(1 + monthlyRateOfReturn, monthsHaveToHigherEducation) - 1);
+
+	return {
+		currentAgeOfChild,
+		ageForHigherEducation,
+		expectedAnnualRateOfReturn,
+		presentCostOfHigherEducation,
+		monthlyInvestmentRequired,
+		costOfEducationConsideringInflation,
+		yearsHaveToHigherEducation,
 	};
 };
