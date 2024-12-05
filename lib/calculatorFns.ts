@@ -45,6 +45,7 @@ import {
 	GoalPlannerSipProps,
 	ICagrCalculationFormData, CagrCalculationProps, INavCalculationFormData, NavCalculationProps,
 	ISipDelayCalculatorFormData, SipDelayCalculatorProps,
+	IRiskAdjustedReturnCalculatorFormData, RiskAdjustedReturnCalculatorProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -741,6 +742,7 @@ export const calculateNavCalculation = (
 		navPerShare,
 	};
 };
+
 export const calculateSipDelayCalculator = (
 	formData: ISipDelayCalculatorFormData
 ): SipDelayCalculatorProps => {
@@ -755,22 +757,12 @@ export const calculateSipDelayCalculator = (
 	const totalMonths = sipPeriodInYear * 12;
 	const monthsWithDelay = totalMonths - periodOfDelayMonth;
 
-	// Future value without delay
 	const withoutDelay = monthlySipAmount * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate);
-
-	// Future value with delay using the original SIP amount
 	const projectedValue = monthlySipAmount * ((Math.pow(1 + monthlyRate, monthsWithDelay) - 1) / monthlyRate);
-
-	// Cost of delay
 	const costOfDelay = withoutDelay - projectedValue;
-
-	// Calculate future value with the adjusted SIP amount after the delay
 	const totalAmountWithDelay = projectedValue;
 
-	// Adjusted SIP amount to achieve a lower future value due to delay
 	const sipAmountWithDelay = totalAmountWithDelay * monthlyRate / ((Math.pow(1 + monthlyRate, monthsWithDelay) - 1));
-
-	// Generate chart data
 	const chartData = [];
 	let balanceWithoutDelay = 0;
 	let balanceWithDelay = 0;
@@ -782,7 +774,7 @@ export const calculateSipDelayCalculator = (
 		if (month > periodOfDelayMonth) {
 			balanceWithDelay += sipAmountWithDelay;
 		} else {
-			balanceWithDelay += 0; // No contribution during the delay period
+			balanceWithDelay += 0;
 		}
 		balanceWithDelay *= 1 + monthlyRate;
 
@@ -807,13 +799,24 @@ export const calculateSipDelayCalculator = (
 	};
 };
 
-// Test the function with given inputs
-const formData = {
-	monthlySipAmount: 25000,
-	sipPeriodInYear: 10,
-	expectedReturnsOnInvestment: 12,
-	periodOfDelayMonth: 10
-};
+export const calculateRiskAdjustedReturnCalculator = (
+	formData: IRiskAdjustedReturnCalculatorFormData
+): RiskAdjustedReturnCalculatorProps => {
+	const {
+		investmentAmount,
+		expectedReturn,
+		riskFreeRate,
+		investmentRisk,
+	} = formData;
 
-const result = calculateSipDelayCalculator(formData);
-console.log(result);
+	// Calculate the Sharpe Ratio (Risk-Adjusted Return)
+	const riskAdjustedReturn = (expectedReturn - riskFreeRate) / investmentRisk;
+
+	return {
+		investmentAmount,
+		expectedReturn,
+		riskFreeRate,
+		investmentRisk,
+		riskAdjustedReturn,
+	};
+};

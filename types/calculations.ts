@@ -24,7 +24,10 @@ import {
 	personalLoanEmiCalculationFormDataScheme,
 	swpCalculationFormDataScheme,
 	goalPlannerSipFormDataScheme,
-	cagrCalculationFormDataScheme, navCalculationFormDataScheme, sipDelayCalculatorFormDataScheme,
+	cagrCalculationFormDataScheme,
+	navCalculationFormDataScheme,
+	sipDelayCalculatorFormDataScheme,
+	riskAdjustedReturnCalculatorFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -294,6 +297,13 @@ export interface SipDelayCalculatorProps extends ISipDelayCalculatorFormData {
 	totalAmountWithDelay: number;
 	chartData: { month: number, withoutDelay: number, withDelay: number }[];
 }
+
+export type IRiskAdjustedReturnCalculatorFormData = z.infer<typeof riskAdjustedReturnCalculatorFormDataScheme>;
+
+export interface RiskAdjustedReturnCalculatorProps extends IRiskAdjustedReturnCalculatorFormData {
+	riskAdjustedReturn: number,
+}
+
 
 export type CalculationType =
 	| BreakEvenPointCalculation

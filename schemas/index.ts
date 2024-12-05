@@ -288,3 +288,10 @@ export const sipDelayCalculatorFormDataScheme = z.object({
 	expectedReturnsOnInvestment: positiveNumberFieldSchemaWithMaxAndMin('expected Returns on Investment', 5, 20),
 	periodOfDelayMonth: positiveNumberFieldSchemaWithMaxAndMin('Period of Delay Month', 1, 40),
 });
+
+export const riskAdjustedReturnCalculatorFormDataScheme = z.object({
+	investmentAmount: positiveNumberFieldSchemaWithMaxAndMin('Investment Amount', 1000, 1000000000),
+	expectedReturn: positiveNumberFieldSchemaWithMaxAndMin('Expected Return', 1, 40),
+	riskFreeRate: positiveNumberFieldSchemaWithMaxAndMin('Risk Free Rate', 1, 40),
+	investmentRisk: positiveNumberFieldSchemaWithMaxAndMin('Investment Risk', 1, 40),
+});

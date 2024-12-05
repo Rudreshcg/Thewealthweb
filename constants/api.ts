@@ -56,6 +56,8 @@ export const NAV_CALCULATIONS_API_URL =
     "/api/nav-calculator" as const;
 export const SIP_DELAY_CALCULATOR_API_URL =
     "/api/sip-delay-calculator" as const;
+export const RISK_ADJUSTED_RETURN_CALCULATOR_API_URL =
+    "/api/risk-adjusted-return-calculator" as const;
 
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
@@ -84,6 +86,7 @@ export const API_URLS = [
   CAGR_CALCULATIONS_API_URL,
   NAV_CALCULATIONS_API_URL,
   SIP_DELAY_CALCULATOR_API_URL,
+  RISK_ADJUSTED_RETURN_CALCULATOR_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -145,6 +148,8 @@ export const NAV_CALCULATIONS_QUERY_KEY =
     "nav-calculator" as const;
 export const SIP_DELAY_CALCULATOR_QUERY_KEY =
     "sip-delay-calculator" as const;
+export const RISK_ADJUSTED_RETURN_CALCULATOR_QUERY_KEY =
+    "risk-adjusted-return-calculator" as const;
 
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
@@ -173,4 +178,5 @@ export const QUERY_KEYS = [
   CAGR_CALCULATIONS_QUERY_KEY,
   NAV_CALCULATIONS_QUERY_KEY,
   SIP_DELAY_CALCULATOR_QUERY_KEY,
+  RISK_ADJUSTED_RETURN_CALCULATOR_QUERY_KEY,
 ] as const;

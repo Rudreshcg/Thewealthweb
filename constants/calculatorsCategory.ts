@@ -435,7 +435,7 @@ export const calculatorsCategory = [
   },
   {
     name: "Risk Adjusted Return Calculator",
-    url: "risk-ajusted-return-calculator",
+    url: "risk-adjusted-return-calculator",
     category: "mutual-fund-calculators",
     description:
       "Evaluates the returns of a mutual fund concerning the risks taken (e.g., using Sharpe Ratio).",
