@@ -24,7 +24,7 @@ import {
 	personalLoanEmiCalculationFormDataScheme,
 	swpCalculationFormDataScheme,
 	goalPlannerSipFormDataScheme,
-	cagrCalculationFormDataScheme, navCalculationFormDataScheme,
+	cagrCalculationFormDataScheme, navCalculationFormDataScheme, sipDelayCalculatorFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -283,6 +283,18 @@ export type INavCalculationFormData = z.infer<typeof navCalculationFormDataSchem
 export interface NavCalculationProps extends INavCalculationFormData {
 	navPerShare: number
 }
+
+export type ISipDelayCalculatorFormData = z.infer<typeof sipDelayCalculatorFormDataScheme>;
+
+export interface SipDelayCalculatorProps extends ISipDelayCalculatorFormData {
+	withoutDelay: number
+	costOfDelay: number
+	projectedValue: number
+	sipAmountWithDelay: number
+	totalAmountWithDelay: number;
+	chartData: { month: number, withoutDelay: number, withDelay: number }[];
+}
+
 export type CalculationType =
 	| BreakEvenPointCalculation
 	| MarkupCalculation

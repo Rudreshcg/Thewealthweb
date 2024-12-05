@@ -281,3 +281,10 @@ export const navCalculationFormDataScheme = z.object({
 	totalLiabilities: positiveNumberFieldSchemaWithMaxAndMin('Total Liabilities', 1, 10000000),
 	sharesOutstanding: positiveNumberFieldSchemaWithMaxAndMin('Shares Outstanding', 1, 10000000),
 });
+
+export const sipDelayCalculatorFormDataScheme = z.object({
+	monthlySipAmount: positiveNumberFieldSchemaWithMaxAndMin('Monthly Sip Amount', 1000, 100000),
+	sipPeriodInYear: positiveNumberFieldSchemaWithMaxAndMin('Sip Period in Year', 1, 40),
+	expectedReturnsOnInvestment: positiveNumberFieldSchemaWithMaxAndMin('expected Returns on Investment', 5, 20),
+	periodOfDelayMonth: positiveNumberFieldSchemaWithMaxAndMin('Period of Delay Month', 1, 40),
+});

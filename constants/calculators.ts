@@ -240,13 +240,13 @@ export const calculators = [
     description:
         "Computes the current market value of the investment based on units held and current NAV.",
   },
-  {
+  /*{
     name: "Expense Ratio Impact Calculator",
     url: "expense-ratio-impact-calculator",
     category: "mutual-fund-calculators",
     description:
         "Evaluates how the expense ratio affects the overall returns of a mutual fund.",
-  },
+  },*/
   {
     name: "SIP Delay Calculator",
     url: "sip-delay-calculator",

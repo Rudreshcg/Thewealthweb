@@ -67,6 +67,8 @@ model User {
   PersonalLoanEmiCalculation       PersonalLoanEmiCalculation[]
   SwpCalculation                   SwpCalculation[]
   GoalPlannerSip                   GoalPlannerSip[]
+  CagrCalculation                  CagrCalculation[]
+  SipDelayCalculator               SipDelayCalculator[]
 }
 
 enum Plan {
@@ -506,6 +508,41 @@ model GoalPlannerSip {
   formData  GoalPlannerSipFormData
   createdAt DateTime               @default(now())
   updatedAt DateTime               @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type CagrCalculationFormData {
+  initialInvestment    Float
+  finalInvestment      Float
+  durationOfInvestment Float
+}
+
+model CagrCalculation {
+  id        String                  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                  @db.ObjectId
+  name      String
+  formData  CagrCalculationFormData
+  createdAt DateTime                @default(now())
+  updatedAt DateTime                @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type SipDelayCalculatorFormData {
+  monthlySipAmount            Float
+  sipPeriodInYear             Float
+  expectedReturnsOnInvestment Float
+  periodOfDelayMonth          Float
+}
+
+model SipDelayCalculator {
+  id        String                     @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                     @db.ObjectId
+  name      String
+  formData  SipDelayCalculatorFormData
+  createdAt DateTime                   @default(now())
+  updatedAt DateTime                   @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

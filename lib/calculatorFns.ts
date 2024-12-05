@@ -44,6 +44,7 @@ import {
 	IGoalPlannerSipFormData,
 	GoalPlannerSipProps,
 	ICagrCalculationFormData, CagrCalculationProps, INavCalculationFormData, NavCalculationProps,
+	ISipDelayCalculatorFormData, SipDelayCalculatorProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -740,3 +741,79 @@ export const calculateNavCalculation = (
 		navPerShare,
 	};
 };
+export const calculateSipDelayCalculator = (
+	formData: ISipDelayCalculatorFormData
+): SipDelayCalculatorProps => {
+	const {
+		monthlySipAmount,
+		sipPeriodInYear,
+		expectedReturnsOnInvestment,
+		periodOfDelayMonth,
+	} = formData;
+
+	const monthlyRate = expectedReturnsOnInvestment / 12 / 100;
+	const totalMonths = sipPeriodInYear * 12;
+	const monthsWithDelay = totalMonths - periodOfDelayMonth;
+
+	// Future value without delay
+	const withoutDelay = monthlySipAmount * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate);
+
+	// Future value with delay using the original SIP amount
+	const projectedValue = monthlySipAmount * ((Math.pow(1 + monthlyRate, monthsWithDelay) - 1) / monthlyRate);
+
+	// Cost of delay
+	const costOfDelay = withoutDelay - projectedValue;
+
+	// Calculate future value with the adjusted SIP amount after the delay
+	const totalAmountWithDelay = projectedValue;
+
+	// Adjusted SIP amount to achieve a lower future value due to delay
+	const sipAmountWithDelay = totalAmountWithDelay * monthlyRate / ((Math.pow(1 + monthlyRate, monthsWithDelay) - 1));
+
+	// Generate chart data
+	const chartData = [];
+	let balanceWithoutDelay = 0;
+	let balanceWithDelay = 0;
+
+	for (let month = 1; month <= totalMonths; month++) {
+		balanceWithoutDelay += monthlySipAmount;
+		balanceWithoutDelay *= 1 + monthlyRate;
+
+		if (month > periodOfDelayMonth) {
+			balanceWithDelay += sipAmountWithDelay;
+		} else {
+			balanceWithDelay += 0; // No contribution during the delay period
+		}
+		balanceWithDelay *= 1 + monthlyRate;
+
+		chartData.push({
+			month: month,
+			withoutDelay: Math.round(balanceWithoutDelay),
+			withDelay: Math.round(balanceWithDelay),
+		});
+	}
+
+	return {
+		monthlySipAmount,
+		sipPeriodInYear,
+		expectedReturnsOnInvestment,
+		periodOfDelayMonth,
+		withoutDelay: Math.round(withoutDelay),
+		costOfDelay: Math.round(costOfDelay),
+		projectedValue: Math.round(projectedValue),
+		sipAmountWithDelay: Math.round(sipAmountWithDelay),
+		totalAmountWithDelay: Math.round(totalAmountWithDelay),
+		chartData,
+	};
+};
+
+// Test the function with given inputs
+const formData = {
+	monthlySipAmount: 25000,
+	sipPeriodInYear: 10,
+	expectedReturnsOnInvestment: 12,
+	periodOfDelayMonth: 10
+};
+
+const result = calculateSipDelayCalculator(formData);
+console.log(result);

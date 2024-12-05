@@ -18,7 +18,7 @@ const Footer = () => {
 								aria-hidden
 								className="scroll-m-20 text-4xl font-extrabold tracking-tight select-none mt-[4px] hidden xs:block"
 							>
-								KoronKorko
+								TheWealthWeb
 							</h4>
 						</div>
 					</div>

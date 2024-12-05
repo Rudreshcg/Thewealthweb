@@ -14,37 +14,39 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-    CAGR_CALCULATIONS_API_URL,
-    CAGR_CALCULATIONS_QUERY_KEY
+    SIP_DELAY_CALCULATOR_API_URL,
+    SIP_DELAY_CALCULATOR_QUERY_KEY
 } from "@/constants/api";
 import useCalculator from "@/hooks/useCalculator";
-import { calculateCagrCalculation } from "@/lib/calculatorFns";
+import { calculateSipDelayCalculator } from "@/lib/calculatorFns";
 import { getCalculations } from "@/lib/queryFns/calculations";
-import { cagrCalculationFormDataScheme } from "@/schemas";
+import { sipDelayCalculatorFormDataScheme } from "@/schemas";
 import {
-  ICagrCalculationFormData,
-    CagrCalculationProps,
+  ISipDelayCalculatorFormData,
+    SipDelayCalculatorProps,
 } from "@/types/calculations";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {SipDelayCalculator} from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import Report from "./Report";
-import {FaDownload} from "react-icons/fa";
-import { CagrCalculation } from "@prisma/client";
+import { FaDownload } from "react-icons/fa";
+import React from "react";
 
-const defaultValues: ICagrCalculationFormData = {
-    initialInvestment: 5000,
-    finalInvestment: 25000,
-    durationOfInvestment: 5,
+const defaultValues: ISipDelayCalculatorFormData = {
+    monthlySipAmount: 25000,
+    sipPeriodInYear: 10,
+    expectedReturnsOnInvestment: 12,
+    periodOfDelayMonth: 10,
 };
 const handlePrint = () => {
     window.print();
 };
 
 const Calculator = () => {
-  const form = useForm<ICagrCalculationFormData>({
-    resolver: zodResolver(cagrCalculationFormDataScheme),
+  const form = useForm<ISipDelayCalculatorFormData>({
+    resolver: zodResolver(sipDelayCalculatorFormDataScheme),
     defaultValues,
   });
 
@@ -69,15 +71,15 @@ const Calculator = () => {
     handleImportStart,
     closeImportModal,
   } = useCalculator<
-    ICagrCalculationFormData,
-    CagrCalculationProps,
-    CagrCalculation
+    ISipDelayCalculatorFormData,
+      SipDelayCalculatorProps,
+      SipDelayCalculator
   >({
-    apiUrl: CAGR_CALCULATIONS_API_URL,
-    queryKey: CAGR_CALCULATIONS_QUERY_KEY,
+    apiUrl: SIP_DELAY_CALCULATOR_API_URL,
+    queryKey: SIP_DELAY_CALCULATOR_QUERY_KEY,
     defaultValues,
     form,
-    calcFn: calculateCagrCalculation,
+    calcFn: calculateSipDelayCalculator,
   });
 
   const { status: sessionStatus } = useSession();
@@ -86,9 +88,9 @@ const Calculator = () => {
     data: calculations,
     isLoading: isCalculationsLoading,
     isFetching,
-  } = useQuery<CagrCalculation[] | null>({
-    queryKey: [CAGR_CALCULATIONS_QUERY_KEY],
-    queryFn: () => getCalculations(CAGR_CALCULATIONS_API_URL),
+  } = useQuery<SipDelayCalculator[] | null>({
+    queryKey: [SIP_DELAY_CALCULATOR_QUERY_KEY],
+    queryFn: () => getCalculations(SIP_DELAY_CALCULATOR_API_URL),
     staleTime: 1_000 * 60 * 10, // 10 minutes
     enabled: sessionStatus === "authenticated",
   });
@@ -122,18 +124,18 @@ const Calculator = () => {
                   <FormGroup>
                       <FormField
                           control={form.control}
-                          name="initialInvestment"
+                          name="monthlySipAmount"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Initial Investment</FormLabel>
+                                  <FormLabel>Monthly Sip Amount</FormLabel>
 
                                   <FormControl>
                                       <NumberInputWithIcon
                                           {...field}
-                                          name="initialInvestment"
+                                          name="monthlySipAmount"
                                           onBlur={(e) => {
                                               ifFieldIsEmpty(e) &&
-                                              form.setValue("initialInvestment", 5000);
+                                              form.setValue("monthlySipAmount", 25000);
                                           }}
                                       />
                                   </FormControl>
@@ -142,47 +144,24 @@ const Calculator = () => {
                           )}
                       />
                   </FormGroup>
-                  <FormField
-                      control={form.control}
-                      name="finalInvestment"
-                      render={({field}) => (
-                          <FormItem className="w-full">
-                              <FormLabel>Final Investment</FormLabel>
 
-                              <FormControl>
-                                  <NumberInputWithIcon
-                                      {...field}
-                                      name="finalInvestment"
-                                      onBlur={(e) => {
-                                          ifFieldIsEmpty(e) &&
-                                          form.setValue("finalInvestment", 25000);
-                                      }}
-                                  />
-                              </FormControl>
-                              <FormMessage/>
-                          </FormItem>
-                      )}
-                  />
-                  <FormGroup />
-                  <FormGroup inline>
+                  <FormGroup>
                       <FormField
                           control={form.control}
-                          name="durationOfInvestment"
+                          name="sipPeriodInYear"
                           render={({field}) => (
                               <FormItem className="w-full">
-                                  <FormLabel>Duration of Investment (Yr)</FormLabel>
+                                  <FormLabel>SIP Period (in Years)</FormLabel>
 
                                   <FormControl>
                                       <Input
                                           {...field}
-                                          name="durationOfInvestment"
+                                          name="sipPeriodInYear"
                                           placeholder="10"
                                           step="0.01"
                                           type="number"
-                                          max={40}
-                                          min={1}
                                           onBlur={(e) => {
-                                              ifFieldIsEmpty(e) && form.setValue("durationOfInvestment", 5);
+                                              ifFieldIsEmpty(e) && form.setValue("sipPeriodInYear", 10);
                                           }}
                                       />
                                   </FormControl>
@@ -191,7 +170,56 @@ const Calculator = () => {
                           )}
                       />
                   </FormGroup>
-                  <SubmitButton/>
+                  <FormGroup>
+                      <FormField
+                          control={form.control}
+                          name="expectedReturnsOnInvestment"
+                          render={({field}) => (
+                              <FormItem className="w-full">
+                                  <FormLabel>Expected Returns on Investment</FormLabel>
+
+                                  <FormControl>
+                                      <NumberInputWithIcon
+                                          {...field}
+                                          name="expectedReturnsOnInvestment"
+                                          iconType="percentage"
+                                          onBlur={(e) => {
+                                              ifFieldIsEmpty(e) &&
+                                              form.setValue("expectedReturnsOnInvestment", 12);
+                                          }}
+                                      />
+                                  </FormControl>
+                                  <FormMessage/>
+                              </FormItem>
+                          )}
+                      />
+                  </FormGroup>
+                  <FormGroup>
+                      <FormField
+                          control={form.control}
+                          name="periodOfDelayMonth"
+                          render={({field}) => (
+                              <FormItem className="w-full">
+                                  <FormLabel>Period of Delay (in Month)</FormLabel>
+
+                                  <FormControl>
+                                      <Input
+                                          {...field}
+                                          name="periodOfDelayMonth"
+                                          placeholder="10"
+                                          step="0.01"
+                                          type="number"
+                                          onBlur={(e) => {
+                                              ifFieldIsEmpty(e) && form.setValue("sipPeriodInYear", 10);
+                                          }}
+                                      />
+                                  </FormControl>
+                                  <FormMessage/>
+                              </FormItem>
+                          )}
+                      />
+                  </FormGroup>
+                      <SubmitButton/>
               </form>
           </Form>
         </FormContainer>

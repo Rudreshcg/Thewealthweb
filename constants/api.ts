@@ -54,6 +54,8 @@ export const CAGR_CALCULATIONS_API_URL =
     "/api/cagr-calculator" as const;
 export const NAV_CALCULATIONS_API_URL =
     "/api/nav-calculator" as const;
+export const SIP_DELAY_CALCULATOR_API_URL =
+    "/api/sip-delay-calculator" as const;
 
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
@@ -81,6 +83,7 @@ export const API_URLS = [
   GOAL_PLANNER_SIP_API_URL,
   CAGR_CALCULATIONS_API_URL,
   NAV_CALCULATIONS_API_URL,
+  SIP_DELAY_CALCULATOR_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -140,6 +143,8 @@ export const CAGR_CALCULATIONS_QUERY_KEY =
     "cagr-calculator" as const;
 export const NAV_CALCULATIONS_QUERY_KEY =
     "nav-calculator" as const;
+export const SIP_DELAY_CALCULATOR_QUERY_KEY =
+    "sip-delay-calculator" as const;
 
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
@@ -167,4 +172,5 @@ export const QUERY_KEYS = [
   GOAL_PLANNER_SIP_QUERY_KEY,
   CAGR_CALCULATIONS_QUERY_KEY,
   NAV_CALCULATIONS_QUERY_KEY,
+  SIP_DELAY_CALCULATOR_QUERY_KEY,
 ] as const;
