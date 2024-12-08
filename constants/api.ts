@@ -76,6 +76,12 @@ export const PROFIT_CALCULATOR_API_URL =
     "/api/profit-margin-calculator" as const;
 export const MARK_UP_CALCULATOR_API_URL =
     "/api/mark-up-calculator" as const;
+export const SIMPLE_INTEREST_CALCULATOR_API_URL =
+    "/api/simple-interest-calculator" as const;
+export const FUTURE_VALUE_CALCULATOR_API_URL =
+    "/api/future-value-calculator" as const;
+export const NETWORTH_CALCULATOR_API_URL =
+    "/api/net-worth-calculator" as const;
 
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
@@ -114,6 +120,9 @@ export const API_URLS = [
   ROI_CALCULATOR_API_URL,
   PROFIT_CALCULATOR_API_URL,
   MARK_UP_CALCULATOR_API_URL,
+  SIMPLE_INTEREST_CALCULATOR_API_URL,
+  FUTURE_VALUE_CALCULATOR_API_URL,
+  NETWORTH_CALCULATOR_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -196,6 +205,12 @@ export const PROFIT_CALCULATOR_QUERY_KEY =
     "profit-margin-calculator" as const;
 export const MARK_UP_CALCULATOR_QUERY_KEY =
     "mark-up-calculator" as const;
+export const SIMPLE_INTEREST_CALCULATOR_QUERY_KEY =
+    "simple-interest-calculator" as const;
+export const FUTURE_VALUE_CALCULATOR_QUERY_KEY =
+    "future-value-calculator" as const;
+export const NETWORTH_CALCULATOR_QUERY_KEY =
+    "net-worth-calculator" as const;
 
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
@@ -234,4 +249,7 @@ export const QUERY_KEYS = [
   ROI_CALCULATOR_QUERY_KEY,
   PROFIT_CALCULATOR_QUERY_KEY,
   MARK_UP_CALCULATOR_QUERY_KEY,
+  SIMPLE_INTEREST_CALCULATOR_QUERY_KEY,
+  FUTURE_VALUE_CALCULATOR_QUERY_KEY,
+  NETWORTH_CALCULATOR_QUERY_KEY,
 ] as const;

@@ -78,6 +78,9 @@ model User {
   MarkUpCalculator                  MarkUpCalculator[]
   BreakEvenCalculator               BreakEvenCalculator[]
   ProfitCalculator                  ProfitCalculator[]
+  SimpleInterestCalculator          SimpleInterestCalculator[]
+  FutureValueCalculator             FutureValueCalculator[]
+  NetWorthCalculator                NetWorthCalculator[]
 }
 
 enum Plan {
@@ -708,6 +711,76 @@ model MarkUpCalculator {
   formData  MarkUpCalculatorFormData
   createdAt DateTime                 @default(now())
   updatedAt DateTime                 @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type SimpleInterestCalculatorFormData {
+  principalAmount      Float
+  interestRate         Float
+  period               Float
+  periodType           Float
+  interestDurationType Float
+}
+
+model SimpleInterestCalculator {
+  id        String                           @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                           @db.ObjectId
+  name      String
+  formData  SimpleInterestCalculatorFormData
+  createdAt DateTime                         @default(now())
+  updatedAt DateTime                         @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type FutureValueCalculatorFormData {
+  initialValue       Float
+  annualContribution Float
+  interestRate       Float
+  numberOfPeriods    Float
+  compoundFrequency  Float
+}
+
+model FutureValueCalculator {
+  id        String                        @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                        @db.ObjectId
+  name      String
+  formData  FutureValueCalculatorFormData
+  createdAt DateTime                      @default(now())
+  updatedAt DateTime                      @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type NetWorthCalculatorFormData {
+  primaryIncome       Float
+  realEstateIncome    Float
+  sharesInvestments   Float
+  vehicleAssets       Float
+  otherAssets         Float
+  savingsAccounts     Float
+  otherInvestments    Float
+  cashEquivalents     Float
+  providentFund       Float
+  insurancePolicies   Float
+  homeLoan            Float
+  carLoan             Float
+  personalLoan        Float
+  studentLoan         Float
+  loanAgainstProperty Float
+  creditCardDebt      Float
+  otherDebts          Float
+  emis                Float
+}
+
+model NetWorthCalculator {
+  id        String                     @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                     @db.ObjectId
+  name      String
+  formData  NetWorthCalculatorFormData
+  createdAt DateTime                   @default(now())
+  updatedAt DateTime                   @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

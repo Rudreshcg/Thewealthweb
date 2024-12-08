@@ -357,3 +357,42 @@ export const markUpCalculatorFormDataScheme = z.object({
 	costPrice: positiveNumberFieldSchemaWithMaxAndMin('Cost Price', 1, 1000000000),
 	sellingPrice: positiveNumberFieldSchemaWithMaxAndMin('Selling Price', 1, 1000000000),
 });
+
+export const simpleInterestCalculatorFormDataScheme = z.object({
+	principalAmount: positiveNumberFieldSchemaWithMaxAndMin('Principal Amount', 1, 1000000000),
+	interestRate: positiveNumberFieldSchemaWithMaxAndMin('Interest Rate', 1, 40),
+	period: positiveNumberFieldSchemaWithMaxAndMin('period', 1, 40),
+	periodType:positiveNumberFieldSchema('Period type'),
+	interestDurationType: positiveNumberFieldSchema('Interest Duration type'),
+});
+
+export const futureValueCalculatorFormDataScheme = z.object({
+
+	initialValue: positiveNumberFieldSchemaWithMaxAndMin('Initial Value', 1, 1000000000),
+	annualContribution: positiveNumberFieldSchemaWithMaxAndMin('Annual Contribution', 1, 1000000000),
+	interestRate: positiveNumberFieldSchemaWithMaxAndMin('Interest Rate', 1, 40),
+	numberOfPeriods: positiveNumberFieldSchemaWithMaxAndMin('Period', 1, 40),
+	compoundFrequency: positiveNumberFieldSchema('Compound Frequency'),
+});
+
+export const netWorthCalculatorFormDataScheme = z.object({
+
+	primaryIncome: positiveNumberFieldSchemaWithMaxAndMin('Primary Income', 0, 1000000000),
+	realEstateIncome: positiveNumberFieldSchemaWithMaxAndMin('Real Estate Income', 0, 1000000000),
+    sharesInvestments: positiveNumberFieldSchemaWithMaxAndMin('Shares Investments', 0, 1000000000),
+    vehicleAssets: positiveNumberFieldSchemaWithMaxAndMin('Vehicle Assets', 0, 1000000000),
+    otherAssets: positiveNumberFieldSchemaWithMaxAndMin('Other Assets', 0, 1000000000),
+	savingsAccounts: positiveNumberFieldSchemaWithMaxAndMin('Savings Accounts', 0, 1000000000),
+    otherInvestments: positiveNumberFieldSchemaWithMaxAndMin('Other Investments', 0, 1000000000),
+    cashEquivalents: positiveNumberFieldSchemaWithMaxAndMin('Cash Equivalents', 0, 1000000000),
+    providentFund: positiveNumberFieldSchemaWithMaxAndMin('Provident Fund', 0, 1000000000),
+    insurancePolicies: positiveNumberFieldSchemaWithMaxAndMin('Insurance Policies', 0, 1000000000),
+    homeLoan: positiveNumberFieldSchemaWithMaxAndMin('Home Loan', 0, 1000000000),
+    carLoan: positiveNumberFieldSchemaWithMaxAndMin('Car Loan', 0, 1000000000),
+    personalLoan: positiveNumberFieldSchemaWithMaxAndMin('Personal Loan', 0, 1000000000),
+    studentLoan: positiveNumberFieldSchemaWithMaxAndMin('Loan Against Property', 0, 1000000000),
+    loanAgainstProperty: positiveNumberFieldSchemaWithMaxAndMin('Credit Card Debt', 0, 1000000000),
+    creditCardDebt: positiveNumberFieldSchemaWithMaxAndMin('Initial Value', 0, 1000000000),
+    otherDebts: positiveNumberFieldSchemaWithMaxAndMin('Other Debts', 0, 1000000000),
+    emis: positiveNumberFieldSchemaWithMaxAndMin('EMIs', 0, 1000000000),
+});

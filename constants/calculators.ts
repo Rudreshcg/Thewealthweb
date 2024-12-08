@@ -96,14 +96,6 @@ export const calculators = [
       "Estimates the returns on one-time investments in mutual funds or stocks.",
   },
   {
-    name: "Compound Interest Calculator",
-    url: "compound-interest-calculator",
-    category: "common-investment-calculators",
-    categoryName: "Common Investment Calculators",
-    description:
-        "Calculate the compound interest of an investment or determine how long your invested money can last. Additionally, logged in users can save their calculations.",
-  },
-  {
     name: "Step-Up SIP Calculator",
     url: "step-up-sip-calculator",
     category: "common-investment-calculators",
@@ -375,5 +367,38 @@ export const calculators = [
     categoryName: "Business and Profitability Calculators",
     description: "Determines selling price based on the desired mark-up.",
   },
+
+  // miscellaneous-calculators
+  {
+    name: "Compound Interest Calculator",
+    url: "compound-interest-calculator",
+    category: "miscellaneous-calculators",
+    categoryName: "Miscellaneous Calculators",
+    description: "Computes returns for investments earning compound interest.",
+  },
+  {
+    name: "Simple Interest Calculator",
+    url: "simple-interest-calculator",
+    category: "miscellaneous-calculators",
+    categoryName: "Miscellaneous Calculators",
+    description:
+        "Calculates interest for loans or investments with simple interest.",
+  },
+  {
+    name: "Future Value Calculator",
+    url: "future-value-calculator",
+    category: "miscellaneous-calculators",
+    categoryName: "Miscellaneous Calculators",
+    description: "Projects the future value of an investment or savings.",
+  },
+  {
+    name: "Net Worth Calculator",
+    url: "net-worth-calculator",
+    category: "miscellaneous-calculators",
+    categoryName: "Miscellaneous Calculators",
+    description:
+        "Estimates an individual's total net worth by subtracting liabilities from assets.",
+  },
+
 
 ] as const;
