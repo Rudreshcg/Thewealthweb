@@ -1,7 +1,7 @@
 "use client"; // Ensures this is a Client Component
 
 import React from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import TypographyH1 from "@/components/TypographyH1";
 import TypographyH2 from "@/components/TypographyH2";
@@ -21,7 +21,8 @@ export default function CategoryPage() {
   return (
     <div>
       <TypographyH1 className="mb-6">
-        {calculators[0].category.replace("-", " ")}
+        {calculators[0].categoryName}
+        {/*{calculators[0].category.replace("-", " ")}*/}
       </TypographyH1>
       <div className="grid w-full gap-4 grid-cols-1 sm:grid-cols-2">
         {calculators.map((calc, i) => (

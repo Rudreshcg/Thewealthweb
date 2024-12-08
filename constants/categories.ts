@@ -17,24 +17,24 @@ export const categories = [
     description:
       "These calculators focus specifically on mutual fund investments, including SIPs, lump sums, and advanced scenarios like tax-saving and step-up SIPs.",
   },
-  {
+ /* {
     name: "Tax and Income Calculators",
     url: "tax-and-income-calculators",
     description:
       "These calculators help individuals and businesses compute tax liabilities and optimize income after deductions.",
-  },
+  },*/
   {
     name: "Budgeting and Savings Calculators",
     url: "budgeting-and-savings-calculators",
     description:
       "These calculators help users manage day-to-day finances, plan savings, and achieve financial goals.",
   },
-  {
+/*  {
     name: "Insurance Calculators",
     url: "insurance-calculators",
     description:
       "These calculators estimate premiums and returns for life, health, and other insurance policies.",
-  },
+  },*/
   {
     name: "Business and Profitability Calculators",
     url: "business-and-profitability-calculators",

@@ -3,7 +3,7 @@ import TypographyH2 from "@/components/TypographyH2";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { featuredApps } from "@/constants/data";
-import { categories } from "@/app/(calculators)/[category]/categories";
+import { categories } from "@/constants/categories";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 

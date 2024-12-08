@@ -30,6 +30,11 @@ import {
 	riskAdjustedReturnCalculatorFormDataScheme,
 	inflationAdjustedReturnCalculatorFormDataScheme,
 	childEducationFundCalculatorFormDataScheme,
+	monthlyBudgetCalculatorFormDataScheme,
+	emergencyFundCalculatorFormDataScheme,
+	expenseRatioCalculatorFormDataScheme,
+	breakEvenCalculatorFormDataScheme,
+	rOICalculatorFormDataScheme, profitCalculatorFormDataScheme, markUpCalculatorFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -319,6 +324,59 @@ export interface ChildEducationFundCalculatorProps extends IChildEducationFundCa
 	monthlyInvestmentRequired: number
 	costOfEducationConsideringInflation: number
 	yearsHaveToHigherEducation: number
+}
+
+export type IMonthlyBudgetCalculatorFormData = z.infer<typeof monthlyBudgetCalculatorFormDataScheme>;
+
+export interface MonthlyBudgetCalculatorProps extends IMonthlyBudgetCalculatorFormData {
+	totalMonthlyExpenses: number
+	remainingBudget: number
+}
+export type IEmergencyFundCalculatorFormData = z.infer<typeof emergencyFundCalculatorFormDataScheme>;
+
+export interface EmergencyFundCalculatorProps extends IEmergencyFundCalculatorFormData {
+	emergencyFund: number
+}
+
+export type IExpenseRatioCalculatorFormData = z.infer<typeof expenseRatioCalculatorFormDataScheme>;
+
+export interface ExpenseRatioCalculatorProps extends IExpenseRatioCalculatorFormData {
+	futureValueOfTotalInvestment: number
+	totalCostOfETF: number
+}
+
+export type IBreakEvenCalculatorFormData = z.infer<typeof breakEvenCalculatorFormDataScheme>;
+
+export interface BreakEvenCalculatorProps extends IBreakEvenCalculatorFormData {
+	breakEvenUnits: number;
+	totalRevenue: number;
+	totalCosts: number;
+	netProfit: number;
+	monthlyBreakdown: Array<any>;
+}
+
+export type IROICalculatorFormData = z.infer<typeof rOICalculatorFormDataScheme>;
+
+export interface ROICalculatorProps extends IROICalculatorFormData {
+	gainOrLoss: number;
+	roi: number;
+	simpleAnnualRoi: number;
+	compoundAnnualRoi: number;
+}
+
+export type IProfitCalculatorFormData = z.infer<typeof profitCalculatorFormDataScheme>;
+
+export interface ProfitCalculatorProps extends IProfitCalculatorFormData {
+	netProfit: number;
+	netProfitMargin: number;
+	profitPercentage: number;
+}
+
+export type IMarkUpCalculatorFormData = z.infer<typeof markUpCalculatorFormDataScheme>;
+
+export interface MarkUpCalculatorProps extends IMarkUpCalculatorFormData {
+	markupPrice: number;
+	markupPercentage: number;
 }
 
 export type CalculationType =

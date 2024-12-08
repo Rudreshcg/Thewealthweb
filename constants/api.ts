@@ -62,6 +62,20 @@ export const INFLATION_ADJUSTED_RETURN_CALCULATOR_API_URL =
     "/api/inflation-adjusted-return-calculator" as const;
 export const CHILD_EDUCATION_FUND_CALCULATOR_API_URL =
     "/api/child-education-fund-calculator" as const;
+export const MONTHLY_BUDGET_CALCULATOR_API_URL =
+    "/api/monthly-budget-calculator" as const;
+export const EMERGENCY_FUND_CALCULATOR_API_URL =
+    "/api/emergency-fund-calculator" as const;
+export const EXPENSE_RATIO_CALCULATOR_API_URL =
+    "/api/expense-ratio-calculator" as const;
+export const BREAK_EVEN_CALCULATOR_API_URL =
+    "/api/break-even-point-calculator" as const;
+export const ROI_CALCULATOR_API_URL =
+    "/api/roi-calculator" as const;
+export const PROFIT_CALCULATOR_API_URL =
+    "/api/profit-margin-calculator" as const;
+export const MARK_UP_CALCULATOR_API_URL =
+    "/api/mark-up-calculator" as const;
 
 export const API_URLS = [
   ANNUALIZED_RETURN_CALCULATIONS_API_URL,
@@ -93,6 +107,13 @@ export const API_URLS = [
   RISK_ADJUSTED_RETURN_CALCULATOR_API_URL,
   INFLATION_ADJUSTED_RETURN_CALCULATOR_API_URL,
   CHILD_EDUCATION_FUND_CALCULATOR_API_URL,
+  MONTHLY_BUDGET_CALCULATOR_API_URL,
+  EMERGENCY_FUND_CALCULATOR_API_URL,
+  EXPENSE_RATIO_CALCULATOR_API_URL,
+  BREAK_EVEN_CALCULATOR_API_URL,
+  ROI_CALCULATOR_API_URL,
+  PROFIT_CALCULATOR_API_URL,
+  MARK_UP_CALCULATOR_API_URL,
 ] as const;
 
 // Tanstack query keys
@@ -160,6 +181,21 @@ export const INFLATION_ADJUSTED_RETURN_CALCULATOR_QUERY_KEY =
     "inflation-adjusted-return-calculator" as const;
 export const CHILD_EDUCATION_FUND_CALCULATOR_QUERY_KEY =
     "child-education-fund-calculator" as const;
+export const MONTHLY_BUDGET_CALCULATOR_QUERY_KEY =
+    "monthly-budget-calculator" as const;
+export const EMERGENCY_FUND_CALCULATOR_QUERY_KEY =
+    "emergency-fund-calculator" as const;
+export const EXPENSE_RATIO_CALCULATOR_QUERY_KEY =
+    "expense-ratio-calculator" as const;
+export const BREAK_EVEN_CALCULATOR_QUERY_KEY =
+    "break-even-point-calculator" as const;
+
+export const ROI_CALCULATOR_QUERY_KEY =
+    "roi-calculator" as const;
+export const PROFIT_CALCULATOR_QUERY_KEY =
+    "profit-margin-calculator" as const;
+export const MARK_UP_CALCULATOR_QUERY_KEY =
+    "mark-up-calculator" as const;
 
 export const QUERY_KEYS = [
   ANNUALIZED_RETURN_CALCULATIONS_QUERY_KEY,
@@ -191,4 +227,11 @@ export const QUERY_KEYS = [
   RISK_ADJUSTED_RETURN_CALCULATOR_QUERY_KEY,
   INFLATION_ADJUSTED_RETURN_CALCULATOR_QUERY_KEY,
   CHILD_EDUCATION_FUND_CALCULATOR_QUERY_KEY,
+  MONTHLY_BUDGET_CALCULATOR_QUERY_KEY,
+  EMERGENCY_FUND_CALCULATOR_QUERY_KEY,
+  EXPENSE_RATIO_CALCULATOR_QUERY_KEY,
+  BREAK_EVEN_CALCULATOR_QUERY_KEY,
+  ROI_CALCULATOR_QUERY_KEY,
+  PROFIT_CALCULATOR_QUERY_KEY,
+  MARK_UP_CALCULATOR_QUERY_KEY,
 ] as const;

@@ -252,7 +252,7 @@ export const personalLoanEmiCalculationFormDataScheme = z.object({
 	loanAmount: positiveNumberFieldSchemaWithMaxAndMin('Loan Amount', 100000, 100000000),
 	rateOfInterest: positiveNumberFieldSchemaWithMaxAndMin('Rate of Interest', 1, 20),
 	loanTenure: positiveNumberFieldSchemaWithMaxAndMin('Load Tenure', 1, 30),
-	tenureType: positiveNumberFieldSchema('tenureType'),
+	tenureType: positiveNumberFieldSchema('Tenure Type'),
 
 });
 
@@ -307,4 +307,53 @@ export const childEducationFundCalculatorFormDataScheme = z.object({
 	ageForHigherEducation: positiveNumberFieldSchemaWithMaxAndMin('Inflation Rate', 18, 57),
 	expectedAnnualRateOfReturn: positiveNumberFieldSchemaWithMaxAndMin('Inflation Rate', 1, 40),
 	presentCostOfHigherEducation: positiveNumberFieldSchemaWithMaxAndMin('Investment Amount', 1000, 10000000),
+});
+
+export const monthlyBudgetCalculatorFormDataScheme = z.object({
+	monthlyIncome: positiveNumberFieldSchemaWithMaxAndMin('Monthly Income', 1000, 10000000),
+	housingExpenses: positiveNumberFieldSchema('Housing Expenses'),
+	utilitiesExpenses: positiveNumberFieldSchema('Utilities Expenses'),
+	groceriesExpenses: positiveNumberFieldSchema('Groceries Expenses'),
+	transportationExpenses: positiveNumberFieldSchema('Transportation Expenses'),
+	otherExpenses: positiveNumberFieldSchema('Other Expenses'),
+});
+
+export const emergencyFundCalculatorFormDataScheme = z.object({
+	averageMonthlyExpenses: positiveNumberFieldSchemaWithMaxAndMin('Average Monthly Expenses', 1000, 10000000),
+	monthsOfSavingsDesired: positiveNumberFieldSchemaWithMaxAndMin('Months of Savings Desired', 1, 100),
+});
+
+
+export const expenseRatioCalculatorFormDataScheme = z.object({
+	initialInvestment: positiveNumberFieldSchemaWithMaxAndMin('Initial Investment', 1000, 10000000),
+	yearlyInvestment: positiveNumberFieldSchemaWithMaxAndMin('Yearly Investment', 1000, 10000000),
+	durationYrs: positiveNumberFieldSchemaWithMaxAndMin('Duration Yrs', 1, 40),
+	expectedReturn: positiveNumberFieldSchemaWithMaxAndMin('Expected Return', 1, 30),
+	expenseRatio: positiveNumberFieldSchemaWithMaxAndMin('Expense Ratio', 0, 10),
+});
+export const breakEvenCalculatorFormDataScheme = z.object({
+
+	fixedCosts: positiveNumberFieldSchemaWithMaxAndMin('Fixed Costs', 1000, 10000000),
+	variableCostPerUnit: positiveNumberFieldSchemaWithMaxAndMin('Variable Cost per Unit', 1, 10000000),
+	sellingPricePerUnit: positiveNumberFieldSchemaWithMaxAndMin('Selling Price per Unit', 1, 10000000),
+	expectedUnitSales: positiveNumberFieldSchemaWithMaxAndMin('Expected Unit Sales', 1, 10000000),
+});
+
+export const rOICalculatorFormDataScheme = z.object({
+
+	amountInvested: positiveNumberFieldSchemaWithMaxAndMin('Amount Invested', 1000, 10000000),
+	amountReturned: positiveNumberFieldSchemaWithMaxAndMin('Amount Returned', 1000, 10000000),
+	investmentPeriodYears: positiveNumberFieldSchemaWithMaxAndMin('Investment Period Years', 1, 40),
+});
+
+export const profitCalculatorFormDataScheme = z.object({
+
+	revenue: positiveNumberFieldSchemaWithMaxAndMin('Revenue', 1, 1000000000),
+	expenses: positiveNumberFieldSchemaWithMaxAndMin('Expenses', 1, 1000000000),
+});
+
+export const markUpCalculatorFormDataScheme = z.object({
+
+	costPrice: positiveNumberFieldSchemaWithMaxAndMin('Cost Price', 1, 1000000000),
+	sellingPrice: positiveNumberFieldSchemaWithMaxAndMin('Selling Price', 1, 1000000000),
 });

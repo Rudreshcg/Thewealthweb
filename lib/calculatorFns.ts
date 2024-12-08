@@ -53,7 +53,15 @@ import {
 	RiskAdjustedReturnCalculatorProps,
 	IInflationAdjustedReturnCalculatorFormData,
 	InflationAdjustedReturnCalculatorProps,
-	ChildEducationFundCalculatorProps, IChildEducationFundCalculatorFormData,
+	ChildEducationFundCalculatorProps,
+	IChildEducationFundCalculatorFormData,
+	IMonthlyBudgetCalculatorFormData,
+	MonthlyBudgetCalculatorProps,
+	EmergencyFundCalculatorProps,
+	IEmergencyFundCalculatorFormData,
+	IExpenseRatioCalculatorFormData, ExpenseRatioCalculatorProps,
+	IBreakEvenCalculatorFormData,
+	BreakEvenCalculatorProps, ProfitCalculatorProps, IProfitCalculatorFormData,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -886,5 +894,230 @@ export const calculateChildEducationFundCalculator = (
 		monthlyInvestmentRequired,
 		costOfEducationConsideringInflation,
 		yearsHaveToHigherEducation,
+	};
+};
+
+export const calculateMonthlyBudgetCalculator = (
+	formData: IMonthlyBudgetCalculatorFormData
+): MonthlyBudgetCalculatorProps => {
+	const {
+		monthlyIncome,
+		housingExpenses,
+		utilitiesExpenses,
+		groceriesExpenses,
+		transportationExpenses,
+		otherExpenses,
+	} = formData;
+
+	const totalMonthlyExpenses = housingExpenses + utilitiesExpenses + groceriesExpenses + transportationExpenses + otherExpenses;
+	const remainingBudget = monthlyIncome - totalMonthlyExpenses;
+
+	return {
+		monthlyIncome,
+		housingExpenses,
+		utilitiesExpenses,
+		groceriesExpenses,
+		transportationExpenses,
+		otherExpenses,
+		totalMonthlyExpenses,
+		remainingBudget,
+	};
+};
+
+export const calculateEmergencyFundCalculator = (
+	formData: IEmergencyFundCalculatorFormData
+): EmergencyFundCalculatorProps => {
+	const {
+		averageMonthlyExpenses,
+		monthsOfSavingsDesired,
+	} = formData;
+
+	const emergencyFund = averageMonthlyExpenses * monthsOfSavingsDesired;
+
+	return {
+		averageMonthlyExpenses,
+		monthsOfSavingsDesired,
+		emergencyFund,
+	};
+};
+
+export const calculateExpenseRatioCalculator = (
+	formData: IExpenseRatioCalculatorFormData
+): ExpenseRatioCalculatorProps => {
+	const {
+		initialInvestment,
+		yearlyInvestment,
+		durationYrs,
+		expectedReturn,
+		expenseRatio,
+	} = formData;
+
+	let futureValueOfTotalInvestment = initialInvestment * Math.pow(1 + expectedReturn / 100, durationYrs);
+	for (let i = 1; i <= durationYrs; i++) {
+		futureValueOfTotalInvestment += yearlyInvestment * Math.pow(1 + expectedReturn / 100, durationYrs - i);
+	}
+
+	let totalCostOfETF = 0;
+	let currentBalance = initialInvestment;
+
+	for (let i = 1; i <= durationYrs; i++) {
+		currentBalance = currentBalance * (1 + expectedReturn / 100) + yearlyInvestment;
+		let yearlyCost = currentBalance * (expenseRatio / 100);
+		totalCostOfETF += yearlyCost;
+	}
+
+	console.log(`Future Value of Total Investment: ₹${futureValueOfTotalInvestment}`);
+	console.log(`Total Cost of ETF: ₹${totalCostOfETF}`);
+
+	return {
+		initialInvestment,
+		yearlyInvestment,
+		durationYrs,
+		expectedReturn,
+		expenseRatio,
+		futureValueOfTotalInvestment,
+		totalCostOfETF,
+	};
+};
+
+export const calculateBreakEvenCalculator = (
+	formData: IBreakEvenCalculatorFormData
+): BreakEvenCalculatorProps => {
+	const {
+		fixedCosts,
+		variableCostPerUnit,
+		sellingPricePerUnit,
+		expectedUnitSales
+	} = formData;
+
+	const breakEvenUnits = fixedCosts / (sellingPricePerUnit - variableCostPerUnit);
+
+	const totalRevenue = expectedUnitSales * sellingPricePerUnit;
+	const totalVariableCosts = expectedUnitSales * variableCostPerUnit;
+	const totalCosts = fixedCosts + totalVariableCosts;
+	const netProfit = totalRevenue - totalCosts;
+
+	const monthlyBreakdown = [];
+	for (let units = 0; units <= expectedUnitSales; units += 1000) {
+		const variableCosts = units * variableCostPerUnit;
+		const totalCost = fixedCosts + variableCosts;
+		const revenue = units * sellingPricePerUnit;
+		const profit = revenue - totalCost;
+
+		monthlyBreakdown.push({
+			units,
+			variableCosts,
+			totalCosts: totalCost,
+			totalRevenue: revenue,
+			netProfit: profit,
+		});
+	}
+
+	return {
+		fixedCosts,
+		variableCostPerUnit,
+		sellingPricePerUnit,
+		expectedUnitSales,
+		breakEvenUnits,
+		totalRevenue,
+		totalCosts,
+		netProfit,
+		monthlyBreakdown,
+	};
+};
+
+export interface IROICalculatorFormData {
+	amountInvested: number;
+	amountReturned: number;
+	investmentPeriodYears: number;
+}
+
+export interface ROICalculatorProps {
+	amountInvested: number;
+	amountReturned: number;
+	investmentPeriodYears: number;
+	gainOrLoss: number;
+	roi: number;
+	simpleAnnualRoi: number;
+	compoundAnnualRoi: number;
+}
+
+export const calculateROICalculator = (
+	formData: IROICalculatorFormData
+): ROICalculatorProps => {
+	const {
+		amountInvested,
+		amountReturned,
+		investmentPeriodYears,
+	} = formData;
+
+	const gainOrLoss = amountReturned - amountInvested;
+	const roi = (gainOrLoss / amountInvested) * 100;
+	const simpleAnnualRoi = roi / investmentPeriodYears;
+	const compoundAnnualRoi = (Math.pow((amountReturned / amountInvested), (1 / investmentPeriodYears)) - 1) * 100;
+
+	return {
+		amountInvested,
+		amountReturned,
+		investmentPeriodYears,
+		gainOrLoss,
+		roi,
+		simpleAnnualRoi,
+		compoundAnnualRoi,
+	};
+};
+
+export const calculateProfitCalculator = (
+	formData: IProfitCalculatorFormData
+): ProfitCalculatorProps => {
+	const {
+		revenue,
+		expenses,
+	} = formData;
+
+	const netProfit = revenue - expenses;
+
+	const netProfitMargin = (netProfit / revenue) * 100;
+
+	const profitPercentage = (netProfit / expenses) * 100;
+
+	return {
+		revenue,
+		expenses,
+		netProfit,
+		netProfitMargin,
+		profitPercentage,
+	};
+};
+
+export interface IMarkupCalculatorFormData {
+	costPrice: number;
+	sellingPrice: number;
+}
+
+export interface MarkupCalculatorProps {
+	costPrice: number;
+	sellingPrice: number;
+	markupPrice: number;
+	markupPercentage: number;
+}
+
+export const calculateMarkupCalculator = (
+	formData: IMarkupCalculatorFormData
+): MarkupCalculatorProps => {
+	const {
+		costPrice,
+		sellingPrice,
+	} = formData;
+
+	const markupPrice = sellingPrice - costPrice;
+
+	const markupPercentage = (markupPrice / costPrice) * 100;
+
+	return {
+		costPrice,
+		sellingPrice,
+		markupPrice,
+		markupPercentage,
 	};
 };

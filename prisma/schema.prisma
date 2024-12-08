@@ -72,6 +72,12 @@ model User {
   RiskAdjustedReturnCalculator      RiskAdjustedReturnCalculator[]
   InflationAdjustedReturnCalculator InflationAdjustedReturnCalculator[]
   ChildEducationFundCalculator      ChildEducationFundCalculator[]
+  MonthlyBudgetCalculator           MonthlyBudgetCalculator[]
+  EmergencyFundCalculator           EmergencyFundCalculator[]
+  ROICalculator                     ROICalculator[]
+  MarkUpCalculator                  MarkUpCalculator[]
+  BreakEvenCalculator               BreakEvenCalculator[]
+  ProfitCalculator                  ProfitCalculator[]
 }
 
 enum Plan {
@@ -599,6 +605,109 @@ model ChildEducationFundCalculator {
   formData  ChildEducationFundCalculatorFormData
   createdAt DateTime                             @default(now())
   updatedAt DateTime                             @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type MonthlyBudgetCalculatorFormData {
+  monthlyIncome          Float
+  housingExpenses        Float
+  utilitiesExpenses      Float
+  groceriesExpenses      Float
+  transportationExpenses Float
+  otherExpenses          Float
+}
+
+model MonthlyBudgetCalculator {
+  id        String                          @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                          @db.ObjectId
+  name      String
+  formData  MonthlyBudgetCalculatorFormData
+  createdAt DateTime                        @default(now())
+  updatedAt DateTime                        @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type EmergencyFundCalculatorFormData {
+  averageMonthlyExpenses Float
+  monthsOfSavingsDesired Float
+}
+
+model EmergencyFundCalculator {
+  id        String                          @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                          @db.ObjectId
+  name      String
+  formData  EmergencyFundCalculatorFormData
+  createdAt DateTime                        @default(now())
+  updatedAt DateTime                        @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type ROICalculatorFormData {
+  amountInvested             Float
+  amountReturned             Float
+  investmentPeriodYearsFloat Float
+}
+
+model ROICalculator {
+  id        String                @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                @db.ObjectId
+  name      String
+  formData  ROICalculatorFormData
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type BreakEvenCalculatorFormData {
+  fixedCosts          Float
+  variableCostPerUnit Float
+  sellingPricePerUnit Float
+  expectedUnitSales   Float
+}
+
+model BreakEvenCalculator {
+  id        String                      @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                      @db.ObjectId
+  name      String
+  formData  BreakEvenCalculatorFormData
+  createdAt DateTime                    @default(now())
+  updatedAt DateTime                    @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type ProfitCalculatorFormData {
+  revenue  Float
+  expenses Float
+}
+
+model ProfitCalculator {
+  id        String                   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                   @db.ObjectId
+  name      String
+  formData  ProfitCalculatorFormData
+  createdAt DateTime                 @default(now())
+  updatedAt DateTime                 @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type MarkUpCalculatorFormData {
+  costPrice    Float
+  sellingPrice Float
+}
+
+model MarkUpCalculator {
+  id        String                   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String                   @db.ObjectId
+  name      String
+  formData  MarkUpCalculatorFormData
+  createdAt DateTime                 @default(now())
+  updatedAt DateTime                 @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
