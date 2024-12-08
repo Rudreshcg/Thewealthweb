@@ -34,7 +34,10 @@ import {
 	emergencyFundCalculatorFormDataScheme,
 	expenseRatioCalculatorFormDataScheme,
 	breakEvenCalculatorFormDataScheme,
-	rOICalculatorFormDataScheme, profitCalculatorFormDataScheme, markUpCalculatorFormDataScheme,
+	rOICalculatorFormDataScheme,
+	profitCalculatorFormDataScheme,
+	markUpCalculatorFormDataScheme,
+	simpleInterestCalculatorFormDataScheme, futureValueCalculatorFormDataScheme, netWorthCalculatorFormDataScheme,
 } from '@/schemas';
 import {
 	AnnualizedReturnCalculation,
@@ -377,6 +380,27 @@ export type IMarkUpCalculatorFormData = z.infer<typeof markUpCalculatorFormDataS
 export interface MarkUpCalculatorProps extends IMarkUpCalculatorFormData {
 	markupPrice: number;
 	markupPercentage: number;
+}
+export type ISimpleInterestCalculatorFormData = z.infer<typeof simpleInterestCalculatorFormDataScheme>;
+
+export interface SimpleInterestCalculatorProps extends ISimpleInterestCalculatorFormData {
+	interestDurationType: number;
+	simpleInterest: number;
+	totalAmount: number;
+}
+export type IFutureValueCalculatorFormData = z.infer<typeof futureValueCalculatorFormDataScheme>;
+
+export interface FutureValueCalculatorProps extends IFutureValueCalculatorFormData {
+	totalPrincipal: number;
+	totalInterest: number;
+	futureValue: number;
+}
+export type INetWorthCalculatorFormData = z.infer<typeof netWorthCalculatorFormDataScheme>;
+
+export interface NetWorthCalculatorProps extends INetWorthCalculatorFormData {
+	totalAssets: number;
+	totalLiabilities: number;
+	netWorth: number;
 }
 
 export type CalculationType =

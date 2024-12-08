@@ -59,9 +59,17 @@ import {
 	MonthlyBudgetCalculatorProps,
 	EmergencyFundCalculatorProps,
 	IEmergencyFundCalculatorFormData,
-	IExpenseRatioCalculatorFormData, ExpenseRatioCalculatorProps,
+	IExpenseRatioCalculatorFormData,
+	ExpenseRatioCalculatorProps,
 	IBreakEvenCalculatorFormData,
-	BreakEvenCalculatorProps, ProfitCalculatorProps, IProfitCalculatorFormData,
+	BreakEvenCalculatorProps,
+	ProfitCalculatorProps,
+	IProfitCalculatorFormData,
+	ISimpleInterestCalculatorFormData,
+	SimpleInterestCalculatorProps,
+	IFutureValueCalculatorFormData,
+	FutureValueCalculatorProps,
+	INetWorthCalculatorFormData, NetWorthCalculatorProps,
 } from '@/types/calculations';
 
 export const calculateMarkup = (formData: IMarkupFormData): MarkupReportProps => {
@@ -1119,5 +1127,100 @@ export const calculateMarkupCalculator = (
 		sellingPrice,
 		markupPrice,
 		markupPercentage,
+	};
+};
+
+export const calculateSimpleInterest = (
+	formData: ISimpleInterestCalculatorFormData
+): SimpleInterestCalculatorProps => {
+	const {
+		principalAmount,
+		interestRate,
+		period,
+		periodType,
+		interestDurationType,
+	} = formData;
+
+	const periodInYears = periodType === 1 ? period / 12 : period;
+	const annualInterestRate = interestDurationType === 1 ? interestRate * 12 : interestRate;
+	const simpleInterest = (principalAmount * annualInterestRate * periodInYears) / 100;
+	const totalAmount = principalAmount + simpleInterest;
+
+	return {
+		principalAmount,
+		interestRate,
+		period,
+		periodType,
+		interestDurationType,
+		simpleInterest,
+		totalAmount,
+	};
+};
+
+export const calculateFutureValue = (
+	formData: IFutureValueCalculatorFormData
+): FutureValueCalculatorProps => {
+	const {
+		initialValue,
+		annualContribution,
+		interestRate,
+		numberOfPeriods,
+		compoundFrequency,
+	} = formData;
+
+	let futureValue = initialValue;
+	for (let i = 1; i <= numberOfPeriods; i++) {
+		futureValue = (futureValue + annualContribution) * (1 + (interestRate / 100 / compoundFrequency) * compoundFrequency);
+	}
+
+	const totalPrincipal = initialValue + (annualContribution * numberOfPeriods);
+	const totalInterest = futureValue - totalPrincipal;
+
+	return {
+		initialValue,
+		annualContribution,
+		interestRate,
+		numberOfPeriods,
+		compoundFrequency,
+		totalPrincipal,
+		totalInterest,
+		futureValue,
+	};
+};
+
+export const calculateNetWorth = (
+	formData: INetWorthCalculatorFormData
+): NetWorthCalculatorProps => {
+	const {
+		primaryIncome,
+		realEstateIncome,
+		sharesInvestments,
+		vehicleAssets,
+		otherAssets,
+		savingsAccounts,
+		otherInvestments,
+		cashEquivalents,
+		providentFund,
+		insurancePolicies,
+		homeLoan,
+		carLoan,
+		personalLoan,
+		studentLoan,
+		loanAgainstProperty,
+		creditCardDebt,
+		otherDebts,
+		emis,
+	} = formData;
+
+	const totalAssets = primaryIncome + realEstateIncome + sharesInvestments + vehicleAssets + otherAssets + savingsAccounts + otherInvestments + cashEquivalents + providentFund + insurancePolicies;
+
+	const totalLiabilities = homeLoan + carLoan + personalLoan + studentLoan + loanAgainstProperty + creditCardDebt + otherDebts + emis;
+
+	const netWorth = totalAssets - totalLiabilities;
+
+	return {
+		totalAssets,
+		totalLiabilities,
+		netWorth,
 	};
 };

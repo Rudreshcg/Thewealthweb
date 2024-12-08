@@ -137,3 +137,7 @@ export const getInvestmentFrequencyShortLabel = (value: number) => {
           ?.shortLabel || "y"
   );
 };
+
+export const getDurationType=(value: number) => {
+  return value===1?"Months":"Years";
+};
